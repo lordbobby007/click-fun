@@ -253,6 +253,29 @@
       transform: scale(0.98);
     }
 
+    .reward-button {
+      width: 100%;
+      min-height: 54px;
+      margin-bottom: 12px;
+      border: 1px solid rgba(74,222,128,0.35);
+      border-radius: 17px;
+      background: rgba(34,197,94,0.18);
+      color: #bbf7d0;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .reward-button:active {
+      transform: scale(0.98);
+    }
+
+    .reward-button:disabled {
+      opacity: 0.55;
+      cursor: default;
+    }
+
     .score-result {
       font-size: 48px;
       font-weight: 900;
@@ -301,7 +324,10 @@
       <div class="best">🏆 Best: <span id="bestScore">0</span></div>
     </div>
 
+    <!-- START SCREEN -->
+
     <div id="startScreen" class="card start-screen">
+
       <div class="big-icon">🧩</div>
 
       <h1>Find The Odd One!</h1>
@@ -314,11 +340,16 @@
       <button id="startButton" class="main-button">
         🎮 Start Game
       </button>
+
     </div>
+
+
+    <!-- GAME SCREEN -->
 
     <div id="gameScreen" class="hidden">
 
       <div class="stats">
+
         <div class="stat">
           <div class="stat-label">Score</div>
           <div id="score" class="stat-value">0</div>
@@ -333,9 +364,12 @@
           <div class="stat-label">Lives</div>
           <div id="lives" class="stat-value">❤️❤️❤️</div>
         </div>
+
       </div>
 
+
       <div class="timer-wrap">
+
         <div class="timer-row">
           <span>TIME</span>
           <span id="timer" class="timer">10.0</span>
@@ -344,16 +378,24 @@
         <div class="timer-bar">
           <div id="timerFill" class="timer-fill"></div>
         </div>
+
       </div>
+
 
       <div class="card">
 
         <div class="round">
-          <div class="round-title">Can you spot it?</div>
+
+          <div class="round-title">
+            Can you spot it?
+          </div>
+
           <div id="question" class="question">
             Find the different emoji
           </div>
+
         </div>
+
 
         <div id="emojiGrid" class="emoji-grid"></div>
 
@@ -367,19 +409,40 @@
 
     </div>
 
+
+    <!-- GAME OVER -->
+
     <div id="gameOver" class="hidden card game-over">
 
-      <div class="big-icon">🏁</div>
+      <div class="big-icon">
+        🏁
+      </div>
 
-      <h1>Game Over!</h1>
+      <h1>
+        Game Over!
+      </h1>
 
-      <p>Your final score is</p>
+      <p>
+        Your final score is
+      </p>
 
-      <div id="finalScore" class="score-result">0</div>
+      <div id="finalScore" class="score-result">
+        0
+      </div>
 
       <div id="newBest" class="new-best hidden">
         🏆 NEW BEST SCORE!
       </div>
+
+
+      <!-- REWARDED AD BUTTON -->
+
+      <button id="watchAdButton" class="reward-button">
+        📺 Watch Ad → +1 Life
+      </button>
+
+
+      <!-- NORMAL PLAY AGAIN -->
 
       <button id="playAgain" class="main-button">
         🔄 Play Again
@@ -390,6 +453,7 @@
   </main>
 </div>
 
+
 <script>
 (function () {
 
@@ -399,39 +463,52 @@
    * ==========================================
    */
 
-  const ADSGRAM_BLOCK_ID = "int-47190";
+  const INTERSTITIAL_BLOCK_ID = "int-47190";
 
-  let adsgramController = null;
+  const REWARD_BLOCK_ID = "47191";
+
+
+  let interstitialController = null;
+  let rewardController = null;
+
   let adShowing = false;
 
+
   /*
-   * Initialize AdsGram
+   * ==========================================
+   * ADSGRAM INTERSTITIAL
+   * ==========================================
    */
 
-  function initAdsgram() {
+  function initInterstitial() {
+
     try {
+
       if (
-        !adsgramController &&
+        !interstitialController &&
         window.Adsgram &&
         typeof window.Adsgram.init === "function"
       ) {
-        adsgramController = window.Adsgram.init({
-          blockId: ADSGRAM_BLOCK_ID
-        });
+
+        interstitialController =
+          window.Adsgram.init({
+            blockId: INTERSTITIAL_BLOCK_ID
+          });
+
       }
+
     } catch (error) {
-      console.log("AdsGram initialization failed:", error);
+
+      console.log(
+        "AdsGram interstitial initialization failed:",
+        error
+      );
+
     }
 
-    return adsgramController;
+    return interstitialController;
   }
 
-  /*
-   * Show interstitial ad.
-   *
-   * If there is no ad available or something
-   * goes wrong, the player simply continues.
-   */
 
   async function showInterstitial() {
 
@@ -439,72 +516,245 @@
       return;
     }
 
-    const controller = initAdsgram();
+    const controller = initInterstitial();
 
     if (!controller) {
-      console.log("AdsGram is not available.");
+
+      console.log(
+        "AdsGram interstitial is not available."
+      );
+
       return;
     }
 
     adShowing = true;
 
     try {
+
       await controller.show();
+
     } catch (error) {
-      console.log("AdsGram ad was not shown:", error);
+
+      console.log(
+        "AdsGram interstitial was not shown:",
+        error
+      );
+
     } finally {
+
       adShowing = false;
+
     }
+
   }
 
 
   /*
    * ==========================================
-   * GAME
+   * ADSGRAM REWARDED AD
    * ==========================================
    */
 
-  const startScreen = document.getElementById("startScreen");
-  const gameScreen = document.getElementById("gameScreen");
-  const gameOver = document.getElementById("gameOver");
+  function initReward() {
 
-  const startButton = document.getElementById("startButton");
-  const playAgain = document.getElementById("playAgain");
+    try {
 
-  const scoreEl = document.getElementById("score");
-  const roundEl = document.getElementById("round");
-  const livesEl = document.getElementById("lives");
-  const timerEl = document.getElementById("timer");
-  const timerFill = document.getElementById("timerFill");
-  const emojiGrid = document.getElementById("emojiGrid");
-  const messageEl = document.getElementById("message");
+      if (
+        !rewardController &&
+        window.Adsgram &&
+        typeof window.Adsgram.init === "function"
+      ) {
 
-  const finalScoreEl = document.getElementById("finalScore");
-  const bestScoreEl = document.getElementById("bestScore");
-  const newBestEl = document.getElementById("newBest");
+        rewardController =
+          window.Adsgram.init({
+            blockId: REWARD_BLOCK_ID
+          });
+
+      }
+
+    } catch (error) {
+
+      console.log(
+        "AdsGram reward initialization failed:",
+        error
+      );
+
+    }
+
+    return rewardController;
+  }
+
+
+  async function showRewardAd() {
+
+    if (adShowing) {
+      return false;
+    }
+
+    const controller = initReward();
+
+    if (!controller) {
+
+      console.log(
+        "AdsGram reward ad is not available."
+      );
+
+      return false;
+    }
+
+    adShowing = true;
+
+    try {
+
+      /*
+       * AdsGram resolves this promise when
+       * the rewarded ad has been watched
+       * completely.
+       */
+
+      await controller.show();
+
+      return true;
+
+    } catch (error) {
+
+      console.log(
+        "AdsGram reward ad was not completed:",
+        error
+      );
+
+      return false;
+
+    } finally {
+
+      adShowing = false;
+
+    }
+
+  }
+
+
+  /*
+   * ==========================================
+   * GAME ELEMENTS
+   * ==========================================
+   */
+
+  const startScreen =
+    document.getElementById("startScreen");
+
+  const gameScreen =
+    document.getElementById("gameScreen");
+
+  const gameOver =
+    document.getElementById("gameOver");
+
+
+  const startButton =
+    document.getElementById("startButton");
+
+  const playAgain =
+    document.getElementById("playAgain");
+
+  const watchAdButton =
+    document.getElementById("watchAdButton");
+
+
+  const scoreEl =
+    document.getElementById("score");
+
+  const roundEl =
+    document.getElementById("round");
+
+  const livesEl =
+    document.getElementById("lives");
+
+  const timerEl =
+    document.getElementById("timer");
+
+  const timerFill =
+    document.getElementById("timerFill");
+
+  const emojiGrid =
+    document.getElementById("emojiGrid");
+
+  const messageEl =
+    document.getElementById("message");
+
+
+  const finalScoreEl =
+    document.getElementById("finalScore");
+
+  const bestScoreEl =
+    document.getElementById("bestScore");
+
+  const newBestEl =
+    document.getElementById("newBest");
+
+
+  /*
+   * ==========================================
+   * GAME VARIABLES
+   * ==========================================
+   */
 
   let score = 0;
+
   let round = 1;
+
   let lives = 3;
 
+
   let timeLeft = 10;
+
   let maxTime = 10;
 
+
   let timer = null;
+
   let running = false;
+
   let correctIndex = 0;
+
+
+  /*
+   * IMPORTANT:
+   *
+   * The player can use the rewarded ad
+   * only ONCE during a game.
+   */
+
+  let rewardUsed = false;
+
 
   let bestScore = 0;
 
+
   try {
-    bestScore = Number(localStorage.getItem("puzzleRushBest")) || 0;
+
+    bestScore =
+      Number(
+        localStorage.getItem("puzzleRushBest")
+      ) || 0;
+
   } catch (e) {
+
     bestScore = 0;
+
   }
+
 
   bestScoreEl.textContent = bestScore;
 
+
+  /*
+   * ==========================================
+   * EMOJI PAIRS
+   * ==========================================
+   */
+
   const pairs = [
+
     ["😀", "😃"],
     ["😎", "🤓"],
     ["🐶", "🐺"],
@@ -520,295 +770,742 @@
     ["😄", "😁"],
     ["😡", "😠"],
     ["🐸", "🐢"]
+
   ];
 
 
+  /*
+   * ==========================================
+   * GRID SIZE
+   * ==========================================
+   */
+
   function getGridSize() {
+
     if (round < 3) return 15;
+
     if (round < 6) return 20;
+
     if (round < 10) return 25;
+
     return 30;
+
   }
 
+
+  /*
+   * ==========================================
+   * ROUND TIME
+   * ==========================================
+   */
 
   function getTime() {
+
     if (round < 4) return 10;
+
     if (round < 7) return 8;
+
     if (round < 10) return 7;
+
     return 6;
+
   }
 
+
+  /*
+   * ==========================================
+   * START GAME
+   * ==========================================
+   */
 
   function startGame() {
 
+    clearInterval(timer);
+
+
     score = 0;
+
     round = 1;
+
     lives = 3;
+
+
+    /*
+     * New game means the player gets
+     * one new rewarded-ad chance.
+     */
+
+    rewardUsed = false;
+
+
+    watchAdButton.classList.remove(
+      "hidden"
+    );
+
+    watchAdButton.disabled = false;
+
 
     running = true;
 
-    startScreen.classList.add("hidden");
-    gameOver.classList.add("hidden");
-    gameScreen.classList.remove("hidden");
+
+    startScreen.classList.add(
+      "hidden"
+    );
+
+    gameOver.classList.add(
+      "hidden"
+    );
+
+    gameScreen.classList.remove(
+      "hidden"
+    );
+
 
     updateStats();
+
     nextRound();
+
   }
 
+
+  /*
+   * ==========================================
+   * UPDATE STATS
+   * ==========================================
+   */
 
   function updateStats() {
 
     scoreEl.textContent = score;
+
     roundEl.textContent = round;
+
 
     let hearts = "";
 
-    for (let i = 0; i < lives; i++) {
+
+    for (
+      let i = 0;
+      i < lives;
+      i++
+    ) {
+
       hearts += "❤️";
+
     }
 
-    for (let i = lives; i < 3; i++) {
+
+    for (
+      let i = lives;
+      i < 3;
+      i++
+    ) {
+
       hearts += "🖤";
+
     }
+
 
     livesEl.textContent = hearts;
+
   }
 
+
+  /*
+   * ==========================================
+   * NEXT ROUND
+   * ==========================================
+   */
 
   function nextRound() {
 
     if (!running) return;
 
+
     clearInterval(timer);
 
-    const size = getGridSize();
 
-    maxTime = getTime();
-    timeLeft = maxTime;
+    const size =
+      getGridSize();
 
-    const pair = pairs[Math.floor(Math.random() * pairs.length)];
 
-    const normal = pair[0];
-    const different = pair[1];
+    maxTime =
+      getTime();
 
-    correctIndex = Math.floor(Math.random() * size);
+
+    timeLeft =
+      maxTime;
+
+
+    const pair =
+      pairs[
+        Math.floor(
+          Math.random() * pairs.length
+        )
+      ];
+
+
+    const normal =
+      pair[0];
+
+    const different =
+      pair[1];
+
+
+    correctIndex =
+      Math.floor(
+        Math.random() * size
+      );
+
 
     emojiGrid.innerHTML = "";
 
-    for (let i = 0; i < size; i++) {
 
-      const button = document.createElement("button");
+    for (
+      let i = 0;
+      i < size;
+      i++
+    ) {
 
-      button.type = "button";
-      button.className = "emoji";
+      const button =
+        document.createElement(
+          "button"
+        );
+
+
+      button.type =
+        "button";
+
+
+      button.className =
+        "emoji";
+
 
       button.textContent =
         i === correctIndex
           ? different
           : normal;
 
-      button.addEventListener("click", function () {
-        chooseEmoji(i, button);
-      });
 
-      emojiGrid.appendChild(button);
+      button.addEventListener(
+        "click",
+        function () {
+
+          chooseEmoji(
+            i,
+            button
+          );
+
+        }
+      );
+
+
+      emojiGrid.appendChild(
+        button
+      );
+
     }
+
 
     messageEl.textContent = "";
 
+
     updateTimer();
 
-    timer = setInterval(function () {
 
-      timeLeft -= 0.1;
+    timer =
+      setInterval(
+        function () {
 
-      if (timeLeft <= 0) {
+          timeLeft -= 0.1;
 
-        timeLeft = 0;
 
-        updateTimer();
+          if (
+            timeLeft <= 0
+          ) {
 
-        clearInterval(timer);
+            timeLeft = 0;
 
-        timeExpired();
+            updateTimer();
 
-        return;
-      }
+            clearInterval(timer);
 
-      updateTimer();
+            timeExpired();
 
-    }, 100);
+            return;
+
+          }
+
+
+          updateTimer();
+
+        },
+        100
+      );
+
   }
 
+
+  /*
+   * ==========================================
+   * TIMER
+   * ==========================================
+   */
 
   function updateTimer() {
 
-    timerEl.textContent = timeLeft.toFixed(1);
+    timerEl.textContent =
+      timeLeft.toFixed(1);
 
-    const percentage = Math.max(
-      0,
-      Math.min(100, (timeLeft / maxTime) * 100)
-    );
 
-    timerFill.style.width = percentage + "%";
+    const percentage =
+      Math.max(
+        0,
+        Math.min(
+          100,
+          (timeLeft / maxTime) * 100
+        )
+      );
+
+
+    timerFill.style.width =
+      percentage + "%";
+
   }
 
 
-  async function chooseEmoji(index, button) {
+  /*
+   * ==========================================
+   * CHOOSE EMOJI
+   * ==========================================
+   */
 
-    if (!running || adShowing) return;
+  async function chooseEmoji(
+    index,
+    button
+  ) {
 
-    if (index === correctIndex) {
+    if (
+      !running ||
+      adShowing
+    ) {
+
+      return;
+
+    }
+
+
+    if (
+      index === correctIndex
+    ) {
 
       clearInterval(timer);
 
-      button.classList.add("correct");
 
-      const speedBonus = Math.ceil(timeLeft);
+      button.classList.add(
+        "correct"
+      );
 
-      const points = 10 + speedBonus + round;
+
+      const speedBonus =
+        Math.ceil(timeLeft);
+
+
+      const points =
+        10 +
+        speedBonus +
+        round;
+
 
       score += points;
 
+
       messageEl.textContent =
-        "+" + points + " points! 🔥";
+        "+" +
+        points +
+        " points! 🔥";
+
 
       updateStats();
 
 
       /*
-       * ==========================================
-       * ADSGRAM NATURAL BREAK
-       * ==========================================
+       * ========================================
+       * INTERSTITIAL
+       * ========================================
        *
-       * Show an interstitial after every 5
-       * successfully completed rounds.
+       * Every 5 completed rounds.
        *
-       * Example:
-       * Round 5 -> Ad -> Round 6
-       * Round 10 -> Ad -> Round 11
+       * 5 -> Ad -> 6
+       * 10 -> Ad -> 11
+       * 15 -> Ad -> 16
        */
 
-      const shouldShowAd = round % 5 === 0;
+      const shouldShowAd =
+        round % 5 === 0;
 
 
-      setTimeout(async function () {
+      setTimeout(
+        async function () {
 
-        if (!running) return;
+          if (!running) {
+            return;
+          }
 
-        if (shouldShowAd) {
 
-          messageEl.textContent =
-            "🎬 Short break...";
+          if (shouldShowAd) {
 
-          await showInterstitial();
+            messageEl.textContent =
+              "🎬 Short break...";
 
-        }
 
-        if (!running) return;
+            await showInterstitial();
 
-        round++;
+          }
 
-        updateStats();
 
-        nextRound();
+          if (!running) {
+            return;
+          }
 
-      }, 350);
 
+          round++;
+
+
+          updateStats();
+
+
+          nextRound();
+
+        },
+        350
+      );
 
     } else {
 
-      button.classList.add("wrong");
+      button.classList.add(
+        "wrong"
+      );
+
 
       lives--;
 
+
       updateStats();
 
-      messageEl.textContent = "❌ Wrong!";
 
-      if (lives <= 0) {
+      messageEl.textContent =
+        "❌ Wrong!";
+
+
+      if (
+        lives <= 0
+      ) {
 
         clearInterval(timer);
 
-        setTimeout(function () {
-          endGame();
-        }, 350);
+
+        setTimeout(
+          function () {
+
+            endGame();
+
+          },
+          350
+        );
+
       }
+
     }
+
   }
 
+
+  /*
+   * ==========================================
+   * TIME EXPIRED
+   * ==========================================
+   */
 
   function timeExpired() {
 
-    if (!running) return;
-
-    lives--;
-
-    updateStats();
-
-    messageEl.textContent = "⏰ Time's up!";
-
-    if (lives <= 0) {
-
-      setTimeout(function () {
-        endGame();
-      }, 500);
-
+    if (!running) {
       return;
     }
 
-    setTimeout(function () {
 
-      if (!running) return;
+    lives--;
 
-      round++;
 
-      nextRound();
+    updateStats();
 
-    }, 500);
+
+    messageEl.textContent =
+      "⏰ Time's up!";
+
+
+    if (
+      lives <= 0
+    ) {
+
+      setTimeout(
+        function () {
+
+          endGame();
+
+        },
+        500
+      );
+
+
+      return;
+
+    }
+
+
+    setTimeout(
+      function () {
+
+        if (!running) {
+          return;
+        }
+
+
+        round++;
+
+
+        nextRound();
+
+      },
+      500
+    );
+
   }
 
+
+  /*
+   * ==========================================
+   * GAME OVER
+   * ==========================================
+   */
 
   function endGame() {
 
     running = false;
 
+
     clearInterval(timer);
 
-    finalScoreEl.textContent = score;
 
-    const oldBest = bestScore;
+    finalScoreEl.textContent =
+      score;
 
-    if (score > bestScore) {
 
-      bestScore = score;
+    const oldBest =
+      bestScore;
+
+
+    if (
+      score > bestScore
+    ) {
+
+      bestScore =
+        score;
+
 
       try {
+
         localStorage.setItem(
           "puzzleRushBest",
           String(bestScore)
         );
+
       } catch (e) {}
 
-      bestScoreEl.textContent = bestScore;
+
+      bestScoreEl.textContent =
+        bestScore;
+
     }
 
-    if (score > oldBest) {
-      newBestEl.classList.remove("hidden");
+
+    if (
+      score > oldBest
+    ) {
+
+      newBestEl.classList.remove(
+        "hidden"
+      );
+
     } else {
-      newBestEl.classList.add("hidden");
+
+      newBestEl.classList.add(
+        "hidden"
+      );
+
     }
 
-    gameScreen.classList.add("hidden");
 
-    gameOver.classList.remove("hidden");
+    /*
+     * Show rewarded button only if
+     * the player has not already used
+     * their one reward this game.
+     */
+
+    if (
+      rewardUsed
+    ) {
+
+      watchAdButton.classList.add(
+        "hidden"
+      );
+
+    } else {
+
+      watchAdButton.classList.remove(
+        "hidden"
+      );
+
+      watchAdButton.disabled = false;
+
+    }
+
+
+    gameScreen.classList.add(
+      "hidden"
+    );
+
+
+    gameOver.classList.remove(
+      "hidden"
+    );
+
   }
 
+
+  /*
+   * ==========================================
+   * WATCH AD FOR +1 LIFE
+   * ==========================================
+   */
+
+  watchAdButton.addEventListener(
+    "click",
+    async function () {
+
+      /*
+       * Prevent double clicks.
+       */
+
+      if (
+        rewardUsed ||
+        adShowing
+      ) {
+
+        return;
+
+      }
+
+
+      watchAdButton.disabled =
+        true;
+
+
+      watchAdButton.textContent =
+        "📺 Loading Ad...";
+
+
+      /*
+       * Show rewarded ad.
+       */
+
+      const rewarded =
+        await showRewardAd();
+
+
+      /*
+       * ONLY give the life if the
+       * rewarded ad completed.
+       */
+
+      if (rewarded) {
+
+        rewardUsed = true;
+
+
+        /*
+         * Give exactly ONE life.
+         */
+
+        lives = 1;
+
+
+        /*
+         * Return to the game.
+         */
+
+        gameOver.classList.add(
+          "hidden"
+        );
+
+        gameScreen.classList.remove(
+          "hidden"
+        );
+
+
+        running = true;
+
+
+        updateStats();
+
+
+        messageEl.textContent =
+          "❤️ Extra life! Keep going!";
+
+
+        /*
+         * Start the SAME round again.
+         */
+
+        nextRound();
+
+
+        watchAdButton.classList.add(
+          "hidden"
+        );
+
+
+      } else {
+
+        /*
+         * Ad wasn't completed.
+         * No reward.
+         */
+
+        watchAdButton.disabled =
+          false;
+
+
+        watchAdButton.textContent =
+          "📺 Watch Ad → +1 Life";
+
+      }
+
+    }
+  );
+
+
+  /*
+   * ==========================================
+   * BUTTONS
+   * ==========================================
+   */
 
   startButton.addEventListener(
     "click",
     startGame
   );
+
 
   playAgain.addEventListener(
     "click",
