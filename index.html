@@ -7,6 +7,12 @@
 
   <title>Puzzle Rush</title>
 
+  <!-- Telegram Mini App -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <!-- AdsGram -->
+  <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+
   <style>
     * {
       box-sizing: border-box;
@@ -387,6 +393,77 @@
 <script>
 (function () {
 
+  /*
+   * ==========================================
+   * ADSGRAM SETTINGS
+   * ==========================================
+   */
+
+  const ADSGRAM_BLOCK_ID = "int-47190";
+
+  let adsgramController = null;
+  let adShowing = false;
+
+  /*
+   * Initialize AdsGram
+   */
+
+  function initAdsgram() {
+    try {
+      if (
+        !adsgramController &&
+        window.Adsgram &&
+        typeof window.Adsgram.init === "function"
+      ) {
+        adsgramController = window.Adsgram.init({
+          blockId: ADSGRAM_BLOCK_ID
+        });
+      }
+    } catch (error) {
+      console.log("AdsGram initialization failed:", error);
+    }
+
+    return adsgramController;
+  }
+
+  /*
+   * Show interstitial ad.
+   *
+   * If there is no ad available or something
+   * goes wrong, the player simply continues.
+   */
+
+  async function showInterstitial() {
+
+    if (adShowing) {
+      return;
+    }
+
+    const controller = initAdsgram();
+
+    if (!controller) {
+      console.log("AdsGram is not available.");
+      return;
+    }
+
+    adShowing = true;
+
+    try {
+      await controller.show();
+    } catch (error) {
+      console.log("AdsGram ad was not shown:", error);
+    } finally {
+      adShowing = false;
+    }
+  }
+
+
+  /*
+   * ==========================================
+   * GAME
+   * ==========================================
+   */
+
   const startScreen = document.getElementById("startScreen");
   const gameScreen = document.getElementById("gameScreen");
   const gameOver = document.getElementById("gameOver");
@@ -445,12 +522,14 @@
     ["🐸", "🐢"]
   ];
 
+
   function getGridSize() {
     if (round < 3) return 15;
     if (round < 6) return 20;
     if (round < 10) return 25;
     return 30;
   }
+
 
   function getTime() {
     if (round < 4) return 10;
@@ -459,7 +538,9 @@
     return 6;
   }
 
+
   function startGame() {
+
     score = 0;
     round = 1;
     lives = 3;
@@ -474,7 +555,9 @@
     nextRound();
   }
 
+
   function updateStats() {
+
     scoreEl.textContent = score;
     roundEl.textContent = round;
 
@@ -491,12 +574,15 @@
     livesEl.textContent = hearts;
   }
 
+
   function nextRound() {
+
     if (!running) return;
 
     clearInterval(timer);
 
     const size = getGridSize();
+
     maxTime = getTime();
     timeLeft = maxTime;
 
@@ -510,11 +596,16 @@
     emojiGrid.innerHTML = "";
 
     for (let i = 0; i < size; i++) {
+
       const button = document.createElement("button");
 
       button.type = "button";
       button.className = "emoji";
-      button.textContent = i === correctIndex ? different : normal;
+
+      button.textContent =
+        i === correctIndex
+          ? different
+          : normal;
 
       button.addEventListener("click", function () {
         chooseEmoji(i, button);
@@ -528,21 +619,30 @@
     updateTimer();
 
     timer = setInterval(function () {
+
       timeLeft -= 0.1;
 
       if (timeLeft <= 0) {
+
         timeLeft = 0;
+
         updateTimer();
+
         clearInterval(timer);
+
         timeExpired();
+
         return;
       }
 
       updateTimer();
+
     }, 100);
   }
 
+
   function updateTimer() {
+
     timerEl.textContent = timeLeft.toFixed(1);
 
     const percentage = Math.max(
@@ -553,32 +653,71 @@
     timerFill.style.width = percentage + "%";
   }
 
-  function chooseEmoji(index, button) {
-    if (!running) return;
+
+  async function chooseEmoji(index, button) {
+
+    if (!running || adShowing) return;
 
     if (index === correctIndex) {
+
       clearInterval(timer);
 
       button.classList.add("correct");
 
       const speedBonus = Math.ceil(timeLeft);
+
       const points = 10 + speedBonus + round;
 
       score += points;
 
-      messageEl.textContent = "+" + points + " points! 🔥";
+      messageEl.textContent =
+        "+" + points + " points! 🔥";
 
       updateStats();
 
-      setTimeout(function () {
+
+      /*
+       * ==========================================
+       * ADSGRAM NATURAL BREAK
+       * ==========================================
+       *
+       * Show an interstitial after every 5
+       * successfully completed rounds.
+       *
+       * Example:
+       * Round 5 -> Ad -> Round 6
+       * Round 10 -> Ad -> Round 11
+       */
+
+      const shouldShowAd = round % 5 === 0;
+
+
+      setTimeout(async function () {
+
+        if (!running) return;
+
+        if (shouldShowAd) {
+
+          messageEl.textContent =
+            "🎬 Short break...";
+
+          await showInterstitial();
+
+        }
+
         if (!running) return;
 
         round++;
+
         updateStats();
+
         nextRound();
+
       }, 350);
 
+
     } else {
+
       button.classList.add("wrong");
 
       lives--;
@@ -588,6 +727,7 @@
       messageEl.textContent = "❌ Wrong!";
 
       if (lives <= 0) {
+
         clearInterval(timer);
 
         setTimeout(function () {
@@ -597,7 +737,9 @@
     }
   }
 
+
   function timeExpired() {
+
     if (!running) return;
 
     lives--;
@@ -607,6 +749,7 @@
     messageEl.textContent = "⏰ Time's up!";
 
     if (lives <= 0) {
+
       setTimeout(function () {
         endGame();
       }, 500);
@@ -615,14 +758,19 @@
     }
 
     setTimeout(function () {
+
       if (!running) return;
 
       round++;
+
       nextRound();
+
     }, 500);
   }
 
+
   function endGame() {
+
     running = false;
 
     clearInterval(timer);
@@ -632,10 +780,14 @@
     const oldBest = bestScore;
 
     if (score > bestScore) {
+
       bestScore = score;
 
       try {
-        localStorage.setItem("puzzleRushBest", String(bestScore));
+        localStorage.setItem(
+          "puzzleRushBest",
+          String(bestScore)
+        );
       } catch (e) {}
 
       bestScoreEl.textContent = bestScore;
@@ -648,11 +800,21 @@
     }
 
     gameScreen.classList.add("hidden");
+
     gameOver.classList.remove("hidden");
   }
 
-  startButton.addEventListener("click", startGame);
-  playAgain.addEventListener("click", startGame);
+
+  startButton.addEventListener(
+    "click",
+    startGame
+  );
+
+  playAgain.addEventListener(
+    "click",
+    startGame
+  );
+
 
 })();
 </script>
