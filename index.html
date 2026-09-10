@@ -1,1 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#111827">
 
+  <title>Puzzle Rush</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top, #312e81 0%, #111827 45%, #030712 100%);
+      color: white;
+      overflow-x: hidden;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 18px 14px 28px;
+    }
+
+    .game {
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+    }
+
+    .logo span {
+      color: #a5b4fc;
+    }
+
+    .best {
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 16px;
+      padding: 11px 8px;
+      text-align: center;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: #cbd5e1;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+    }
+
+    .stat-value {
+      margin-top: 3px;
+      font-size: 21px;
+      font-weight: 900;
+    }
+
+    .timer-wrap {
+      margin-bottom: 18px;
+    }
+
+    .timer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 7px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .timer {
+      font-size: 20px;
+    }
+
+    .timer-bar {
+      height: 9px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      overflow: hidden;
+    }
+
+    .timer-fill {
+      height: 100%;
+      width: 100%;
+      border-radius: inherit;
+      background: #818cf8;
+      transition: width 0.1s linear;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 28px;
+      padding: 24px 16px 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    }
+
+    .round {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .round-title {
+      font-size: 14px;
+      color: #cbd5e1;
+      margin-bottom: 5px;
+    }
+
+    .question {
+      font-size: 23px;
+      font-weight: 900;
+    }
+
+    .emoji-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .emoji {
+      aspect-ratio: 1;
+      border: 0;
+      border-radius: 17px;
+      background: rgba(255,255,255,0.09);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(25px, 8vw, 43px);
+      cursor: pointer;
+      transition: transform 0.12s ease, background 0.12s ease;
+      touch-action: manipulation;
+    }
+
+    .emoji:active {
+      transform: scale(0.88);
+      background: rgba(255,255,255,0.18);
+    }
+
+    .emoji.correct {
+      background: rgba(34,197,94,0.35);
+      transform: scale(1.05);
+    }
+
+    .emoji.wrong {
+      background: rgba(239,68,68,0.35);
+      transform: scale(0.92);
+    }
+
+    .message {
+      min-height: 24px;
+      margin-top: 17px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .hint {
+      margin-top: 14px;
+      text-align: center;
+      color: #94a3b8;
+      font-size: 12px;
+    }
+
+    .start-screen,
+    .game-over {
+      text-align: center;
+      padding: 12px 5px 4px;
+    }
+
+    .big-icon {
+      font-size: 70px;
+      margin-bottom: 8px;
+    }
+
+    .start-screen h1,
+    .game-over h1 {
+      margin: 0;
+      font-size: 34px;
+      font-weight: 900;
+    }
+
+    .start-screen p,
+    .game-over p {
+      color: #cbd5e1;
+      line-height: 1.5;
+      margin: 10px auto 20px;
+      max-width: 350px;
+    }
+
+    .main-button {
+      width: 100%;
+      min-height: 54px;
+      border: 0;
+      border-radius: 17px;
+      background: #818cf8;
+      color: white;
+      font-size: 17px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(99,102,241,0.35);
+      touch-action: manipulation;
+    }
+
+    .main-button:active {
+      transform: scale(0.98);
+    }
+
+    .score-result {
+      font-size: 48px;
+      font-weight: 900;
+      margin: 8px 0;
+    }
+
+    .new-best {
+      display: inline-block;
+      margin-bottom: 16px;
+      background: rgba(250,204,21,0.15);
+      color: #fde68a;
+      border: 1px solid rgba(250,204,21,0.25);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 360px) {
+      .emoji-grid {
+        gap: 6px;
+      }
+
+      .emoji {
+        border-radius: 13px;
+      }
+
+      .card {
+        padding: 20px 12px 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+  <main class="game">
+
+    <div class="top">
+      <div class="logo">🧩 Puzzle<span>Rush</span></div>
+      <div class="best">🏆 Best: <span id="bestScore">0</span></div>
+    </div>
+
+    <div id="startScreen" class="card start-screen">
+      <div class="big-icon">🧩</div>
+
+      <h1>Find The Odd One!</h1>
+
+      <p>
+        Find the one emoji that is different before the timer runs out.
+        Every round gets harder!
+      </p>
+
+      <button id="startButton" class="main-button">
+        🎮 Start Game
+      </button>
+    </div>
+
+    <div id="gameScreen" class="hidden">
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-label">Score</div>
+          <div id="score" class="stat-value">0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">Round</div>
+          <div id="round" class="stat-value">1</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">Lives</div>
+          <div id="lives" class="stat-value">❤️❤️❤️</div>
+        </div>
+      </div>
+
+      <div class="timer-wrap">
+        <div class="timer-row">
+          <span>TIME</span>
+          <span id="timer" class="timer">10.0</span>
+        </div>
+
+        <div class="timer-bar">
+          <div id="timerFill" class="timer-fill"></div>
+        </div>
+      </div>
+
+      <div class="card">
+
+        <div class="round">
+          <div class="round-title">Can you spot it?</div>
+          <div id="question" class="question">
+            Find the different emoji
+          </div>
+        </div>
+
+        <div id="emojiGrid" class="emoji-grid"></div>
+
+        <div id="message" class="message"></div>
+
+        <div class="hint">
+          👆 Tap the different emoji
+        </div>
+
+      </div>
+
+    </div>
+
+    <div id="gameOver" class="hidden card game-over">
+
+      <div class="big-icon">🏁</div>
+
+      <h1>Game Over!</h1>
+
+      <p>Your final score is</p>
+
+      <div id="finalScore" class="score-result">0</div>
+
+      <div id="newBest" class="new-best hidden">
+        🏆 NEW BEST SCORE!
+      </div>
+
+      <button id="playAgain" class="main-button">
+        🔄 Play Again
+      </button>
+
+    </div>
+
+  </main>
+</div>
+
+<script>
+(function () {
+
+  const startScreen = document.getElementById("startScreen");
+  const gameScreen = document.getElementById("gameScreen");
+  const gameOver = document.getElementById("gameOver");
+
+  const startButton = document.getElementById("startButton");
+  const playAgain = document.getElementById("playAgain");
+
+  const scoreEl = document.getElementById("score");
+  const roundEl = document.getElementById("round");
+  const livesEl = document.getElementById("lives");
+  const timerEl = document.getElementById("timer");
+  const timerFill = document.getElementById("timerFill");
+  const emojiGrid = document.getElementById("emojiGrid");
+  const messageEl = document.getElementById("message");
+
+  const finalScoreEl = document.getElementById("finalScore");
+  const bestScoreEl = document.getElementById("bestScore");
+  const newBestEl = document.getElementById("newBest");
+
+  let score = 0;
+  let round = 1;
+  let lives = 3;
+
+  let timeLeft = 10;
+  let maxTime = 10;
+
+  let timer = null;
+  let running = false;
+  let correctIndex = 0;
+
+  let bestScore = 0;
+
+  try {
+    bestScore = Number(localStorage.getItem("puzzleRushBest")) || 0;
+  } catch (e) {
+    bestScore = 0;
+  }
+
+  bestScoreEl.textContent = bestScore;
+
+  const pairs = [
+    ["😀", "😃"],
+    ["😎", "🤓"],
+    ["🐶", "🐺"],
+    ["🐱", "🦁"],
+    ["🍎", "🍏"],
+    ["🍋", "🍈"],
+    ["⭐", "🌟"],
+    ["❤️", "🧡"],
+    ["🚗", "🚕"],
+    ["⚽", "🏀"],
+    ["🔥", "✨"],
+    ["🌙", "🌚"],
+    ["😄", "😁"],
+    ["😡", "😠"],
+    ["🐸", "🐢"]
+  ];
+
+  function getGridSize() {
+    if (round < 3) return 15;
+    if (round < 6) return 20;
+    if (round < 10) return 25;
+    return 30;
+  }
+
+  function getTime() {
+    if (round < 4) return 10;
+    if (round < 7) return 8;
+    if (round < 10) return 7;
+    return 6;
+  }
+
+  function startGame() {
+    score = 0;
+    round = 1;
+    lives = 3;
+
+    running = true;
+
+    startScreen.classList.add("hidden");
+    gameOver.classList.add("hidden");
+    gameScreen.classList.remove("hidden");
+
+    updateStats();
+    nextRound();
+  }
+
+  function updateStats() {
+    scoreEl.textContent = score;
+    roundEl.textContent = round;
+
+    let hearts = "";
+
+    for (let i = 0; i < lives; i++) {
+      hearts += "❤️";
+    }
+
+    for (let i = lives; i < 3; i++) {
+      hearts += "🖤";
+    }
+
+    livesEl.textContent = hearts;
+  }
+
+  function nextRound() {
+    if (!running) return;
+
+    clearInterval(timer);
+
+    const size = getGridSize();
+    maxTime = getTime();
+    timeLeft = maxTime;
+
+    const pair = pairs[Math.floor(Math.random() * pairs.length)];
+
+    const normal = pair[0];
+    const different = pair[1];
+
+    correctIndex = Math.floor(Math.random() * size);
+
+    emojiGrid.innerHTML = "";
+
+    for (let i = 0; i < size; i++) {
+      const button = document.createElement("button");
+
+      button.type = "button";
+      button.className = "emoji";
+      button.textContent = i === correctIndex ? different : normal;
+
+      button.addEventListener("click", function () {
+        chooseEmoji(i, button);
+      });
+
+      emojiGrid.appendChild(button);
+    }
+
+    messageEl.textContent = "";
+
+    updateTimer();
+
+    timer = setInterval(function () {
+      timeLeft -= 0.1;
+
+      if (timeLeft <= 0) {
+        timeLeft = 0;
+        updateTimer();
+        clearInterval(timer);
+        timeExpired();
+        return;
+      }
+
+      updateTimer();
+    }, 100);
+  }
+
+  function updateTimer() {
+    timerEl.textContent = timeLeft.toFixed(1);
+
+    const percentage = Math.max(
+      0,
+      Math.min(100, (timeLeft / maxTime) * 100)
+    );
+
+    timerFill.style.width = percentage + "%";
+  }
+
+  function chooseEmoji(index, button) {
+    if (!running) return;
+
+    if (index === correctIndex) {
+      clearInterval(timer);
+
+      button.classList.add("correct");
+
+      const speedBonus = Math.ceil(timeLeft);
+      const points = 10 + speedBonus + round;
+
+      score += points;
+
+      messageEl.textContent = "+" + points + " points! 🔥";
+
+      updateStats();
+
+      setTimeout(function () {
+        if (!running) return;
+
+        round++;
+        updateStats();
+        nextRound();
+      }, 350);
+
+    } else {
+      button.classList.add("wrong");
+
+      lives--;
+
+      updateStats();
+
+      messageEl.textContent = "❌ Wrong!";
+
+      if (lives <= 0) {
+        clearInterval(timer);
+
+        setTimeout(function () {
+          endGame();
+        }, 350);
+      }
+    }
+  }
+
+  function timeExpired() {
+    if (!running) return;
+
+    lives--;
+
+    updateStats();
+
+    messageEl.textContent = "⏰ Time's up!";
+
+    if (lives <= 0) {
+      setTimeout(function () {
+        endGame();
+      }, 500);
+
+      return;
+    }
+
+    setTimeout(function () {
+      if (!running) return;
+
+      round++;
+      nextRound();
+    }, 500);
+  }
+
+  function endGame() {
+    running = false;
+
+    clearInterval(timer);
+
+    finalScoreEl.textContent = score;
+
+    const oldBest = bestScore;
+
+    if (score > bestScore) {
+      bestScore = score;
+
+      try {
+        localStorage.setItem("puzzleRushBest", String(bestScore));
+      } catch (e) {}
+
+      bestScoreEl.textContent = bestScore;
+    }
+
+    if (score > oldBest) {
+      newBestEl.classList.remove("hidden");
+    } else {
+      newBestEl.classList.add("hidden");
+    }
+
+    gameScreen.classList.add("hidden");
+    gameOver.classList.remove("hidden");
+  }
+
+  startButton.addEventListener("click", startGame);
+  playAgain.addEventListener("click", startGame);
+
+})();
+</script>
+
+</body>
+</html>
