@@ -27,6 +27,7 @@ body{
 
 button{
   font-family:inherit;
+  cursor:pointer;
 }
 
 .app{
@@ -612,17 +613,21 @@ button{
 
 <div class="app">
 
-<!-- HOME -->
+<!-- ================= HOME ================= -->
+
 <section id="homeScreen" class="screen active">
 
 <div class="topbar">
 
 <div class="brand">
+
 <div class="brand-icon">🧩</div>
+
 <div>
 <div class="brand-title">Puzzle Rush</div>
 <div class="brand-sub">Think fast. Beat your best.</div>
 </div>
+
 </div>
 
 <div class="best-pill">
@@ -659,7 +664,6 @@ Solve different mini-puzzles, build your combo and push your score higher.
 
 <button
 class="daily-btn"
-id="dailyBtn"
 onclick="playDaily()">
 PLAY
 </button>
@@ -677,7 +681,9 @@ PLAY
 
 <div class="mode-list">
 
-<button class="mode-card" onclick="startGame('classic')">
+<button
+class="mode-card"
+onclick="startGame('classic')">
 
 <div class="mode-icon">🔎</div>
 
@@ -693,7 +699,9 @@ Find the one symbol that doesn't belong.
 </button>
 
 
-<button class="mode-card" onclick="startGame('color')">
+<button
+class="mode-card"
+onclick="startGame('color')">
 
 <div class="mode-icon">🎨</div>
 
@@ -709,7 +717,9 @@ Ignore the word. Choose the color you see.
 </button>
 
 
-<button class="mode-card" onclick="startGame('pair')">
+<button
+class="mode-card"
+onclick="startGame('pair')">
 
 <div class="mode-icon">🧠</div>
 
@@ -798,8 +808,7 @@ Find the only symbol that appears twice.
 </section>
 
 
-
-<!-- GAME -->
+<!-- ================= GAME ================= -->
 
 <section id="gameScreen" class="screen">
 
@@ -810,8 +819,14 @@ Find the only symbol that appears twice.
 <div class="brand-icon">🧩</div>
 
 <div>
-<div class="brand-title" id="gameTitle">Puzzle Rush</div>
-<div class="brand-sub" id="gameSub">Odd One</div>
+<div class="brand-title" id="gameTitle">
+Puzzle Rush
+</div>
+
+<div class="brand-sub" id="gameSub">
+Odd One
+</div>
+
 </div>
 
 </div>
@@ -861,40 +876,59 @@ Find the only symbol that appears twice.
 
 <div class="game-card">
 
-<div class="round-title" id="roundTitle">
+<div
+class="round-title"
+id="roundTitle">
 Find the odd one
 </div>
 
-<div class="instruction" id="instruction">
+<div
+class="instruction"
+id="instruction">
 Tap the symbol that is different.
 </div>
 
-<div class="puzzle-area" id="puzzleArea"></div>
+<div
+class="puzzle-area"
+id="puzzleArea">
+</div>
 
-<div class="game-message" id="gameMessage"></div>
+<div
+class="game-message"
+id="gameMessage">
+</div>
 
 </div>
 
 
-<button class="back-button" onclick="goHome()">
+<button
+class="back-button"
+onclick="goHome()">
 Leave game
 </button>
 
 </section>
 
 
-
-<!-- RESULT -->
+<!-- ================= RESULT ================= -->
 
 <section id="resultScreen" class="screen">
 
 <div class="result">
 
-<div class="result-icon" id="resultIcon">🏁</div>
+<div
+class="result-icon"
+id="resultIcon">
+🏁
+</div>
 
-<h1 id="resultTitle">Run Complete</h1>
+<h1 id="resultTitle">
+Run Complete
+</h1>
 
-<div class="result-sub" id="resultSub">
+<div
+class="result-sub"
+id="resultSub">
 Can you beat your score?
 </div>
 
@@ -958,16 +992,15 @@ onclick="goHome()">
 
 <script>
 
-/* =========================================
-   PUZZLE RUSH V2
-   ========================================= */
+/* =====================================================
+   PUZZLE RUSH
+   ===================================================== */
 
 /*
-   IMPORTANT:
-   AdsGram is NOT loaded here.
-   This makes sure the game buttons work
-   independently from the advertising system.
+   NEW ADSGRAM INTERSTITIAL BLOCK
 */
+var INTERSTITIAL_BLOCK_ID = "int-47314";
+
 
 var gameMode = "classic";
 var dailyMode = false;
@@ -988,12 +1021,14 @@ var maxTime = 10;
 var locked = false;
 var roundsSinceAd = 0;
 
+
 var emojis = [
 "🍎","🍊","🍋","🍉","🍇","🍓",
 "🐶","🐱","🐼","🐸","🦊","🐵",
 "⭐","🌙","☀️","⚡","🔥","❄️",
 "🚗","🚲","🚀","✈️","🎈","🎯"
 ];
+
 
 var colors = [
 {name:"RED",color:"#ff5c5c"},
@@ -1004,6 +1039,7 @@ var colors = [
 {name:"PINK",color:"#ff6fba"}
 ];
 
+
 var pairs = [
 "★","◆","●","▲","■","♥️",
 "☀️","☾","✦","✚","⬟","⬢",
@@ -1011,15 +1047,16 @@ var pairs = [
 ];
 
 
-/* =========================================
+/* =====================================================
    TELEGRAM
-   ========================================= */
+   ===================================================== */
 
 try{
 
 if(window.Telegram && Telegram.WebApp){
 
 Telegram.WebApp.ready();
+
 Telegram.WebApp.expand();
 
 if(Telegram.WebApp.disableVerticalSwipes){
@@ -1035,23 +1072,24 @@ console.log("Telegram setup skipped");
 }
 
 
-/* =========================================
-   DATA
-   ========================================= */
+/* =====================================================
+   LOCAL DATA
+   ===================================================== */
 
 var data;
 
 try{
 
-data = JSON.parse(
+data=JSON.parse(
 localStorage.getItem("puzzleRushV2") || "null"
 );
 
 }catch(e){
 
-data = null;
+data=null;
 
 }
+
 
 if(!data){
 
@@ -1072,25 +1110,29 @@ scores:[]
 function saveData(){
 
 try{
+
 localStorage.setItem(
 "puzzleRushV2",
 JSON.stringify(data)
 );
+
 }catch(e){}
 
 }
 
 
-/* =========================================
+/* =====================================================
    SCREEN
-   ========================================= */
+   ===================================================== */
 
 function showScreen(id){
 
 document
 .querySelectorAll(".screen")
-.forEach(function(s){
-s.classList.remove("active");
+.forEach(function(screen){
+
+screen.classList.remove("active");
+
 });
 
 document
@@ -1102,22 +1144,22 @@ window.scrollTo(0,0);
 }
 
 
-/* =========================================
+/* =====================================================
    HOME
-   ========================================= */
+   ===================================================== */
 
 function updateHome(){
 
-document.getElementById("homeBest").textContent =
+document.getElementById("homeBest").textContent=
 data.best.toLocaleString();
 
-document.getElementById("homeStreak").textContent =
+document.getElementById("homeStreak").textContent=
 data.streak;
 
-document.getElementById("homeRounds").textContent =
+document.getElementById("homeRounds").textContent=
 data.rounds;
 
-document.getElementById("homeCombo").textContent =
+document.getElementById("homeCombo").textContent=
 data.bestCombo;
 
 updateAchievements();
@@ -1129,47 +1171,84 @@ renderLeaderboard("homeLeaderboard");
 
 function updateAchievements(){
 
-var unlocked=0;
+var count=0;
+
 
 if(data.runs>=1){
-document.getElementById("ach1").classList.add("unlocked");
-unlocked++;
+
+document
+.getElementById("ach1")
+.classList.add("unlocked");
+
+count++;
+
 }
+
 
 if(data.rounds>=10){
-document.getElementById("ach2").classList.add("unlocked");
-unlocked++;
+
+document
+.getElementById("ach2")
+.classList.add("unlocked");
+
+count++;
+
 }
+
 
 if(data.bestCombo>=5){
-document.getElementById("ach3").classList.add("unlocked");
-unlocked++;
+
+document
+.getElementById("ach3")
+.classList.add("unlocked");
+
+count++;
+
 }
+
 
 if(data.best>=1000){
-document.getElementById("ach4").classList.add("unlocked");
-unlocked++;
+
+document
+.getElementById("ach4")
+.classList.add("unlocked");
+
+count++;
+
 }
+
 
 if(data.dailyPlayed===today()){
-document.getElementById("ach5").classList.add("unlocked");
-unlocked++;
+
+document
+.getElementById("ach5")
+.classList.add("unlocked");
+
+count++;
+
 }
+
 
 if(data.rounds>=50 && data.best>=2500){
-document.getElementById("ach6").classList.add("unlocked");
-unlocked++;
+
+document
+.getElementById("ach6")
+.classList.add("unlocked");
+
+count++;
+
 }
 
-document.getElementById("achievementCount").textContent =
-unlocked + "/6";
+
+document.getElementById("achievementCount").textContent=
+count+"/6";
 
 }
 
 
-/* =========================================
+/* =====================================================
    DATE
-   ========================================= */
+   ===================================================== */
 
 function today(){
 
@@ -1182,9 +1261,9 @@ String(d.getDate()).padStart(2,"0");
 }
 
 
-/* =========================================
+/* =====================================================
    STREAK
-   ========================================= */
+   ===================================================== */
 
 function updateStreak(){
 
@@ -1194,17 +1273,23 @@ if(data.lastPlayed!==t){
 
 if(data.lastPlayed){
 
-var old=new Date(data.lastPlayed);
-var now=new Date(t);
+var oldDate=new Date(data.lastPlayed);
 
-var diff=Math.round(
-(now-old)/(1000*60*60*24)
+var currentDate=new Date(t);
+
+var difference=Math.round(
+(currentDate-oldDate)/
+(1000*60*60*24)
 );
 
-if(diff===1){
+if(difference===1){
+
 data.streak++;
+
 }else{
+
 data.streak=1;
+
 }
 
 }else{
@@ -1222,15 +1307,16 @@ saveData();
 }
 
 
-/* =========================================
-   START GAME
-   ========================================= */
+/* =====================================================
+   START NORMAL GAME
+   ===================================================== */
 
 function startGame(mode){
 
 clearInterval(timer);
 
 gameMode=mode;
+
 dailyMode=false;
 
 score=0;
@@ -1245,16 +1331,22 @@ locked=false;
 
 updateStreak();
 
+
 document.getElementById("gameTitle").textContent=
 "Puzzle Rush";
+
 
 document.getElementById("gameSub").textContent=
 modeName(mode);
 
+
 document.getElementById("modeText").textContent=
-mode==="classic" ? "ODD" :
-mode==="color" ? "COLOR" :
+mode==="classic"
+?"ODD":
+mode==="color"
+?"COLOR":
 "PAIR";
+
 
 showScreen("gameScreen");
 
@@ -1265,9 +1357,9 @@ createRound();
 }
 
 
-/* =========================================
-   DAILY
-   ========================================= */
+/* =====================================================
+   DAILY GAME
+   ===================================================== */
 
 function playDaily(){
 
@@ -1279,9 +1371,11 @@ return;
 
 }
 
+
 clearInterval(timer);
 
 gameMode="daily";
+
 dailyMode=true;
 
 score=0;
@@ -1296,14 +1390,18 @@ locked=false;
 
 updateStreak();
 
+
 document.getElementById("gameTitle").textContent=
 "Daily Challenge";
+
 
 document.getElementById("gameSub").textContent=
 "10 rounds • Today's challenge";
 
+
 document.getElementById("modeText").textContent=
 "DAILY";
+
 
 showScreen("gameScreen");
 
@@ -1314,23 +1412,32 @@ createRound();
 }
 
 
-/* =========================================
+/* =====================================================
    MODE NAME
-   ========================================= */
+   ===================================================== */
 
 function modeName(mode){
 
-if(mode==="classic") return "Odd One";
-if(mode==="color") return "Color Code";
-if(mode==="pair") return "Pair Hunt";
+if(mode==="classic"){
+return "Odd One";
+}
+
+if(mode==="color"){
+return "Color Code";
+}
+
+if(mode==="pair"){
+return "Pair Hunt";
+}
+
 return "Daily Challenge";
 
 }
 
 
-/* =========================================
-   GAME UPDATE
-   ========================================= */
+/* =====================================================
+   GAME UI
+   ===================================================== */
 
 function updateGame(){
 
@@ -1341,7 +1448,8 @@ document.getElementById("roundText").textContent=
 round;
 
 document.getElementById("livesText").textContent=
-"❤️".repeat(lives)+"🖤".repeat(3-lives);
+"❤️".repeat(lives)+
+"🖤".repeat(3-lives);
 
 document.getElementById("comboText").textContent=
 "x"+combo;
@@ -1349,9 +1457,9 @@ document.getElementById("comboText").textContent=
 }
 
 
-/* =========================================
-   ROUND
-   ========================================= */
+/* =====================================================
+   CREATE ROUND
+   ===================================================== */
 
 function createRound(){
 
@@ -1361,6 +1469,7 @@ document.getElementById("gameMessage").textContent="";
 
 document.getElementById("gameMessage").className=
 "game-message";
+
 
 if(dailyMode){
 
@@ -1380,14 +1489,15 @@ createPuzzle(gameMode);
 
 }
 
+
 startTimer();
 
 }
 
 
-/* =========================================
+/* =====================================================
    TIMER
-   ========================================= */
+   ===================================================== */
 
 function startTimer(){
 
@@ -1404,9 +1514,11 @@ updateTimer();
 
 var start=Date.now();
 
+
 timer=setInterval(function(){
 
-var elapsed=(Date.now()-start)/1000;
+var elapsed=
+(Date.now()-start)/1000;
 
 timeLeft=Math.max(
 0,
@@ -1414,6 +1526,7 @@ maxTime-elapsed
 );
 
 updateTimer();
+
 
 if(timeLeft<=0){
 
@@ -1439,9 +1552,9 @@ document.getElementById("timerFill").style.width=
 }
 
 
-/* =========================================
+/* =====================================================
    PUZZLE SELECTOR
-   ========================================= */
+   ===================================================== */
 
 function createPuzzle(type){
 
@@ -1460,53 +1573,87 @@ createPair();
 }
 
 
-/* =========================================
-   ODD ONE
-   ========================================= */
+/* =====================================================
+   ODD PUZZLE
+   ===================================================== */
 
 function createOdd(){
 
-var area=document.getElementById("puzzleArea");
+var area=
+document.getElementById("puzzleArea");
+
 
 var size=
-round<3 ? 3 :
-round<6 ? 4 :
-round<10 ? 5 : 6;
+round<3
+?3
+:round<6
+?4
+:round<10
+?5
+:6;
+
 
 var total=size*size;
 
+
 var normal=
-emojis[Math.floor(Math.random()*emojis.length)];
+emojis[
+Math.floor(
+Math.random()*emojis.length
+)
+];
+
 
 var odd=
-emojis[Math.floor(Math.random()*emojis.length)];
+emojis[
+Math.floor(
+Math.random()*emojis.length
+)
+];
+
 
 while(odd===normal){
+
 odd=
-emojis[Math.floor(Math.random()*emojis.length)];
+emojis[
+Math.floor(
+Math.random()*emojis.length
+)
+];
+
 }
+
 
 var oddIndex=
 Math.floor(Math.random()*total);
 
+
 document.getElementById("roundTitle").textContent=
 "Find the odd one";
+
 
 document.getElementById("instruction").textContent=
 "One symbol is different. Tap it.";
 
+
 var html=
-'<div class="emoji-grid" style="grid-template-columns:repeat('+size+',1fr)">';
+'<div class="emoji-grid" '+
+'style="grid-template-columns:repeat('+
+size+
+',1fr)">';
+
 
 for(var i=0;i<total;i++){
 
 html+=
 '<button class="emoji-tile" '+
-'onclick="answerOdd(this,'+(i===oddIndex)+')">'+
+'onclick="answerOdd(this,'+
+(i===oddIndex)+')">'+
 (i===oddIndex?odd:normal)+
 '</button>';
 
 }
+
 
 html+="</div>";
 
@@ -1518,61 +1665,94 @@ area.innerHTML=html;
 function answerOdd(button,correct){
 
 if(correct){
+
 correctAnswer();
+
 }else{
+
 wrongAnswer("❌ Not that one!");
-}
 
 }
 
+}
 
-/* =========================================
-   COLOR
-   ========================================= */
+
+/* =====================================================
+   COLOR PUZZLE
+   ===================================================== */
 
 function createColor(){
 
-var area=document.getElementById("puzzleArea");
+var area=
+document.getElementById("puzzleArea");
+
 
 var wordIndex=
-Math.floor(Math.random()*colors.length);
+Math.floor(
+Math.random()*colors.length
+);
+
 
 var colorIndex=
-Math.floor(Math.random()*colors.length);
+Math.floor(
+Math.random()*colors.length
+);
+
 
 while(colorIndex===wordIndex){
+
 colorIndex=
-Math.floor(Math.random()*colors.length);
+Math.floor(
+Math.random()*colors.length
+);
+
 }
 
+
 var word=colors[wordIndex];
+
 var ink=colors[colorIndex];
+
 
 document.getElementById("roundTitle").textContent=
 "Color Code";
 
+
 document.getElementById("instruction").textContent=
 "Ignore the word. Choose the ink color.";
 
+
 var options=
-colors.slice().sort(function(){
+colors
+.slice()
+.sort(function(){
 return Math.random()-.5;
-}).slice(0,4);
+})
+.slice(0,4);
+
 
 if(!options.includes(ink)){
+
 options[0]=ink;
+
 }
+
 
 options.sort(function(){
 return Math.random()-.5;
 });
 
+
 var html=
 '<div class="color-container">'+
-'<div class="color-word" style="color:'+ink.color+'">'+
+
+'<div class="color-word" '+
+'style="color:'+ink.color+'">'+
 word.name+
 '</div>'+
+
 '<div class="color-options">';
+
 
 for(var i=0;i<options.length;i++){
 
@@ -1586,6 +1766,7 @@ options[i].name+
 
 }
 
+
 html+="</div></div>";
 
 area.innerHTML=html;
@@ -1596,47 +1777,72 @@ area.innerHTML=html;
 function answerColor(button,correct){
 
 if(correct){
+
 correctAnswer();
+
 }else{
+
 wrongAnswer("❌ Watch the color!");
-}
 
 }
 
+}
 
-/* =========================================
-   PAIR
-   ========================================= */
+
+/* =====================================================
+   PAIR PUZZLE
+   ===================================================== */
 
 function createPair(){
 
-var area=document.getElementById("puzzleArea");
+var area=
+document.getElementById("puzzleArea");
+
 
 var total=
-round<5 ? 12 :
-round<10 ? 16 : 20;
+round<5
+?12
+:round<10
+?16
+:20;
+
 
 var symbols=
-pairs.slice().sort(function(){
+pairs
+.slice()
+.sort(function(){
 return Math.random()-.5;
-}).slice(0,total-1);
+})
+.slice(0,total-1);
+
 
 var pair=
-symbols[Math.floor(Math.random()*symbols.length)];
+symbols[
+Math.floor(
+Math.random()*symbols.length
+)
+];
+
 
 symbols.push(pair);
+
 
 symbols.sort(function(){
 return Math.random()-.5;
 });
 
+
 document.getElementById("roundTitle").textContent=
 "Pair Hunt";
+
 
 document.getElementById("instruction").textContent=
 "Find the only symbol that appears twice.";
 
-var html='<div class="pair-grid">';
+
+var html=
+'<div class="pair-grid">';
+
 
 for(var i=0;i<symbols.length;i++){
 
@@ -1649,6 +1855,7 @@ symbols[i]+
 
 }
 
+
 html+="</div>";
 
 area.innerHTML=html;
@@ -1659,21 +1866,27 @@ area.innerHTML=html;
 function answerPair(button,correct){
 
 if(correct){
+
 correctAnswer();
+
 }else{
+
 wrongAnswer("❌ That's a unique symbol!");
-}
 
 }
 
+}
 
-/* =========================================
-   CORRECT
-   ========================================= */
+
+/* =====================================================
+   CORRECT ANSWER
+   ===================================================== */
 
 function correctAnswer(){
 
-if(locked)return;
+if(locked){
+return;
+}
 
 locked=true;
 
@@ -1685,8 +1898,11 @@ totalAttempts++;
 combo++;
 
 if(combo>bestComboRun){
+
 bestComboRun=combo;
+
 }
+
 
 var points=
 50+
@@ -1694,19 +1910,29 @@ round*10+
 Math.round(timeLeft*12)+
 combo*10;
 
+
 score+=points;
+
 
 document.getElementById("gameMessage").textContent=
 "✓ +"+points+" points";
 
+
 document.getElementById("gameMessage").className=
 "game-message good";
 
+
 updateGame();
+
 
 setTimeout(function(){
 
 roundsSinceAd++;
+
+
+/*
+   DAILY = EXACTLY 10 ROUNDS
+*/
 
 if(dailyMode && round>=10){
 
@@ -1716,22 +1942,40 @@ return;
 
 }
 
+
+/*
+   ADSGRAM INTERSTITIAL
+   AFTER EVERY 5 COMPLETED ROUNDS
+*/
+
+if(roundsSinceAd>=5){
+
+roundsSinceAd=0;
+
+showAdsGramInterstitial();
+
+}else{
+
 round++;
 
 createRound();
+
+}
 
 },350);
 
 }
 
 
-/* =========================================
-   WRONG
-   ========================================= */
+/* =====================================================
+   WRONG ANSWER
+   ===================================================== */
 
 function wrongAnswer(message){
 
-if(locked)return;
+if(locked){
+return;
+}
 
 locked=true;
 
@@ -1740,15 +1984,20 @@ clearInterval(timer);
 totalAttempts++;
 
 lives--;
+
 combo=0;
+
 
 document.getElementById("gameMessage").textContent=
 message;
 
+
 document.getElementById("gameMessage").className=
 "game-message bad";
 
+
 updateGame();
+
 
 setTimeout(function(){
 
@@ -1767,74 +2016,296 @@ createRound();
 }
 
 
-/* =========================================
-   FINISH
-   ========================================= */
+/* =====================================================
+   ADSGRAM
+   ===================================================== */
+
+/*
+   The AdsGram script is loaded only after
+   the game has started.
+
+   This means AdsGram cannot stop the
+   game buttons from working.
+*/
+
+function loadAdsGram(){
+
+if(window.Adsgram){
+
+return Promise.resolve();
+
+}
+
+
+return new Promise(function(resolve){
+
+var existing=
+document.getElementById("adsgramScript");
+
+
+if(existing){
+
+existing.addEventListener(
+"load",
+function(){
+resolve();
+}
+);
+
+return;
+
+}
+
+
+var script=
+document.createElement("script");
+
+
+script.id=
+"adsgramScript";
+
+
+script.src=
+"https://sad.adsgram.ai/js/sad.min.js";
+
+
+script.onload=function(){
+
+console.log("AdsGram loaded");
+
+resolve();
+
+};
+
+
+script.onerror=function(){
+
+console.log("AdsGram unavailable");
+
+resolve();
+
+};
+
+
+document.head.appendChild(script);
+
+});
+
+}
+
+
+/*
+   SHOW INTERSTITIAL
+*/
+
+function showAdsGramInterstitial(){
+
+loadAdsGram()
+.then(function(){
+
+if(
+!window.Adsgram ||
+typeof window.Adsgram.init!=="function"
+){
+
+/*
+   No ad available.
+   Continue game.
+*/
+
+round++;
+
+createRound();
+
+return;
+
+}
+
+
+try{
+
+var controller=
+window.Adsgram.init({
+blockId:INTERSTITIAL_BLOCK_ID
+});
+
+
+var result=
+controller.show();
+
+
+if(result && typeof result.then==="function"){
+
+result
+.then(function(){
+
+/*
+   Ad finished.
+   Continue game.
+*/
+
+round++;
+
+createRound();
+
+})
+.catch(function(){
+
+/*
+   Ad failed/closed.
+   Continue game.
+*/
+
+round++;
+
+createRound();
+
+});
+
+}else{
+
+round++;
+
+createRound();
+
+}
+
+}catch(error){
+
+console.log(
+"AdsGram error:",
+error
+);
+
+round++;
+
+createRound();
+
+}
+
+})
+.catch(function(){
+
+round++;
+
+createRound();
+
+});
+
+}
+
+
+/* =====================================================
+   FINISH GAME
+   ===================================================== */
 
 function finishGame(dailyComplete){
 
 clearInterval(timer);
 
+
 var oldBest=data.best;
+
 
 data.runs++;
 
+
 data.rounds+=
-dailyComplete ? 10 : Math.max(0,round-1);
+dailyComplete
+?10
+:Math.max(0,round-1);
+
 
 if(score>data.best){
+
 data.best=score;
+
 }
+
 
 if(bestComboRun>data.bestCombo){
+
 data.bestCombo=bestComboRun;
+
 }
+
 
 if(dailyComplete){
+
 data.dailyPlayed=today();
+
 }
 
+
 data.scores.push({
+
 score:score,
-mode:dailyComplete?"Daily":modeName(gameMode)
+
+mode:
+dailyComplete
+?"Daily"
+:modeName(gameMode)
+
 });
+
 
 data.scores.sort(function(a,b){
+
 return b.score-a.score;
+
 });
 
-data.scores=data.scores.slice(0,5);
+
+data.scores=
+data.scores.slice(0,5);
+
 
 saveData();
+
 
 document.getElementById("finalScore").textContent=
 score.toLocaleString();
 
+
 document.getElementById("resultRounds").textContent=
-dailyComplete ? 10 : Math.max(0,round-1);
+dailyComplete
+?10
+:Math.max(0,round-1);
+
 
 document.getElementById("resultCombo").textContent=
 bestComboRun;
 
+
 var accuracy=
-totalAttempts ?
-Math.round(correctAnswers/totalAttempts*100) : 0;
+totalAttempts
+?Math.round(
+correctAnswers/totalAttempts*100
+)
+:0;
+
 
 document.getElementById("resultAccuracy").textContent=
 accuracy+"%";
 
+
 document.getElementById("resultTitle").textContent=
-dailyComplete ?
-"Daily Complete!" :
-"Run Complete";
+dailyComplete
+?"Daily Complete!"
+:"Run Complete";
+
 
 document.getElementById("resultSub").textContent=
-dailyComplete ?
-"Today's challenge is finished!" :
-"Can you beat your score next time?";
+dailyComplete
+?"Today's challenge is finished!"
+:"Can you beat your score next time?";
+
 
 document.getElementById("resultIcon").textContent=
-dailyComplete ? "🌟" : "🏆";
+dailyComplete
+?"🌟"
+:"🏆";
+
 
 if(score>oldBest){
 
@@ -1847,6 +2318,7 @@ document.getElementById("recordMessage").innerHTML="";
 
 }
 
+
 renderLeaderboard("resultLeaderboard");
 
 updateHome();
@@ -1856,48 +2328,63 @@ showScreen("resultScreen");
 }
 
 
-/* =========================================
+/* =====================================================
    LEADERBOARD
-   ========================================= */
+   ===================================================== */
 
 function renderLeaderboard(id){
 
-var box=document.getElementById(id);
+var box=
+document.getElementById(id);
+
 
 if(!data.scores.length){
 
 box.innerHTML=
 '<div class="leader-row">'+
-'<div class="lb-mode">Play your first run to appear here.</div>'+
+'<div class="lb-mode">'+
+'Play your first run to appear here.'+
+'</div>'+
 '</div>';
 
 return;
 
 }
 
+
 var html="";
+
 
 for(var i=0;i<data.scores.length;i++){
 
 html+=
 '<div class="leader-row">'+
-'<div class="rank">'+(i+1)+'</div>'+
-'<div class="lb-mode">'+data.scores[i].mode+'</div>'+
+
+'<div class="rank">'+
+(i+1)+
+'</div>'+
+
+'<div class="lb-mode">'+
+data.scores[i].mode+
+'</div>'+
+
 '<div class="lb-score">'+
 data.scores[i].score.toLocaleString()+
 '</div>'+
+
 '</div>';
 
 }
+
 
 box.innerHTML=html;
 
 }
 
 
-/* =========================================
-   AGAIN
-   ========================================= */
+/* =====================================================
+   PLAY AGAIN
+   ===================================================== */
 
 function playAgain(){
 
@@ -1914,9 +2401,9 @@ startGame(gameMode);
 }
 
 
-/* =========================================
+/* =====================================================
    HOME
-   ========================================= */
+   ===================================================== */
 
 function goHome(){
 
@@ -1929,44 +2416,11 @@ showScreen("homeScreen");
 }
 
 
-/* =========================================
+/* =====================================================
    INITIALIZE
-   ========================================= */
+   ===================================================== */
 
 updateHome();
-
-</script>
-
-
-<!--
-  AdsGram is loaded AFTER the game JavaScript.
-  Therefore an advertising problem cannot break
-  the game buttons.
--->
-
-<script>
-
-setTimeout(function(){
-
-var script=document.createElement("script");
-
-script.src="https://sad.adsgram.ai/js/sad.min.js";
-
-script.onload=function(){
-
-console.log("AdsGram loaded");
-
-};
-
-script.onerror=function(){
-
-console.log("AdsGram unavailable");
-
-};
-
-document.head.appendChild(script);
-
-},3000);
 
 </script>
 
