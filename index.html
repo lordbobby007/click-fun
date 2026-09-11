@@ -1,2313 +1,1974 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-  />
-
-  <title>Puzzle Rush</title>
-
-  <!-- Telegram Mini App -->
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-  <!-- AdsGram -->
-  <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      min-height: 100%;
-      background: #080b18;
-      color: #ffffff;
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        Arial,
-        sans-serif;
-      overflow-x: hidden;
-    }
-
-    body {
-      min-height: 100vh;
-    }
-
-    button {
-      font: inherit;
-    }
-
-    .app {
-      min-height: 100vh;
-      max-width: 520px;
-      margin: 0 auto;
-      padding:
-        calc(12px + env(safe-area-inset-top))
-        16px
-        calc(18px + env(safe-area-inset-bottom));
-      position: relative;
-    }
-
-    .screen {
-      display: none;
-      min-height: calc(100vh - 40px);
-    }
-
-    .screen.active {
-      display: block;
-    }
-
-    /* =========================
-       HOME
-    ========================= */
-
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 18px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .brand-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 13px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 23px;
-      background: linear-gradient(135deg, #6c5ce7, #9b59ff);
-      box-shadow: 0 8px 25px rgba(108, 92, 231, 0.3);
-    }
-
-    .brand-title {
-      font-size: 20px;
-      font-weight: 900;
-      letter-spacing: -0.5px;
-    }
-
-    .brand-sub {
-      font-size: 11px;
-      opacity: 0.55;
-      margin-top: 2px;
-    }
-
-    .best-pill {
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 8px 11px;
-      border-radius: 12px;
-      text-align: right;
-    }
-
-    .best-pill small {
-      display: block;
-      font-size: 9px;
-      opacity: 0.5;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-    }
-
-    .best-pill strong {
-      font-size: 15px;
-    }
-
-    .hero {
-      padding: 22px 20px;
-      border-radius: 24px;
-      background:
-        radial-gradient(circle at 90% 10%, rgba(143, 95, 255, 0.35), transparent 35%),
-        linear-gradient(145deg, #17142d, #0f1328);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      margin-bottom: 16px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      width: 120px;
-      height: 120px;
-      right: -40px;
-      bottom: -45px;
-      border-radius: 50%;
-      background: rgba(83, 203, 255, 0.1);
-    }
-
-    .hero-tag {
-      display: inline-block;
-      font-size: 10px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #bbaeff;
-      margin-bottom: 8px;
-    }
-
-    .hero h1 {
-      margin: 0;
-      font-size: 30px;
-      line-height: 1.05;
-      letter-spacing: -1.2px;
-    }
-
-    .hero p {
-      margin: 9px 0 0;
-      color: rgba(255, 255, 255, 0.62);
-      font-size: 13px;
-      line-height: 1.5;
-      max-width: 330px;
-    }
-
-    .daily-card {
-      margin-top: 18px;
-      padding: 14px;
-      border-radius: 17px;
-      background: rgba(255, 255, 255, 0.055);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .daily-left {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-    }
-
-    .daily-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      background: rgba(255, 196, 87, 0.13);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 21px;
-    }
-
-    .daily-title {
-      font-weight: 800;
-      font-size: 13px;
-    }
-
-    .daily-desc {
-      font-size: 10px;
-      opacity: 0.5;
-      margin-top: 3px;
-    }
-
-    .daily-btn {
-      border: 0;
-      color: #111;
-      background: #ffd166;
-      border-radius: 10px;
-      padding: 9px 11px;
-      font-size: 11px;
-      font-weight: 900;
-    }
-
-    .section-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 19px 2px 9px;
-    }
-
-    .section-title h2 {
-      font-size: 14px;
-      margin: 0;
-    }
-
-    .section-title span {
-      font-size: 10px;
-      opacity: 0.4;
-    }
-
-    .mode-list {
-      display: grid;
-      gap: 10px;
-    }
-
-    .mode-card {
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: #101429;
-      border-radius: 18px;
-      padding: 14px;
-      color: #fff;
-      text-align: left;
-      display: flex;
-      align-items: center;
-      gap: 13px;
-      cursor: pointer;
-      transition: transform 0.15s ease, border 0.15s ease;
-    }
-
-    .mode-card:active {
-      transform: scale(0.98);
-    }
-
-    .mode-card:hover {
-      border-color: rgba(155, 89, 255, 0.4);
-    }
-
-    .mode-icon {
-      width: 45px;
-      height: 45px;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 23px;
-      background: #1c2040;
-      flex-shrink: 0;
-    }
-
-    .mode-info {
-      flex: 1;
-    }
-
-    .mode-name {
-      font-size: 14px;
-      font-weight: 900;
-    }
-
-    .mode-description {
-      font-size: 10px;
-      color: rgba(255, 255, 255, 0.48);
-      margin-top: 4px;
-      line-height: 1.35;
-    }
-
-    .mode-arrow {
-      opacity: 0.35;
-      font-size: 19px;
-    }
-
-    .stats-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 9px;
-      margin-top: 16px;
-    }
-
-    .mini-stat {
-      background: #101429;
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      border-radius: 15px;
-      padding: 12px 8px;
-      text-align: center;
-    }
-
-    .mini-stat .number {
-      font-size: 17px;
-      font-weight: 900;
-    }
-
-    .mini-stat .label {
-      margin-top: 3px;
-      font-size: 9px;
-      opacity: 0.42;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-    }
-
-    .achievements {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-    }
-
-    .achievement {
-      background: #101429;
-      border-radius: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      padding: 10px 4px;
-      text-align: center;
-      opacity: 0.35;
-    }
-
-    .achievement.unlocked {
-      opacity: 1;
-      border-color: rgba(255, 209, 102, 0.35);
-    }
-
-    .achievement-icon {
-      font-size: 22px;
-    }
-
-    .achievement-name {
-      font-size: 8px;
-      margin-top: 5px;
-      opacity: 0.65;
-    }
-
-    /* =========================
-       GAME
-    ========================= */
-
-    .game-header {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 7px;
-      margin-bottom: 12px;
-    }
-
-    .game-stat {
-      background: #101429;
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      border-radius: 13px;
-      padding: 9px 5px;
-      text-align: center;
-    }
-
-    .game-stat-label {
-      font-size: 8px;
-      opacity: 0.4;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-    }
-
-    .game-stat-value {
-      margin-top: 3px;
-      font-size: 15px;
-      font-weight: 900;
-    }
-
-    .timer-wrap {
-      margin-bottom: 12px;
-    }
-
-    .timer-top {
-      display: flex;
-      justify-content: space-between;
-      font-size: 10px;
-      margin-bottom: 5px;
-      opacity: 0.6;
-    }
-
-    .timer-bar {
-      height: 6px;
-      background: #181c34;
-      border-radius: 20px;
-      overflow: hidden;
-    }
-
-    .timer-fill {
-      height: 100%;
-      width: 100%;
-      background: linear-gradient(90deg, #61e294, #ffd166, #ff6b6b);
-      border-radius: 20px;
-      transition: width 0.1s linear;
-    }
-
-    .game-card {
-      background:
-        radial-gradient(circle at 20% 0%, rgba(120, 87, 255, 0.16), transparent 30%),
-        #101429;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 23px;
-      padding: 18px 14px 16px;
-      min-height: 450px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .round-title {
-      text-align: center;
-      font-size: 13px;
-      font-weight: 800;
-      opacity: 0.8;
-      margin-bottom: 4px;
-    }
-
-    .instruction {
-      text-align: center;
-      font-size: 11px;
-      opacity: 0.45;
-      min-height: 17px;
-      margin-bottom: 14px;
-    }
-
-    .puzzle-area {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* Emoji puzzle */
-
-    .emoji-grid {
-      width: min(100%, 330px);
-      display: grid;
-      gap: 8px;
-    }
-
-    .emoji-tile {
-      aspect-ratio: 1;
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      border-radius: 13px;
-      background: #181c34;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: clamp(21px, 7vw, 34px);
-      cursor: pointer;
-      transition: transform 0.12s ease, background 0.12s ease;
-    }
-
-    .emoji-tile:active {
-      transform: scale(0.91);
-    }
-
-    /* Color puzzle */
-
-    .color-word {
-      text-align: center;
-      font-size: 45px;
-      font-weight: 1000;
-      letter-spacing: 1px;
-      margin-bottom: 24px;
-      text-transform: uppercase;
-    }
-
-    .color-options {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      width: min(100%, 310px);
-    }
-
-    .color-option {
-      border: 0;
-      min-height: 58px;
-      border-radius: 14px;
-      color: white;
-      font-weight: 900;
-      cursor: pointer;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
-    }
-
-    /* Pair puzzle */
-
-    .pair-grid {
-      width: min(100%, 330px);
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 9px;
-    }
-
-    .pair-tile {
-      aspect-ratio: 1;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.07);
-      background: #181c34;
-      color: #fff;
-      font-size: 26px;
-      cursor: pointer;
-    }
-
-    .pair-tile:active {
-      transform: scale(0.94);
-    }
-
-    .game-message {
-      text-align: center;
-      min-height: 25px;
-      padding-top: 9px;
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .game-message.good {
-      color: #61e294;
-    }
-
-    .game-message.bad {
-      color: #ff7676;
-    }
-
-    .back-button {
-      margin-top: 13px;
-      width: 100%;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: transparent;
-      color: rgba(255,255,255,0.55);
-      border-radius: 13px;
-      padding: 11px;
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    /* =========================
-       GAME OVER
-    ========================= */
-
-    .result {
-      padding-top: 35px;
-      text-align: center;
-    }
-
-    .result-icon {
-      width: 82px;
-      height: 82px;
-      border-radius: 25px;
-      margin: 0 auto 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 42px;
-      background: linear-gradient(135deg, #29204d, #171d3b);
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .result h1 {
-      margin: 0;
-      font-size: 28px;
-    }
-
-    .result-sub {
-      margin-top: 7px;
-      font-size: 12px;
-      opacity: 0.48;
-    }
-
-    .result-score {
-      margin: 24px auto;
-      padding: 20px;
-      background: #101429;
-      border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .result-score small {
-      font-size: 10px;
-      text-transform: uppercase;
-      opacity: 0.4;
-      letter-spacing: 1px;
-    }
-
-    .result-score strong {
-      display: block;
-      margin-top: 4px;
-      font-size: 42px;
-    }
-
-    .result-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-
-    .result-box {
-      background: #101429;
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 14px;
-      padding: 12px 5px;
-    }
-
-    .result-box strong {
-      display: block;
-      font-size: 17px;
-    }
-
-    .result-box span {
-      display: block;
-      margin-top: 3px;
-      font-size: 8px;
-      opacity: 0.4;
-      text-transform: uppercase;
-    }
-
-    .primary-button {
-      width: 100%;
-      border: 0;
-      border-radius: 15px;
-      padding: 15px;
-      font-size: 14px;
-      font-weight: 900;
-      color: #fff;
-      background: linear-gradient(135deg, #735cff, #a057ff);
-      box-shadow: 0 12px 28px rgba(115, 92, 255, 0.24);
-    }
-
-    .secondary-button {
-      width: 100%;
-      margin-top: 9px;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 15px;
-      padding: 14px;
-      font-size: 13px;
-      font-weight: 800;
-      color: rgba(255,255,255,0.75);
-      background: #101429;
-    }
-
-    /* =========================
-       LEADERBOARD
-    ========================= */
-
-    .leaderboard {
-      margin-top: 16px;
-      text-align: left;
-    }
-
-    .leader-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: #101429;
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 12px;
-      padding: 10px;
-      margin-bottom: 6px;
-    }
-
-    .rank {
-      width: 27px;
-      text-align: center;
-      font-weight: 900;
-      font-size: 12px;
-    }
-
-    .lb-mode {
-      flex: 1;
-      font-size: 10px;
-      opacity: 0.55;
-    }
-
-    .lb-score {
-      font-size: 13px;
-      font-weight: 900;
-    }
-
-    .new-record {
-      color: #ffd166;
-      font-size: 11px;
-      font-weight: 900;
-      margin-bottom: 8px;
-    }
-
-    /* =========================
-       TOAST
-    ========================= */
-
-    .toast {
-      position: fixed;
-      left: 50%;
-      bottom: calc(22px + env(safe-area-inset-bottom));
-      transform: translate(-50%, 20px);
-      background: rgba(20, 22, 40, 0.96);
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 11px 15px;
-      border-radius: 13px;
-      font-size: 11px;
-      font-weight: 800;
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.2s ease;
-      z-index: 9999;
-      white-space: nowrap;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translate(-50%, 0);
-    }
-
-    @media (max-height: 650px) {
-      .hero {
-        padding: 17px;
-      }
-
-      .hero h1 {
-        font-size: 25px;
-      }
-
-      .game-card {
-        min-height: 370px;
-      }
-
-      .emoji-grid {
-        max-width: 285px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Puzzle Rush</title>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<style>
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+  margin:0;
+  padding:0;
+  background:#080b18;
+  color:white;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+}
+
+body{
+  min-height:100vh;
+}
+
+button{
+  font-family:inherit;
+}
+
+.app{
+  max-width:520px;
+  margin:auto;
+  min-height:100vh;
+  padding:18px 16px 30px;
+}
+
+.screen{
+  display:none;
+}
+
+.screen.active{
+  display:block;
+}
+
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:18px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.brand-icon{
+  width:42px;
+  height:42px;
+  border-radius:13px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:23px;
+  background:linear-gradient(135deg,#6c5ce7,#9b59ff);
+}
+
+.brand-title{
+  font-size:20px;
+  font-weight:900;
+}
+
+.brand-sub{
+  font-size:11px;
+  opacity:.5;
+  margin-top:2px;
+}
+
+.best-pill{
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.08);
+  padding:8px 11px;
+  border-radius:12px;
+  text-align:right;
+}
+
+.best-pill small{
+  display:block;
+  font-size:9px;
+  opacity:.5;
+}
+
+.best-pill strong{
+  font-size:15px;
+}
+
+.hero{
+  padding:22px 20px;
+  border-radius:24px;
+  background:
+    radial-gradient(circle at 90% 10%,rgba(143,95,255,.35),transparent 35%),
+    linear-gradient(145deg,#17142d,#0f1328);
+  border:1px solid rgba(255,255,255,.08);
+}
+
+.hero-tag{
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:1px;
+  color:#bbaeff;
+}
+
+.hero h1{
+  margin:8px 0 0;
+  font-size:30px;
+  line-height:1.05;
+}
+
+.hero p{
+  color:rgba(255,255,255,.62);
+  font-size:13px;
+  line-height:1.5;
+}
+
+.daily-card{
+  margin-top:18px;
+  padding:14px;
+  border-radius:17px;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.08);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.daily-left{
+  display:flex;
+  align-items:center;
+  gap:11px;
+}
+
+.daily-icon{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  background:rgba(255,196,87,.13);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:21px;
+}
+
+.daily-title{
+  font-weight:800;
+  font-size:13px;
+}
+
+.daily-desc{
+  font-size:10px;
+  opacity:.5;
+  margin-top:3px;
+}
+
+.daily-btn{
+  border:0;
+  color:#111;
+  background:#ffd166;
+  border-radius:10px;
+  padding:10px 13px;
+  font-size:11px;
+  font-weight:900;
+}
+
+.section-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:20px 3px 9px;
+}
+
+.section-title h2{
+  margin:0;
+  font-size:14px;
+}
+
+.section-title span{
+  font-size:10px;
+  opacity:.4;
+}
+
+.mode-list{
+  display:grid;
+  gap:10px;
+}
+
+.mode-card{
+  width:100%;
+  border:1px solid rgba(255,255,255,.08);
+  background:#101429;
+  color:white;
+  border-radius:18px;
+  padding:14px;
+  text-align:left;
+  display:flex;
+  align-items:center;
+  gap:13px;
+}
+
+.mode-card:active{
+  transform:scale(.98);
+}
+
+.mode-icon{
+  width:45px;
+  height:45px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:23px;
+  background:#1c2040;
+  flex-shrink:0;
+}
+
+.mode-info{
+  flex:1;
+}
+
+.mode-name{
+  font-size:14px;
+  font-weight:900;
+}
+
+.mode-description{
+  font-size:10px;
+  color:rgba(255,255,255,.48);
+  margin-top:4px;
+}
+
+.mode-arrow{
+  opacity:.4;
+  font-size:20px;
+}
+
+.stats-row{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:9px;
+  margin-top:16px;
+}
+
+.mini-stat{
+  background:#101429;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:15px;
+  padding:12px 5px;
+  text-align:center;
+}
+
+.number{
+  font-size:17px;
+  font-weight:900;
+}
+
+.label{
+  margin-top:3px;
+  font-size:9px;
+  opacity:.42;
+  letter-spacing:.6px;
+}
+
+.achievements{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+
+.achievement{
+  background:#101429;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.07);
+  padding:11px 4px;
+  text-align:center;
+  opacity:.3;
+}
+
+.achievement.unlocked{
+  opacity:1;
+  border-color:rgba(255,209,102,.35);
+}
+
+.achievement-icon{
+  font-size:22px;
+}
+
+.achievement-name{
+  font-size:8px;
+  margin-top:5px;
+  opacity:.65;
+}
+
+.leader-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:#101429;
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:12px;
+  padding:10px;
+  margin-bottom:6px;
+}
+
+.rank{
+  width:25px;
+  text-align:center;
+  font-weight:900;
+}
+
+.lb-mode{
+  flex:1;
+  font-size:10px;
+  opacity:.55;
+}
+
+.lb-score{
+  font-size:13px;
+  font-weight:900;
+}
+
+
+/* GAME */
+
+.game-header{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:7px;
+  margin-bottom:12px;
+}
+
+.game-stat{
+  background:#101429;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:13px;
+  padding:9px 3px;
+  text-align:center;
+}
+
+.game-stat-label{
+  font-size:8px;
+  opacity:.4;
+}
+
+.game-stat-value{
+  margin-top:3px;
+  font-size:14px;
+  font-weight:900;
+}
+
+.timer-top{
+  display:flex;
+  justify-content:space-between;
+  font-size:10px;
+  opacity:.6;
+  margin-bottom:5px;
+}
+
+.timer-bar{
+  height:6px;
+  background:#181c34;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.timer-fill{
+  height:100%;
+  width:100%;
+  background:linear-gradient(90deg,#61e294,#ffd166,#ff6b6b);
+}
+
+.game-card{
+  margin-top:13px;
+  background:
+    radial-gradient(circle at 20% 0%,rgba(120,87,255,.16),transparent 30%),
+    #101429;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:23px;
+  padding:18px 14px;
+  min-height:440px;
+  display:flex;
+  flex-direction:column;
+}
+
+.round-title{
+  text-align:center;
+  font-size:14px;
+  font-weight:800;
+}
+
+.instruction{
+  text-align:center;
+  font-size:11px;
+  opacity:.45;
+  margin:5px 0 15px;
+}
+
+.puzzle-area{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.emoji-grid{
+  width:100%;
+  max-width:330px;
+  display:grid;
+  gap:8px;
+}
+
+.emoji-tile{
+  aspect-ratio:1;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:13px;
+  background:#181c34;
+  font-size:30px;
+  color:white;
+}
+
+.emoji-tile:active{
+  transform:scale(.9);
+}
+
+.color-container{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.color-word{
+  font-size:42px;
+  font-weight:1000;
+  margin-bottom:25px;
+}
+
+.color-options{
+  width:100%;
+  max-width:310px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.color-option{
+  min-height:58px;
+  border:0;
+  border-radius:14px;
+  color:white;
+  font-weight:900;
+}
+
+.pair-grid{
+  width:100%;
+  max-width:330px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+}
+
+.pair-tile{
+  aspect-ratio:1;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.07);
+  background:#181c34;
+  color:white;
+  font-size:25px;
+}
+
+.game-message{
+  min-height:24px;
+  text-align:center;
+  font-size:12px;
+  font-weight:800;
+  padding-top:8px;
+}
+
+.good{
+  color:#61e294;
+}
+
+.bad{
+  color:#ff7676;
+}
+
+.back-button{
+  margin-top:12px;
+  width:100%;
+  border:1px solid rgba(255,255,255,.08);
+  background:transparent;
+  color:rgba(255,255,255,.55);
+  border-radius:13px;
+  padding:11px;
+}
+
+
+/* RESULT */
+
+.result{
+  text-align:center;
+  padding-top:35px;
+}
+
+.result-icon{
+  width:82px;
+  height:82px;
+  border-radius:25px;
+  margin:auto auto 16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:42px;
+  background:#171d3b;
+}
+
+.result h1{
+  margin:0;
+  font-size:28px;
+}
+
+.result-sub{
+  margin-top:7px;
+  font-size:12px;
+  opacity:.48;
+}
+
+.result-score{
+  margin:24px auto;
+  padding:20px;
+  background:#101429;
+  border-radius:20px;
+}
+
+.result-score small{
+  font-size:10px;
+  opacity:.4;
+}
+
+.result-score strong{
+  display:block;
+  font-size:42px;
+}
+
+.result-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+
+.result-box{
+  background:#101429;
+  border-radius:14px;
+  padding:12px 4px;
+}
+
+.result-box strong{
+  display:block;
+  font-size:17px;
+}
+
+.result-box span{
+  font-size:8px;
+  opacity:.4;
+}
+
+.primary-button{
+  width:100%;
+  margin-top:16px;
+  border:0;
+  border-radius:15px;
+  padding:15px;
+  font-size:14px;
+  font-weight:900;
+  color:white;
+  background:linear-gradient(135deg,#735cff,#a057ff);
+}
+
+.secondary-button{
+  width:100%;
+  margin-top:9px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:15px;
+  padding:14px;
+  color:rgba(255,255,255,.75);
+  background:#101429;
+  font-weight:800;
+}
+
+.new-record{
+  color:#ffd166;
+  font-size:11px;
+  font-weight:900;
+  margin-bottom:10px;
+}
+
+</style>
 </head>
 
 <body>
-  <div class="app">
-
-    <!-- =========================
-         HOME
-    ========================= -->
-
-    <section id="homeScreen" class="screen active">
-
-      <div class="topbar">
-        <div class="brand">
-          <div class="brand-icon">🧩</div>
-          <div>
-            <div class="brand-title">Puzzle Rush</div>
-            <div class="brand-sub">Think fast. Beat your best.</div>
-          </div>
-        </div>
-
-        <div class="best-pill">
-          <small>Best</small>
-          <strong id="homeBest">0</strong>
-        </div>
-      </div>
-
-      <div class="hero">
-        <div class="hero-tag">⚡ New challenge system</div>
-        <h1>How fast can<br>you think?</h1>
-        <p>
-          Solve different mini-puzzles, build your combo and push your score higher.
-        </p>
-
-        <div class="daily-card">
-          <div class="daily-left">
-            <div class="daily-icon">🌟</div>
-            <div>
-              <div class="daily-title">Daily Challenge</div>
-              <div class="daily-desc" id="dailyDesc">10 rounds • New every day</div>
-            </div>
-          </div>
-
-          <button class="daily-btn" id="dailyBtn">
-            PLAY
-          </button>
-        </div>
-      </div>
-
-      <div class="section-title">
-        <h2>Choose your mode</h2>
-        <span>3 challenges</span>
-      </div>
-
-      <div class="mode-list">
-
-        <button class="mode-card" data-mode="classic">
-          <div class="mode-icon">🔎</div>
-          <div class="mode-info">
-            <div class="mode-name">Odd One</div>
-            <div class="mode-description">
-              Find the one symbol that doesn't belong.
-            </div>
-          </div>
-          <div class="mode-arrow">›</div>
-        </button>
-
-        <button class="mode-card" data-mode="color">
-          <div class="mode-icon">🎨</div>
-          <div class="mode-info">
-            <div class="mode-name">Color Code</div>
-            <div class="mode-description">
-              Ignore the word. Choose the color you see.
-            </div>
-          </div>
-          <div class="mode-arrow">›</div>
-        </button>
-
-        <button class="mode-card" data-mode="pair">
-          <div class="mode-icon">🧠</div>
-          <div class="mode-info">
-            <div class="mode-name">Pair Hunt</div>
-            <div class="mode-description">
-              Find the only symbol that appears twice.
-            </div>
-          </div>
-          <div class="mode-arrow">›</div>
-        </button>
-
-      </div>
-
-      <div class="stats-row">
-        <div class="mini-stat">
-          <div class="number" id="homeStreak">0</div>
-          <div class="label">Streak</div>
-        </div>
-
-        <div class="mini-stat">
-          <div class="number" id="homeRounds">0</div>
-          <div class="label">Rounds</div>
-        </div>
-
-        <div class="mini-stat">
-          <div class="number" id="homeCombo">0</div>
-          <div class="label">Best Combo</div>
-        </div>
-      </div>
-
-      <div class="section-title">
-        <h2>Achievements</h2>
-        <span id="achievementCount">0/6</span>
-      </div>
-
-      <div class="achievements">
-
-        <div class="achievement" id="achFirst">
-          <div class="achievement-icon">🚀</div>
-          <div class="achievement-name">First Run</div>
-        </div>
-
-        <div class="achievement" id="achRounds">
-          <div class="achievement-icon">🔥</div>
-          <div class="achievement-name">10 Rounds</div>
-        </div>
-
-        <div class="achievement" id="achCombo">
-          <div class="achievement-icon">⚡</div>
-          <div class="achievement-name">Combo 5</div>
-        </div>
 
-        <div class="achievement" id="achScore">
-          <div class="achievement-icon">💎</div>
-          <div class="achievement-name">1000 Score</div>
-        </div>
+<div class="app">
 
-        <div class="achievement" id="achDaily">
-          <div class="achievement-icon">🌟</div>
-          <div class="achievement-name">Daily</div>
-        </div>
+<!-- HOME -->
+<section id="homeScreen" class="screen active">
 
-        <div class="achievement" id="achMaster">
-          <div class="achievement-icon">👑</div>
-          <div class="achievement-name">Master</div>
-        </div>
+<div class="topbar">
 
-      </div>
+<div class="brand">
+<div class="brand-icon">🧩</div>
+<div>
+<div class="brand-title">Puzzle Rush</div>
+<div class="brand-sub">Think fast. Beat your best.</div>
+</div>
+</div>
 
-      <div class="section-title">
-        <h2>Local leaderboard</h2>
-        <span>this device</span>
-      </div>
+<div class="best-pill">
+<small>BEST</small>
+<strong id="homeBest">0</strong>
+</div>
 
-      <div id="homeLeaderboard"></div>
+</div>
 
-    </section>
 
+<div class="hero">
 
-    <!-- =========================
-         GAME
-    ========================= -->
+<div class="hero-tag">⚡ NEW CHALLENGE SYSTEM</div>
 
-    <section id="gameScreen" class="screen">
+<h1>How fast can<br>you think?</h1>
 
-      <div class="topbar">
-        <div class="brand">
-          <div class="brand-icon">🧩</div>
-          <div>
-            <div class="brand-title" id="gameModeName">Puzzle Rush</div>
-            <div class="brand-sub" id="gameModeSub">Classic</div>
-          </div>
-        </div>
+<p>
+Solve different mini-puzzles, build your combo and push your score higher.
+</p>
 
-        <div class="best-pill">
-          <small>Score</small>
-          <strong id="topScore">0</strong>
-        </div>
-      </div>
 
-      <div class="game-header">
+<div class="daily-card">
 
-        <div class="game-stat">
-          <div class="game-stat-label">Round</div>
-          <div class="game-stat-value" id="roundValue">1</div>
-        </div>
+<div class="daily-left">
 
-        <div class="game-stat">
-          <div class="game-stat-label">Lives</div>
-          <div class="game-stat-value" id="livesValue">❤️❤️❤️</div>
-        </div>
+<div class="daily-icon">🌟</div>
 
-        <div class="game-stat">
-          <div class="game-stat-label">Combo</div>
-          <div class="game-stat-value" id="comboValue">x0</div>
-        </div>
+<div>
+<div class="daily-title">Daily Challenge</div>
+<div class="daily-desc">10 rounds • New every day</div>
+</div>
 
-        <div class="game-stat">
-          <div class="game-stat-label">Mode</div>
-          <div class="game-stat-value" id="modeShort">ODD</div>
-        </div>
+</div>
 
-      </div>
+<button
+class="daily-btn"
+id="dailyBtn"
+onclick="playDaily()">
+PLAY
+</button>
 
-      <div class="timer-wrap">
-        <div class="timer-top">
-          <span>TIME</span>
-          <span id="timerText">10.0s</span>
-        </div>
+</div>
 
-        <div class="timer-bar">
-          <div class="timer-fill" id="timerFill"></div>
-        </div>
-      </div>
+</div>
 
-      <div class="game-card">
 
-        <div class="round-title" id="roundTitle">
-          Find the odd one
-        </div>
+<div class="section-title">
+<h2>Choose your mode</h2>
+<span>3 challenges</span>
+</div>
 
-        <div class="instruction" id="instruction">
-          Tap the symbol that is different.
-        </div>
 
-        <div class="puzzle-area" id="puzzleArea"></div>
+<div class="mode-list">
 
-        <div class="game-message" id="gameMessage"></div>
+<button class="mode-card" onclick="startGame('classic')">
 
-      </div>
+<div class="mode-icon">🔎</div>
 
-      <button class="back-button" id="quitGame">
-        Leave game
-      </button>
+<div class="mode-info">
+<div class="mode-name">Odd One</div>
+<div class="mode-description">
+Find the one symbol that doesn't belong.
+</div>
+</div>
 
-    </section>
+<div class="mode-arrow">›</div>
 
+</button>
 
-    <!-- =========================
-         RESULT
-    ========================= -->
 
-    <section id="resultScreen" class="screen">
+<button class="mode-card" onclick="startGame('color')">
 
-      <div class="result">
+<div class="mode-icon">🎨</div>
 
-        <div class="result-icon" id="resultIcon">🏁</div>
+<div class="mode-info">
+<div class="mode-name">Color Code</div>
+<div class="mode-description">
+Ignore the word. Choose the color you see.
+</div>
+</div>
 
-        <h1 id="resultTitle">Run Complete</h1>
+<div class="mode-arrow">›</div>
 
-        <div class="result-sub" id="resultSub">
-          Nice run!
-        </div>
+</button>
 
-        <div class="result-score">
-          <small>Final Score</small>
-          <strong id="finalScore">0</strong>
-        </div>
 
-        <div id="recordMessage"></div>
+<button class="mode-card" onclick="startGame('pair')">
 
-        <div class="result-grid">
+<div class="mode-icon">🧠</div>
 
-          <div class="result-box">
-            <strong id="resultRounds">0</strong>
-            <span>Rounds</span>
-          </div>
+<div class="mode-info">
+<div class="mode-name">Pair Hunt</div>
+<div class="mode-description">
+Find the only symbol that appears twice.
+</div>
+</div>
 
-          <div class="result-box">
-            <strong id="resultCombo">0</strong>
-            <span>Best Combo</span>
-          </div>
+<div class="mode-arrow">›</div>
 
-          <div class="result-box">
-            <strong id="resultAccuracy">0%</strong>
-            <span>Accuracy</span>
-          </div>
+</button>
 
-        </div>
+</div>
 
-        <button class="primary-button" id="againButton">
-          🔄 Play Again
-        </button>
 
-        <button class="secondary-button" id="homeButton">
-          🏠 Back to Home
-        </button>
+<div class="stats-row">
 
-        <div class="leaderboard">
-          <div class="section-title">
-            <h2>Your best runs</h2>
-          </div>
+<div class="mini-stat">
+<div class="number" id="homeStreak">0</div>
+<div class="label">STREAK</div>
+</div>
 
-          <div id="resultLeaderboard"></div>
-        </div>
+<div class="mini-stat">
+<div class="number" id="homeRounds">0</div>
+<div class="label">ROUNDS</div>
+</div>
 
-      </div>
+<div class="mini-stat">
+<div class="number" id="homeCombo">0</div>
+<div class="label">BEST COMBO</div>
+</div>
 
-    </section>
+</div>
 
-  </div>
 
-  <div class="toast" id="toast"></div>
+<div class="section-title">
+<h2>Achievements</h2>
+<span id="achievementCount">0/6</span>
+</div>
 
 
-  <script>
+<div class="achievements">
 
-    /* =====================================================
-       PUZZLE RUSH V2
-       ===================================================== */
+<div class="achievement" id="ach1">
+<div class="achievement-icon">🚀</div>
+<div class="achievement-name">First Run</div>
+</div>
 
-    const INTERSTITIAL_BLOCK_ID = "int-47307";
+<div class="achievement" id="ach2">
+<div class="achievement-icon">🔥</div>
+<div class="achievement-name">10 Rounds</div>
+</div>
 
-    let selectedMode = "classic";
-    let gameMode = "classic";
+<div class="achievement" id="ach3">
+<div class="achievement-icon">⚡</div>
+<div class="achievement-name">Combo 5</div>
+</div>
 
-    let score = 0;
-    let round = 1;
-    let lives = 3;
-    let combo = 0;
-    let bestComboRun = 0;
+<div class="achievement" id="ach4">
+<div class="achievement-icon">💎</div>
+<div class="achievement-name">1000 Score</div>
+</div>
 
-    let correctAnswers = 0;
-    let totalAttempts = 0;
+<div class="achievement" id="ach5">
+<div class="achievement-icon">🌟</div>
+<div class="achievement-name">Daily</div>
+</div>
 
-    let timeLeft = 10;
-    let maxTime = 10;
-    let timer = null;
+<div class="achievement" id="ach6">
+<div class="achievement-icon">👑</div>
+<div class="achievement-name">Master</div>
+</div>
 
-    let roundLocked = false;
-    let roundsSinceAd = 0;
+</div>
 
-    let currentDaily = false;
-    let dailySeed = 0;
 
-    const emojis = [
-      "🍎","🍊","🍋","🍉","🍇","🍓",
-      "🐶","🐱","🐼","🐸","🦊","🐵",
-      "⭐","🌙","☀️","⚡","🔥","❄️",
-      "🚗","🚲","🚀","✈️","🎈","🎯"
-    ];
+<div class="section-title">
+<h2>Local leaderboard</h2>
+<span>this device</span>
+</div>
 
-    const colorData = [
-      { name: "RED", color: "#ff5c5c" },
-      { name: "BLUE", color: "#5ca8ff" },
-      { name: "GREEN", color: "#58d68d" },
-      { name: "YELLOW", color: "#ffd166" },
-      { name: "PURPLE", color: "#a66cff" },
-      { name: "PINK", color: "#ff6fba" }
-    ];
+<div id="homeLeaderboard"></div>
 
-    const pairSymbols = [
-      "★","◆","●","▲","■","♥️",
-      "☀️","☾","✦","✚","⬟","⬢",
-      "♣️","♠️","♦️","♟"
-    ];
+</section>
 
-    /* =========================
-       TELEGRAM
-    ========================= */
 
-    try {
-      if (window.Telegram && Telegram.WebApp) {
-        Telegram.WebApp.ready();
-        Telegram.WebApp.expand();
 
-        if (Telegram.WebApp.disableVerticalSwipes) {
-          Telegram.WebApp.disableVerticalSwipes();
-        }
+<!-- GAME -->
 
-        if (Telegram.WebApp.setHeaderColor) {
-          Telegram.WebApp.setHeaderColor("#080b18");
-        }
+<section id="gameScreen" class="screen">
 
-        if (Telegram.WebApp.setBackgroundColor) {
-          Telegram.WebApp.setBackgroundColor("#080b18");
-        }
-      }
-    } catch (e) {
-      console.log("Telegram SDK unavailable");
-    }
+<div class="topbar">
 
+<div class="brand">
 
-    /* =========================
-       STORAGE
-    ========================= */
+<div class="brand-icon">🧩</div>
 
-    const STORAGE_KEY = "puzzleRushV2Data";
+<div>
+<div class="brand-title" id="gameTitle">Puzzle Rush</div>
+<div class="brand-sub" id="gameSub">Odd One</div>
+</div>
 
-    function getData() {
-      try {
-        const saved = localStorage.getItem(STORAGE_KEY);
+</div>
 
-        if (saved) {
-          return JSON.parse(saved);
-        }
-      } catch (e) {}
+<div class="best-pill">
+<small>SCORE</small>
+<strong id="scoreText">0</strong>
+</div>
 
-      return {
-        best: 0,
-        bestCombo: 0,
-        totalRounds: 0,
-        totalRuns: 0,
-        streak: 0,
-        lastPlayed: "",
-        dailyPlayed: "",
-        achievements: [],
-        leaderboard: []
-      };
-    }
+</div>
 
-    function saveData(data) {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-      } catch (e) {}
-    }
 
-    let data = getData();
+<div class="game-header">
 
+<div class="game-stat">
+<div class="game-stat-label">ROUND</div>
+<div class="game-stat-value" id="roundText">1</div>
+</div>
 
-    /* =========================
-       DATE / DAILY
-    ========================= */
+<div class="game-stat">
+<div class="game-stat-label">LIVES</div>
+<div class="game-stat-value" id="livesText">❤️❤️❤️</div>
+</div>
 
-    function dateKey() {
-      const d = new Date();
+<div class="game-stat">
+<div class="game-stat-label">COMBO</div>
+<div class="game-stat-value" id="comboText">x0</div>
+</div>
 
-      return [
-        d.getFullYear(),
-        String(d.getMonth() + 1).padStart(2, "0"),
-        String(d.getDate()).padStart(2, "0")
-      ].join("-");
-    }
+<div class="game-stat">
+<div class="game-stat-label">MODE</div>
+<div class="game-stat-value" id="modeText">ODD</div>
+</div>
 
-    function getDayNumber() {
-      const d = new Date();
+</div>
 
-      return (
-        d.getFullYear() * 10000 +
-        (d.getMonth() + 1) * 100 +
-        d.getDate()
-      );
-    }
 
-    function seededRandom(seed) {
-      let x = Math.sin(seed++) * 10000;
-      return x - Math.floor(x);
-    }
+<div class="timer-top">
+<span>TIME</span>
+<span id="timeText">10.0s</span>
+</div>
 
+<div class="timer-bar">
+<div class="timer-fill" id="timerFill"></div>
+</div>
 
-    /* =========================
-       STREAK
-    ========================= */
 
-    function updateStreak() {
-      const today = dateKey();
+<div class="game-card">
 
-      if (!data.lastPlayed) {
-        data.streak = 1;
-      } else if (data.lastPlayed !== today) {
+<div class="round-title" id="roundTitle">
+Find the odd one
+</div>
 
-        const previous = new Date(data.lastPlayed);
-        const current = new Date(today);
+<div class="instruction" id="instruction">
+Tap the symbol that is different.
+</div>
 
-        const difference =
-          Math.round(
-            (current - previous) / (1000 * 60 * 60 * 24)
-          );
+<div class="puzzle-area" id="puzzleArea"></div>
 
-        if (difference === 1) {
-          data.streak++;
-        } else {
-          data.streak = 1;
-        }
-      }
+<div class="game-message" id="gameMessage"></div>
 
-      data.lastPlayed = today;
+</div>
 
-      saveData(data);
-    }
 
+<button class="back-button" onclick="goHome()">
+Leave game
+</button>
 
-    /* =========================
-       HOME
-    ========================= */
+</section>
 
-    function showScreen(id) {
-      document.querySelectorAll(".screen").forEach((screen) => {
-        screen.classList.remove("active");
-      });
 
-      document.getElementById(id).classList.add("active");
 
-      window.scrollTo(0, 0);
-    }
+<!-- RESULT -->
 
-    function updateHome() {
+<section id="resultScreen" class="screen">
 
-      document.getElementById("homeBest").textContent =
-        data.best.toLocaleString();
+<div class="result">
 
-      document.getElementById("homeStreak").textContent =
-        data.streak;
+<div class="result-icon" id="resultIcon">🏁</div>
 
-      document.getElementById("homeRounds").textContent =
-        data.totalRounds;
+<h1 id="resultTitle">Run Complete</h1>
 
-      document.getElementById("homeCombo").textContent =
-        data.bestCombo;
+<div class="result-sub" id="resultSub">
+Can you beat your score?
+</div>
 
-      const dailyDone = data.dailyPlayed === dateKey();
+<div class="result-score">
 
-      document.getElementById("dailyBtn").textContent =
-        dailyDone ? "DONE" : "PLAY";
+<small>FINAL SCORE</small>
 
-      document.getElementById("dailyBtn").style.opacity =
-        dailyDone ? "0.5" : "1";
+<strong id="finalScore">0</strong>
 
-      updateAchievements();
-      renderLeaderboard("homeLeaderboard");
-    }
+</div>
 
+<div id="recordMessage"></div>
 
-    /* =========================
-       ACHIEVEMENTS
-    ========================= */
 
-    function achievementUnlocked(id) {
-      return data.achievements.includes(id);
-    }
+<div class="result-grid">
 
-    function unlockAchievement(id, message) {
+<div class="result-box">
+<strong id="resultRounds">0</strong>
+<span>ROUNDS</span>
+</div>
 
-      if (achievementUnlocked(id)) {
-        return;
-      }
+<div class="result-box">
+<strong id="resultCombo">0</strong>
+<span>BEST COMBO</span>
+</div>
 
-      data.achievements.push(id);
-      saveData(data);
+<div class="result-box">
+<strong id="resultAccuracy">0%</strong>
+<span>ACCURACY</span>
+</div>
 
-      if (message) {
-        showToast(message);
-      }
-    }
+</div>
 
-    function updateAchievements() {
 
-      const checks = [
-        ["first", "achFirst"],
-        ["rounds", "achRounds"],
-        ["combo", "achCombo"],
-        ["score", "achScore"],
-        ["daily", "achDaily"],
-        ["master", "achMaster"]
-      ];
+<button
+class="primary-button"
+onclick="playAgain()">
+🔄 Play Again
+</button>
 
-      checks.forEach(([id, elementId]) => {
 
-        const element = document.getElementById(elementId);
+<button
+class="secondary-button"
+onclick="goHome()">
+🏠 Back to Home
+</button>
 
-        if (achievementUnlocked(id)) {
-          element.classList.add("unlocked");
-        } else {
-          element.classList.remove("unlocked");
-        }
 
-      });
+<div class="section-title">
+<h2>Your best runs</h2>
+</div>
 
-      document.getElementById("achievementCount").textContent =
-        ${data.achievements.length}/6;
-    }
+<div id="resultLeaderboard"></div>
 
+</div>
 
-    function checkAchievements() {
+</section>
 
-      if (data.totalRuns >= 1) {
-        unlockAchievement("first", "🚀 First Run unlocked!");
-      }
+</div>
 
-      if (data.totalRounds >= 10) {
-        unlockAchievement("rounds", "🔥 10 Rounds unlocked!");
-      }
 
-      if (data.bestCombo >= 5) {
-        unlockAchievement("combo", "⚡ Combo Master unlocked!");
-      }
+<script>
 
-      if (data.best >= 1000) {
-        unlockAchievement("score", "💎 1000 Score unlocked!");
-      }
+/* =========================================
+   PUZZLE RUSH V2
+   ========================================= */
 
-      if (data.dailyPlayed === dateKey()) {
-        unlockAchievement("daily", "🌟 Daily Challenge complete!");
-      }
+/*
+   IMPORTANT:
+   AdsGram is NOT loaded here.
+   This makes sure the game buttons work
+   independently from the advertising system.
+*/
 
-      if (
-        data.totalRounds >= 50 &&
-        data.best >= 2500 &&
-        data.bestCombo >= 8
-      ) {
-        unlockAchievement("master", "👑 Puzzle Master unlocked!");
-      }
-    }
+var gameMode = "classic";
+var dailyMode = false;
 
+var score = 0;
+var round = 1;
+var lives = 3;
+var combo = 0;
+var bestComboRun = 0;
 
-    /* =========================
-       LEADERBOARD
-    ========================= */
+var correctAnswers = 0;
+var totalAttempts = 0;
 
-    function addLeaderboardEntry(scoreValue, mode) {
+var timer = null;
+var timeLeft = 10;
+var maxTime = 10;
 
-      data.leaderboard.push({
-        score: scoreValue,
-        mode: mode,
-        date: dateKey()
-      });
+var locked = false;
+var roundsSinceAd = 0;
 
-      data.leaderboard.sort((a, b) => b.score - a.score);
+var emojis = [
+"🍎","🍊","🍋","🍉","🍇","🍓",
+"🐶","🐱","🐼","🐸","🦊","🐵",
+"⭐","🌙","☀️","⚡","🔥","❄️",
+"🚗","🚲","🚀","✈️","🎈","🎯"
+];
 
-      data.leaderboard =
-        data.leaderboard.slice(0, 5);
+var colors = [
+{name:"RED",color:"#ff5c5c"},
+{name:"BLUE",color:"#5ca8ff"},
+{name:"GREEN",color:"#58d68d"},
+{name:"YELLOW",color:"#ffd166"},
+{name:"PURPLE",color:"#a66cff"},
+{name:"PINK",color:"#ff6fba"}
+];
 
-      saveData(data);
-    }
+var pairs = [
+"★","◆","●","▲","■","♥️",
+"☀️","☾","✦","✚","⬟","⬢",
+"♣️","♠️","♦️","♟"
+];
 
-    function renderLeaderboard(elementId) {
 
-      const element =
-        document.getElementById(elementId);
+/* =========================================
+   TELEGRAM
+   ========================================= */
 
-      if (!data.leaderboard.length) {
+try{
 
-        element.innerHTML = `
-          <div class="leader-row">
-            <div class="lb-mode">
-              Play your first run to appear here.
-            </div>
-          </div>
-        `;
+if(window.Telegram && Telegram.WebApp){
 
-        return;
-      }
+Telegram.WebApp.ready();
+Telegram.WebApp.expand();
 
-      element.innerHTML =
-        data.leaderboard
-          .map((entry, index) => {
+if(Telegram.WebApp.disableVerticalSwipes){
+Telegram.WebApp.disableVerticalSwipes();
+}
 
-            return `
-              <div class="leader-row">
-                <div class="rank">${index + 1}</div>
-                <div class="lb-mode">
-                  ${modeLabel(entry.mode)}
-                </div>
-                <div class="lb-score">
-                  ${entry.score.toLocaleString()}
-                </div>
-              </div>
-            `;
+}
 
-          })
-          .join("");
-    }
+}catch(e){
 
+console.log("Telegram setup skipped");
 
-    function modeLabel(mode) {
+}
 
-      if (mode === "classic") {
-        return "🔎 Odd One";
-      }
 
-      if (mode === "color") {
-        return "🎨 Color Code";
-      }
+/* =========================================
+   DATA
+   ========================================= */
 
-      if (mode === "pair") {
-        return "🧠 Pair Hunt";
-      }
+var data;
 
-      if (mode === "daily") {
-        return "🌟 Daily";
-      }
+try{
 
-      return mode;
-    }
+data = JSON.parse(
+localStorage.getItem("puzzleRushV2") || "null"
+);
 
+}catch(e){
 
-    /* =========================
-       GAME START
-    ========================= */
+data = null;
 
-    function startGame(mode, daily = false) {
+}
 
-      clearInterval(timer);
+if(!data){
 
-      gameMode = mode;
-      selectedMode = mode;
-      currentDaily = daily;
+data={
+best:0,
+bestCombo:0,
+rounds:0,
+runs:0,
+streak:0,
+lastPlayed:"",
+dailyPlayed:"",
+scores:[]
+};
 
-      score = 0;
-      round = 1;
-      lives = 3;
-      combo = 0;
-      bestComboRun = 0;
-      correctAnswers = 0;
-      totalAttempts = 0;
-      roundsSinceAd = 0;
-      roundLocked = false;
+}
 
-      updateStreak();
 
-      document.getElementById("gameModeName").textContent =
-        daily ? "Daily Challenge" : "Puzzle Rush";
+function saveData(){
 
-      document.getElementById("gameModeSub").textContent =
-        daily
-          ? "10 rounds • Today's challenge"
-          : modeLabel(mode);
+try{
+localStorage.setItem(
+"puzzleRushV2",
+JSON.stringify(data)
+);
+}catch(e){}
 
-      document.getElementById("modeShort").textContent =
-        daily ? "DAILY" :
-        mode === "classic" ? "ODD" :
-        mode === "color" ? "COLOR" :
-        "PAIR";
+}
 
-      showScreen("gameScreen");
 
-      updateGameStats();
+/* =========================================
+   SCREEN
+   ========================================= */
 
-      createRound();
-    }
+function showScreen(id){
 
+document
+.querySelectorAll(".screen")
+.forEach(function(s){
+s.classList.remove("active");
+});
 
-    /* =========================
-       DIFFICULTY
-    ========================= */
+document
+.getElementById(id)
+.classList.add("active");
 
-    function getMaxTime() {
+window.scrollTo(0,0);
 
-      if (currentDaily) {
-        return Math.max(5.5, 9.5 - round * 0.22);
-      }
+}
 
-      return Math.max(5.5, 10 - round * 0.25);
-    }
 
+/* =========================================
+   HOME
+   ========================================= */
 
-    /* =========================
-       GAME TIMER
-    ========================= */
+function updateHome(){
 
-    function startTimer() {
+document.getElementById("homeBest").textContent =
+data.best.toLocaleString();
 
-      clearInterval(timer);
+document.getElementById("homeStreak").textContent =
+data.streak;
 
-      maxTime = getMaxTime();
-      timeLeft = maxTime;
+document.getElementById("homeRounds").textContent =
+data.rounds;
 
-      updateTimer();
+document.getElementById("homeCombo").textContent =
+data.bestCombo;
 
-      const startedAt = performance.now();
+updateAchievements();
 
-      timer = setInterval(() => {
+renderLeaderboard("homeLeaderboard");
 
-        const elapsed =
-          (performance.now() - startedAt) / 1000;
+}
 
-        timeLeft = Math.max(
-          0,
-          maxTime - elapsed
-        );
 
-        updateTimer();
+function updateAchievements(){
 
-        if (timeLeft <= 0) {
-          clearInterval(timer);
-          handleWrong("⏰ Too slow!");
-        }
+var unlocked=0;
 
-      }, 50);
-    }
+if(data.runs>=1){
+document.getElementById("ach1").classList.add("unlocked");
+unlocked++;
+}
 
+if(data.rounds>=10){
+document.getElementById("ach2").classList.add("unlocked");
+unlocked++;
+}
 
-    function updateTimer() {
+if(data.bestCombo>=5){
+document.getElementById("ach3").classList.add("unlocked");
+unlocked++;
+}
 
-      const percentage =
-        Math.max(
-          0,
-          Math.min(
-            100,
-            (timeLeft / maxTime) * 100
-          )
-        );
+if(data.best>=1000){
+document.getElementById("ach4").classList.add("unlocked");
+unlocked++;
+}
 
-      document.getElementById("timerFill").style.width =
-        percentage + "%";
+if(data.dailyPlayed===today()){
+document.getElementById("ach5").classList.add("unlocked");
+unlocked++;
+}
 
-      document.getElementById("timerText").textContent =
-        timeLeft.toFixed(1) + "s";
-    }
+if(data.rounds>=50 && data.best>=2500){
+document.getElementById("ach6").classList.add("unlocked");
+unlocked++;
+}
 
+document.getElementById("achievementCount").textContent =
+unlocked + "/6";
 
-    /* =========================
-       ROUND
-    ========================= */
+}
 
-    function createRound() {
 
-      roundLocked = false;
+/* =========================================
+   DATE
+   ========================================= */
 
-      document.getElementById("roundValue").textContent =
-        round;
+function today(){
 
-      document.getElementById("gameMessage").textContent = "";
-      document.getElementById("gameMessage").className =
-        "game-message";
+var d=new Date();
 
-      updateGameStats();
+return d.getFullYear()+"-"+
+String(d.getMonth()+1).padStart(2,"0")+"-"+
+String(d.getDate()).padStart(2,"0");
 
-      if (currentDaily) {
+}
 
-        const modes = [
-          "classic",
-          "color",
-          "pair"
-        ];
 
-        const index =
-          (round - 1) % modes.length;
+/* =========================================
+   STREAK
+   ========================================= */
 
-        createPuzzle(modes[index]);
+function updateStreak(){
 
-      } else {
+var t=today();
 
-        createPuzzle(gameMode);
+if(data.lastPlayed!==t){
 
-      }
+if(data.lastPlayed){
 
-      startTimer();
-    }
+var old=new Date(data.lastPlayed);
+var now=new Date(t);
 
+var diff=Math.round(
+(now-old)/(1000*60*60*24)
+);
 
-    function createPuzzle(type) {
+if(diff===1){
+data.streak++;
+}else{
+data.streak=1;
+}
 
-      if (type === "classic") {
-        createOddPuzzle();
-      }
+}else{
 
-      if (type === "color") {
-        createColorPuzzle();
-      }
+data.streak=1;
 
-      if (type === "pair") {
-        createPairPuzzle();
-      }
+}
 
-    }
+data.lastPlayed=t;
 
+saveData();
 
-    /* =========================
-       ODD ONE PUZZLE
-    ========================= */
+}
 
-    function createOddPuzzle() {
+}
 
-      const area =
-        document.getElementById("puzzleArea");
 
-      const gridSize =
-        round < 3 ? 3 :
-        round < 6 ? 4 :
-        round < 10 ? 5 :
-        6;
+/* =========================================
+   START GAME
+   ========================================= */
 
-      const total =
-        gridSize * gridSize;
+function startGame(mode){
 
-      let normal;
-      let odd;
+clearInterval(timer);
 
-      if (currentDaily) {
+gameMode=mode;
+dailyMode=false;
 
-        const seed =
-          dailySeed + round * 17;
+score=0;
+round=1;
+lives=3;
+combo=0;
+bestComboRun=0;
+correctAnswers=0;
+totalAttempts=0;
+roundsSinceAd=0;
+locked=false;
 
-        normal =
-          emojis[
-            Math.floor(
-              seededRandom(seed) * emojis.length
-            )
-          ];
+updateStreak();
 
-        odd =
-          emojis[
-            Math.floor(
-              seededRandom(seed + 1) * emojis.length
-            )
-          ];
+document.getElementById("gameTitle").textContent=
+"Puzzle Rush";
 
-        if (odd === normal) {
-          odd = "🧩";
-        }
+document.getElementById("gameSub").textContent=
+modeName(mode);
 
-      } else {
+document.getElementById("modeText").textContent=
+mode==="classic" ? "ODD" :
+mode==="color" ? "COLOR" :
+"PAIR";
 
-        normal =
-          emojis[
-            Math.floor(
-              Math.random() * emojis.length
-            )
-          ];
+showScreen("gameScreen");
 
-        odd =
-          emojis[
-            Math.floor(
-              Math.random() * emojis.length
-            )
-          ];
+updateGame();
 
-        while (odd === normal) {
-          odd =
-            emojis[
-              Math.floor(
-                Math.random() * emojis.length
-              )
-            ];
-        }
-      }
+createRound();
 
-      const oddIndex =
-        currentDaily
-          ? Math.floor(
-              seededRandom(dailySeed + round * 31) * total
-            )
-          : Math.floor(Math.random() * total);
+}
 
-      document.getElementById("roundTitle").textContent =
-        "Find the odd one";
 
-      document.getElementById("instruction").textContent =
-        "One symbol is different. Tap it.";
+/* =========================================
+   DAILY
+   ========================================= */
 
-      area.innerHTML = `
-        <div
-          class="emoji-grid"
-          style="grid-template-columns:repeat(${gridSize},1fr)"
-        >
-          ${Array.from({ length: total })
-            .map((_, index) => {
+function playDaily(){
 
-              const emoji =
-                index === oddIndex
-                  ? odd
-                  : normal;
+if(data.dailyPlayed===today()){
 
-              return `
-                <button
-                  class="emoji-tile"
-                  data-correct="${index === oddIndex}"
-                >
-                  ${emoji}
-                </button>
-              `;
+alert("You already completed today's challenge!");
 
-            })
-            .join("")}
-        </div>
-      `;
+return;
 
-      area
-        .querySelectorAll(".emoji-tile")
-        .forEach((button) => {
+}
 
-          button.addEventListener("click", () => {
+clearInterval(timer);
 
-            if (button.dataset.correct === "true") {
-              handleCorrect();
-            } else {
-              handleWrong("❌ Not that one!");
-            }
+gameMode="daily";
+dailyMode=true;
 
-          });
+score=0;
+round=1;
+lives=3;
+combo=0;
+bestComboRun=0;
+correctAnswers=0;
+totalAttempts=0;
+roundsSinceAd=0;
+locked=false;
 
-        });
-    }
+updateStreak();
 
+document.getElementById("gameTitle").textContent=
+"Daily Challenge";
 
-    /* =========================
-       COLOR PUZZLE
-    ========================= */
+document.getElementById("gameSub").textContent=
+"10 rounds • Today's challenge";
 
-    function createColorPuzzle() {
+document.getElementById("modeText").textContent=
+"DAILY";
 
-      const area =
-        document.getElementById("puzzleArea");
+showScreen("gameScreen");
 
-      let wordIndex =
-        Math.floor(Math.random() * colorData.length);
+updateGame();
 
-      let colorIndex =
-        Math.floor(Math.random() * colorData.length);
+createRound();
 
-      while (colorIndex === wordIndex) {
-        colorIndex =
-          Math.floor(Math.random() * colorData.length);
-      }
+}
 
-      const word =
-        colorData[wordIndex];
 
-      const ink =
-        colorData[colorIndex];
+/* =========================================
+   MODE NAME
+   ========================================= */
 
-      document.getElementById("roundTitle").textContent =
-        "Color Code";
+function modeName(mode){
 
-      document.getElementById("instruction").textContent =
-        "Ignore the word. Tap the ink color.";
+if(mode==="classic") return "Odd One";
+if(mode==="color") return "Color Code";
+if(mode==="pair") return "Pair Hunt";
+return "Daily Challenge";
 
-      const shuffled =
-        [...colorData]
-          .sort(() => Math.random() - 0.5)
-          .slice(0, 4);
+}
 
-      if (!shuffled.includes(ink)) {
-        shuffled[0] = ink;
-      }
 
-      shuffled.sort(() => Math.random() - 0.5);
+/* =========================================
+   GAME UPDATE
+   ========================================= */
 
-      area.innerHTML = `
-        <div style="width:100%;display:flex;flex-direction:column;align-items:center;">
-          <div
-            class="color-word"
-            style="color:${ink.color}"
-          >
-            ${word.name}
-          </div>
+function updateGame(){
 
-          <div class="color-options">
-            ${shuffled
-              .map((item) => {
+document.getElementById("scoreText").textContent=
+score.toLocaleString();
 
-                return `
-                  <button
-                    class="color-option"
-                    data-correct="${item === ink}"
-                    style="background:${item.color}"
-                  >
-                    ${item.name}
-                  </button>
-                `;
+document.getElementById("roundText").textContent=
+round;
 
-              })
-              .join("")}
-          </div>
-        </div>
-      `;
+document.getElementById("livesText").textContent=
+"❤️".repeat(lives)+"🖤".repeat(3-lives);
 
-      area
-        .querySelectorAll(".color-option")
-        .forEach((button) => {
+document.getElementById("comboText").textContent=
+"x"+combo;
 
-          button.addEventListener("click", () => {
+}
 
-            if (button.dataset.correct === "true") {
-              handleCorrect();
-            } else {
-              handleWrong("❌ Watch the color, not the word!");
-            }
 
-          });
+/* =========================================
+   ROUND
+   ========================================= */
 
-        });
-    }
+function createRound(){
 
+locked=false;
 
-    /* =========================
-       PAIR PUZZLE
-    ========================= */
+document.getElementById("gameMessage").textContent="";
 
-    function createPairPuzzle() {
+document.getElementById("gameMessage").className=
+"game-message";
 
-      const area =
-        document.getElementById("puzzleArea");
+if(dailyMode){
 
-      const total =
-        round < 5 ? 12 :
-        round < 10 ? 16 :
-        20;
+var dailyModes=[
+"classic",
+"color",
+"pair"
+];
 
-      const uniqueCount =
-        total - 1;
+createPuzzle(
+dailyModes[(round-1)%3]
+);
 
-      const shuffledSymbols =
-        [...pairSymbols]
-          .sort(() => Math.random() - 0.5);
+}else{
 
-      let symbols =
-        shuffledSymbols.slice(0, uniqueCount);
+createPuzzle(gameMode);
 
-      const pairSymbol =
-        symbols[
-          Math.floor(
-            Math.random() * symbols.length
-          )
-        ];
+}
 
-      symbols.push(pairSymbol);
+startTimer();
 
-      symbols =
-        symbols.sort(() => Math.random() - 0.5);
+}
 
-      document.getElementById("roundTitle").textContent =
-        "Pair Hunt";
 
-      document.getElementById("instruction").textContent =
-        "Only one symbol appears twice. Find it.";
+/* =========================================
+   TIMER
+   ========================================= */
 
-      area.innerHTML = `
-        <div class="pair-grid">
-          ${symbols
-            .map((symbol) => {
+function startTimer(){
 
-              return `
-                <button
-                  class="pair-tile"
-                  data-symbol="${symbol}"
-                  data-correct="${symbol === pairSymbol}"
-                >
-                  ${symbol}
-                </button>
-              `;
+clearInterval(timer);
 
-            })
-            .join("")}
-        </div>
-      `;
+maxTime=Math.max(
+5.5,
+10-(round*.25)
+);
 
-      area
-        .querySelectorAll(".pair-tile")
-        .forEach((button) => {
+timeLeft=maxTime;
 
-          button.addEventListener("click", () => {
+updateTimer();
 
-            if (button.dataset.correct === "true") {
-              handleCorrect();
-            } else {
-              handleWrong("❌ That's a unique symbol!");
-            }
+var start=Date.now();
 
-          });
+timer=setInterval(function(){
 
-        });
-    }
+var elapsed=(Date.now()-start)/1000;
 
+timeLeft=Math.max(
+0,
+maxTime-elapsed
+);
 
-    /* =========================
-       ANSWERS
-    ========================= */
+updateTimer();
 
-    function handleCorrect() {
+if(timeLeft<=0){
 
-      if (roundLocked) {
-        return;
-      }
+clearInterval(timer);
 
-      roundLocked = true;
+wrongAnswer("⏰ Too slow!");
 
-      clearInterval(timer);
+}
 
-      correctAnswers++;
-      totalAttempts++;
+},50);
 
-      combo++;
-      bestComboRun =
-        Math.max(bestComboRun, combo);
+}
 
-      const speedBonus =
-        Math.round(timeLeft * 12);
 
-      const comboBonus =
-        combo * 10;
+function updateTimer(){
 
-      const roundPoints =
-        50 +
-        round * 10 +
-        speedBonus +
-        comboBonus;
+document.getElementById("timeText").textContent=
+timeLeft.toFixed(1)+"s";
 
-      score += roundPoints;
+document.getElementById("timerFill").style.width=
+((timeLeft/maxTime)*100)+"%";
 
-      showMessage(
-        ✓ +${roundPoints} points,
-        "good"
-      );
+}
 
-      data.bestCombo =
-        Math.max(data.bestCombo, combo);
 
-      saveData(data);
+/* =========================================
+   PUZZLE SELECTOR
+   ========================================= */
 
-      setTimeout(() => {
+function createPuzzle(type){
 
-        round++;
+if(type==="classic"){
+createOdd();
+}
 
-        roundsSinceAd++;
+if(type==="color"){
+createColor();
+}
 
-        /* Daily Challenge is exactly 10 rounds */
-        if (currentDaily && round > 10) {
-          finishGame(true);
-          return;
-        }
+if(type==="pair"){
+createPair();
+}
 
-        /*
-          Natural ad breakpoint:
-          after every 5 completed rounds.
-        */
-        if (roundsSinceAd >= 5) {
+}
 
-          roundsSinceAd = 0;
 
-          showInterstitial()
-            .finally(() => {
-              createRound();
-            });
+/* =========================================
+   ODD ONE
+   ========================================= */
 
-        } else {
+function createOdd(){
 
-          createRound();
+var area=document.getElementById("puzzleArea");
 
-        }
+var size=
+round<3 ? 3 :
+round<6 ? 4 :
+round<10 ? 5 : 6;
 
-      }, 350);
-    }
+var total=size*size;
 
+var normal=
+emojis[Math.floor(Math.random()*emojis.length)];
 
-    function handleWrong(message) {
+var odd=
+emojis[Math.floor(Math.random()*emojis.length)];
 
-      if (roundLocked) {
-        return;
-      }
+while(odd===normal){
+odd=
+emojis[Math.floor(Math.random()*emojis.length)];
+}
 
-      roundLocked = true;
+var oddIndex=
+Math.floor(Math.random()*total);
 
-      clearInterval(timer);
+document.getElementById("roundTitle").textContent=
+"Find the odd one";
 
-      totalAttempts++;
-      lives--;
-      combo = 0;
+document.getElementById("instruction").textContent=
+"One symbol is different. Tap it.";
 
-      showMessage(message, "bad");
+var html=
+'<div class="emoji-grid" style="grid-template-columns:repeat('+size+',1fr)">';
 
-      updateGameStats();
+for(var i=0;i<total;i++){
 
-      setTimeout(() => {
+html+=
+'<button class="emoji-tile" '+
+'onclick="answerOdd(this,'+(i===oddIndex)+')">'+
+(i===oddIndex?odd:normal)+
+'</button>';
 
-        if (lives <= 0) {
+}
 
-          finishGame(false);
+html+="</div>";
 
-        } else {
+area.innerHTML=html;
 
-          roundLocked = false;
-          createRound();
+}
 
-        }
 
-      }, 650);
-    }
+function answerOdd(button,correct){
 
+if(correct){
+correctAnswer();
+}else{
+wrongAnswer("❌ Not that one!");
+}
 
-    /* =========================
-       SCORE / STATS
-    ========================= */
+}
 
-    function updateGameStats() {
 
-      document.getElementById("topScore").textContent =
-        score.toLocaleString();
+/* =========================================
+   COLOR
+   ========================================= */
 
-      document.getElementById("roundValue").textContent =
-        round;
+function createColor(){
 
-      document.getElementById("livesValue").textContent =
-        "❤️".repeat(lives) +
-        "🖤".repeat(Math.max(0, 3 - lives));
+var area=document.getElementById("puzzleArea");
 
-      document.getElementById("comboValue").textContent =
-        "x" + combo;
-    }
+var wordIndex=
+Math.floor(Math.random()*colors.length);
 
+var colorIndex=
+Math.floor(Math.random()*colors.length);
 
-    function showMessage(message, type) {
+while(colorIndex===wordIndex){
+colorIndex=
+Math.floor(Math.random()*colors.length);
+}
 
-      const element =
-        document.getElementById("gameMessage");
+var word=colors[wordIndex];
+var ink=colors[colorIndex];
 
-      element.textContent = message;
-      element.className =
-        "game-message " + type;
+document.getElementById("roundTitle").textContent=
+"Color Code";
 
-      updateGameStats();
-    }
+document.getElementById("instruction").textContent=
+"Ignore the word. Choose the ink color.";
 
+var options=
+colors.slice().sort(function(){
+return Math.random()-.5;
+}).slice(0,4);
 
-    /* =========================
-       ADSGRAM
-    ========================= */
+if(!options.includes(ink)){
+options[0]=ink;
+}
 
-    async function showInterstitial() {
+options.sort(function(){
+return Math.random()-.5;
+});
 
-      /*
-        Ads are optional for gameplay.
-        If AdsGram is unavailable or has no ad,
-        the player simply continues.
-      */
+var html=
+'<div class="color-container">'+
+'<div class="color-word" style="color:'+ink.color+'">'+
+word.name+
+'</div>'+
+'<div class="color-options">';
 
-      try {
+for(var i=0;i<options.length;i++){
 
-        if (
-          !window.Adsgram ||
-          typeof window.Adsgram.init !== "function"
-        ) {
-          return;
-        }
+html+=
+'<button class="color-option" '+
+'style="background:'+options[i].color+'" '+
+'onclick="answerColor(this,'+
+(options[i]===ink)+')">'+
+options[i].name+
+'</button>';
 
-        const controller =
-          window.Adsgram.init({
-            blockId: INTERSTITIAL_BLOCK_ID
-          });
+}
 
-        await controller.show();
+html+="</div></div>";
 
-      } catch (error) {
+area.innerHTML=html;
 
-        console.log(
-          "AdsGram interstitial unavailable",
-          error
-        );
+}
 
-      }
-    }
 
+function answerColor(button,correct){
 
-    /* =========================
-       FINISH GAME
-    ========================= */
+if(correct){
+correctAnswer();
+}else{
+wrongAnswer("❌ Watch the color!");
+}
 
-    function finishGame(dailyComplete) {
+}
 
-      clearInterval(timer);
 
-      const previousBest =
-        data.best;
+/* =========================================
+   PAIR
+   ========================================= */
 
-      data.totalRuns++;
-      data.totalRounds +=
-        currentDaily
-          ? 10
-          : Math.max(0, round - 1);
+function createPair(){
 
-      if (score > data.best) {
-        data.best = score;
-      }
+var area=document.getElementById("puzzleArea");
 
-      if (dailyComplete) {
-        data.dailyPlayed = dateKey();
-      }
+var total=
+round<5 ? 12 :
+round<10 ? 16 : 20;
 
-      addLeaderboardEntry(
-        score,
-        dailyComplete ? "daily" : gameMode
-      );
+var symbols=
+pairs.slice().sort(function(){
+return Math.random()-.5;
+}).slice(0,total-1);
 
-      checkAchievements();
+var pair=
+symbols[Math.floor(Math.random()*symbols.length)];
 
-      saveData(data);
+symbols.push(pair);
 
-      document.getElementById("finalScore").textContent =
-        score.toLocaleString();
+symbols.sort(function(){
+return Math.random()-.5;
+});
 
-      document.getElementById("resultRounds").textContent =
-        currentDaily
-          ? "10"
-          : Math.max(0, round - 1);
+document.getElementById("roundTitle").textContent=
+"Pair Hunt";
 
-      document.getElementById("resultCombo").textContent =
-        bestComboRun;
+document.getElementById("instruction").textContent=
+"Find the only symbol that appears twice.";
 
-      const accuracy =
-        totalAttempts > 0
-          ? Math.round(
-              (correctAnswers / totalAttempts) * 100
-            )
-          : 0;
+var html='<div class="pair-grid">';
 
-      document.getElementById("resultAccuracy").textContent =
-        accuracy + "%";
+for(var i=0;i<symbols.length;i++){
 
-      document.getElementById("resultTitle").textContent =
-        dailyComplete
-          ? "Daily Complete!"
-          : lives <= 0
-            ? "Run Over"
-            : "Run Complete";
+html+=
+'<button class="pair-tile" '+
+'onclick="answerPair(this,'+
+(symbols[i]===pair)+')">'+
+symbols[i]+
+'</button>';
 
-      document.getElementById("resultSub").textContent =
-        dailyComplete
-          ? "You completed today's challenge."
-          : "Can you beat your score next time?";
+}
 
-      document.getElementById("resultIcon").textContent =
-        dailyComplete
-          ? "🌟"
-          : score >= data.best
-            ? "🏆"
-            : "🏁";
+html+="</div>";
 
-      const recordMessage =
-        document.getElementById("recordMessage");
+area.innerHTML=html;
 
-      if (score > previousBest) {
+}
 
-        recordMessage.innerHTML =
-          <div class="new-record">🏆 NEW PERSONAL BEST!</div>;
 
-      } else {
+function answerPair(button,correct){
 
-        recordMessage.innerHTML = "";
+if(correct){
+correctAnswer();
+}else{
+wrongAnswer("❌ That's a unique symbol!");
+}
 
-      }
+}
 
-      renderLeaderboard("resultLeaderboard");
 
-      showScreen("resultScreen");
-    }
+/* =========================================
+   CORRECT
+   ========================================= */
 
+function correctAnswer(){
 
-    /* =========================
-       TOAST
-    ========================= */
+if(locked)return;
 
-    let toastTimer = null;
+locked=true;
 
-    function showToast(message) {
+clearInterval(timer);
 
-      const toast =
-        document.getElementById("toast");
+correctAnswers++;
+totalAttempts++;
 
-      toast.textContent = message;
-      toast.classList.add("show");
+combo++;
 
-      clearTimeout(toastTimer);
+if(combo>bestComboRun){
+bestComboRun=combo;
+}
 
-      toastTimer =
-        setTimeout(() => {
-          toast.classList.remove("show");
-        }, 1800);
-    }
+var points=
+50+
+round*10+
+Math.round(timeLeft*12)+
+combo*10;
 
+score+=points;
 
-    /* =========================
-       BUTTONS
-    ========================= */
+document.getElementById("gameMessage").textContent=
+"✓ +"+points+" points";
 
-    document
-      .querySelectorAll(".mode-card")
-      .forEach((button) => {
+document.getElementById("gameMessage").className=
+"game-message good";
 
-        button.addEventListener("click", () => {
+updateGame();
 
-          startGame(
-            button.dataset.mode,
-            false
-          );
+setTimeout(function(){
 
-        });
+roundsSinceAd++;
 
-      });
+if(dailyMode && round>=10){
 
+finishGame(true);
 
-    document
-      .getElementById("dailyBtn")
-      .addEventListener("click", () => {
+return;
 
-        if (data.dailyPlayed === dateKey()) {
+}
 
-          showToast("🌟 Today's challenge is already complete!");
+round++;
 
-          return;
-        }
+createRound();
 
-        dailySeed =
-          getDayNumber();
+},350);
 
-        startGame(
-          "daily",
-          true
-        );
+}
 
-      });
 
+/* =========================================
+   WRONG
+   ========================================= */
 
-    document
-      .getElementById("quitGame")
-      .addEventListener("click", () => {
+function wrongAnswer(message){
 
-        clearInterval(timer);
+if(locked)return;
 
-        showScreen("homeScreen");
+locked=true;
 
-        updateHome();
+clearInterval(timer);
 
-      });
+totalAttempts++;
 
+lives--;
+combo=0;
 
-    document
-      .getElementById("againButton")
-      .addEventListener("click", () => {
+document.getElementById("gameMessage").textContent=
+message;
 
-        startGame(
-          selectedMode === "daily"
-            ? "classic"
-            : selectedMode,
-          false
-        );
+document.getElementById("gameMessage").className=
+"game-message bad";
 
-      });
+updateGame();
 
+setTimeout(function(){
 
-    document
-      .getElementById("homeButton")
-      .addEventListener("click", () => {
+if(lives<=0){
 
-        updateHome();
+finishGame(false);
 
-        showScreen("homeScreen");
+}else{
 
-      });
+createRound();
 
+}
 
-    /* =========================
-       INITIALIZE
-    ========================= */
+},600);
 
-    checkAchievements();
-    updateHome();
+}
 
-    /*
-      Keep global functions available.
-      This also makes the app easier to test
-      from Telegram/browser environments.
-    */
 
-    window.startGame = startGame;
+/* =========================================
+   FINISH
+   ========================================= */
 
-  </script>
+function finishGame(dailyComplete){
+
+clearInterval(timer);
+
+var oldBest=data.best;
+
+data.runs++;
+
+data.rounds+=
+dailyComplete ? 10 : Math.max(0,round-1);
+
+if(score>data.best){
+data.best=score;
+}
+
+if(bestComboRun>data.bestCombo){
+data.bestCombo=bestComboRun;
+}
+
+if(dailyComplete){
+data.dailyPlayed=today();
+}
+
+data.scores.push({
+score:score,
+mode:dailyComplete?"Daily":modeName(gameMode)
+});
+
+data.scores.sort(function(a,b){
+return b.score-a.score;
+});
+
+data.scores=data.scores.slice(0,5);
+
+saveData();
+
+document.getElementById("finalScore").textContent=
+score.toLocaleString();
+
+document.getElementById("resultRounds").textContent=
+dailyComplete ? 10 : Math.max(0,round-1);
+
+document.getElementById("resultCombo").textContent=
+bestComboRun;
+
+var accuracy=
+totalAttempts ?
+Math.round(correctAnswers/totalAttempts*100) : 0;
+
+document.getElementById("resultAccuracy").textContent=
+accuracy+"%";
+
+document.getElementById("resultTitle").textContent=
+dailyComplete ?
+"Daily Complete!" :
+"Run Complete";
+
+document.getElementById("resultSub").textContent=
+dailyComplete ?
+"Today's challenge is finished!" :
+"Can you beat your score next time?";
+
+document.getElementById("resultIcon").textContent=
+dailyComplete ? "🌟" : "🏆";
+
+if(score>oldBest){
+
+document.getElementById("recordMessage").innerHTML=
+'<div class="new-record">🏆 NEW PERSONAL BEST!</div>';
+
+}else{
+
+document.getElementById("recordMessage").innerHTML="";
+
+}
+
+renderLeaderboard("resultLeaderboard");
+
+updateHome();
+
+showScreen("resultScreen");
+
+}
+
+
+/* =========================================
+   LEADERBOARD
+   ========================================= */
+
+function renderLeaderboard(id){
+
+var box=document.getElementById(id);
+
+if(!data.scores.length){
+
+box.innerHTML=
+'<div class="leader-row">'+
+'<div class="lb-mode">Play your first run to appear here.</div>'+
+'</div>';
+
+return;
+
+}
+
+var html="";
+
+for(var i=0;i<data.scores.length;i++){
+
+html+=
+'<div class="leader-row">'+
+'<div class="rank">'+(i+1)+'</div>'+
+'<div class="lb-mode">'+data.scores[i].mode+'</div>'+
+'<div class="lb-score">'+
+data.scores[i].score.toLocaleString()+
+'</div>'+
+'</div>';
+
+}
+
+box.innerHTML=html;
+
+}
+
+
+/* =========================================
+   AGAIN
+   ========================================= */
+
+function playAgain(){
+
+if(gameMode==="daily"){
+
+startGame("classic");
+
+}else{
+
+startGame(gameMode);
+
+}
+
+}
+
+
+/* =========================================
+   HOME
+   ========================================= */
+
+function goHome(){
+
+clearInterval(timer);
+
+updateHome();
+
+showScreen("homeScreen");
+
+}
+
+
+/* =========================================
+   INITIALIZE
+   ========================================= */
+
+updateHome();
+
+</script>
+
+
+<!--
+  AdsGram is loaded AFTER the game JavaScript.
+  Therefore an advertising problem cannot break
+  the game buttons.
+-->
+
+<script>
+
+setTimeout(function(){
+
+var script=document.createElement("script");
+
+script.src="https://sad.adsgram.ai/js/sad.min.js";
+
+script.onload=function(){
+
+console.log("AdsGram loaded");
+
+};
+
+script.onerror=function(){
+
+console.log("AdsGram unavailable");
+
+};
+
+document.head.appendChild(script);
+
+},3000);
+
+</script>
 
 </body>
 </html>
