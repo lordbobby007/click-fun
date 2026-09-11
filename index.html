@@ -386,9 +386,7 @@
   </div>
 
 
-  <!-- =========================================
-       START SCREEN
-       ========================================= -->
+  <!-- START SCREEN -->
 
   <div id="startScreen" class="screen">
 
@@ -424,9 +422,7 @@
   </div>
 
 
-  <!-- =========================================
-       GAME SCREEN
-       ========================================= -->
+  <!-- GAME SCREEN -->
 
   <div id="gameScreen" class="screen hidden">
 
@@ -503,9 +499,7 @@
   </div>
 
 
-  <!-- =========================================
-       GAME OVER SCREEN
-       ========================================= -->
+  <!-- GAME OVER SCREEN -->
 
   <div id="gameOverScreen" class="screen hidden">
 
@@ -579,17 +573,16 @@
      ========================================= */
 
   const INTERSTITIAL_BLOCK_ID =
-    "int-47289";
+    "int-47307";
 
   let adsgramController = null;
   let adsgramLoading = false;
   let adShowing = false;
 
 
-  /*
-    Load AdsGram only in the background.
-    The game itself does NOT depend on AdsGram.
-  */
+  /* =========================================
+     LOAD ADSGRAM
+     ========================================= */
 
   function loadAdsgram() {
 
@@ -636,9 +629,9 @@
   }
 
 
-  /*
-    Prepare interstitial controller.
-  */
+  /* =========================================
+     INITIALIZE ADSGRAM
+     ========================================= */
 
   function initAdsgram() {
 
@@ -674,9 +667,9 @@
   }
 
 
-  /*
-    Show interstitial.
-  */
+  /* =========================================
+     SHOW INTERSTITIAL
+     ========================================= */
 
   async function showInterstitial() {
 
@@ -740,7 +733,7 @@
 
 
   /* =========================================
-     GAME VARIABLES
+     GAME DATA
      ========================================= */
 
   const emojiPairs = [
@@ -765,12 +758,15 @@
   ];
 
 
+  /* =========================================
+     GAME VARIABLES
+     ========================================= */
+
   let score = 0;
   let round = 1;
   let lives = 3;
   let combo = 0;
   let bestComboRun = 0;
-
   let correctAnswers = 0;
   let completedRounds = 0;
 
@@ -779,7 +775,6 @@
   let timer = null;
   let roundStartTime = 0;
   let roundTime = 5;
-
   let correctIndex = 0;
 
 
@@ -1236,7 +1231,9 @@
       combo * 15;
 
 
-    if (reaction < 1) {
+    if (
+      reaction < 1
+    ) {
 
       points += 100;
 
@@ -1271,8 +1268,8 @@
 
 
     /*
-      Ads appear only after
-      every 5 completed rounds.
+      Show an interstitial only
+      after every 5 completed rounds.
     */
 
     if (
@@ -1289,14 +1286,7 @@
       setTimeout(
         async function () {
 
-          /*
-            Try the ad.
-            If there is no ad,
-            the game continues.
-          */
-
           await showInterstitial();
-
 
           running = true;
 
@@ -1470,8 +1460,8 @@
 
 
     /*
-      AdsGram starts loading AFTER
-      the game has already started.
+      AdsGram loads in the background.
+      It cannot prevent the game from starting.
     */
 
     setTimeout(
@@ -1563,8 +1553,7 @@
 
 
   /*
-    Make startGame globally available
-    as an additional safety fallback.
+    Make function globally available.
   */
 
   window.startGame =
@@ -1572,8 +1561,7 @@
 
 
   /*
-    Begin loading AdsGram in the background.
-    This will NEVER stop the Start button.
+    Load AdsGram in background.
   */
 
   setTimeout(
