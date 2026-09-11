@@ -3,619 +3,829 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
 <title>Puzzle Rush</title>
 
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
+
 *{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent;
 }
 
 html,body{
-  margin:0;
-  padding:0;
-  background:#080b18;
-  color:white;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+margin:0;
+padding:0;
+background:#070a17;
+color:#fff;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
 }
 
 body{
-  min-height:100vh;
+min-height:100vh;
 }
 
 button{
-  font-family:inherit;
-  cursor:pointer;
+font-family:inherit;
+cursor:pointer;
 }
 
 .app{
-  max-width:520px;
-  margin:auto;
-  min-height:100vh;
-  padding:18px 16px 30px;
+width:100%;
+max-width:520px;
+margin:auto;
+padding:16px;
+min-height:100vh;
 }
 
 .screen{
-  display:none;
+display:none;
 }
 
 .screen.active{
-  display:block;
+display:block;
 }
 
+
+/* =========================
+   TOP
+========================= */
+
 .topbar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:18px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:16px;
 }
 
 .brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
+display:flex;
+align-items:center;
+gap:10px;
 }
 
 .brand-icon{
-  width:42px;
-  height:42px;
-  border-radius:13px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:23px;
-  background:linear-gradient(135deg,#6c5ce7,#9b59ff);
+width:43px;
+height:43px;
+border-radius:14px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:23px;
+background:linear-gradient(135deg,#6855ff,#a451ff);
+box-shadow:0 8px 25px rgba(105,80,255,.25);
 }
 
 .brand-title{
-  font-size:20px;
-  font-weight:900;
+font-size:20px;
+font-weight:900;
 }
 
 .brand-sub{
-  font-size:11px;
-  opacity:.5;
-  margin-top:2px;
+font-size:10px;
+opacity:.45;
+margin-top:2px;
 }
 
-.best-pill{
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,255,255,.08);
-  padding:8px 11px;
-  border-radius:12px;
-  text-align:right;
+.level-pill{
+background:#11162b;
+border:1px solid rgba(255,255,255,.08);
+border-radius:13px;
+padding:7px 10px;
+text-align:right;
 }
 
-.best-pill small{
-  display:block;
-  font-size:9px;
-  opacity:.5;
+.level-pill small{
+display:block;
+font-size:8px;
+opacity:.45;
 }
 
-.best-pill strong{
-  font-size:15px;
+.level-pill strong{
+font-size:14px;
 }
+
+
+/* =========================
+   HOME HERO
+========================= */
 
 .hero{
-  padding:22px 20px;
-  border-radius:24px;
-  background:
-    radial-gradient(circle at 90% 10%,rgba(143,95,255,.35),transparent 35%),
-    linear-gradient(145deg,#17142d,#0f1328);
-  border:1px solid rgba(255,255,255,.08);
+position:relative;
+overflow:hidden;
+padding:22px 19px;
+border-radius:25px;
+background:
+radial-gradient(circle at 90% 10%,rgba(125,82,255,.4),transparent 35%),
+radial-gradient(circle at 5% 90%,rgba(42,190,255,.12),transparent 35%),
+linear-gradient(145deg,#181431,#0e1328);
+border:1px solid rgba(255,255,255,.08);
 }
 
-.hero-tag{
-  font-size:10px;
-  font-weight:800;
-  letter-spacing:1px;
-  color:#bbaeff;
+.hero-label{
+font-size:10px;
+font-weight:900;
+letter-spacing:1.2px;
+color:#b8aaff;
 }
 
 .hero h1{
-  margin:8px 0 0;
-  font-size:30px;
-  line-height:1.05;
+margin:8px 0 8px;
+font-size:31px;
+line-height:1.02;
+letter-spacing:-1px;
 }
 
 .hero p{
-  color:rgba(255,255,255,.62);
-  font-size:13px;
-  line-height:1.5;
+margin:0;
+font-size:12px;
+line-height:1.55;
+color:rgba(255,255,255,.58);
 }
 
-.daily-card{
-  margin-top:18px;
-  padding:14px;
-  border-radius:17px;
-  background:rgba(255,255,255,.055);
-  border:1px solid rgba(255,255,255,.08);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+.xp-wrap{
+margin-top:18px;
 }
 
-.daily-left{
-  display:flex;
-  align-items:center;
-  gap:11px;
+.xp-info{
+display:flex;
+justify-content:space-between;
+font-size:9px;
+opacity:.55;
+margin-bottom:5px;
+}
+
+.xp-bar{
+height:7px;
+border-radius:20px;
+background:#090d1c;
+overflow:hidden;
+}
+
+.xp-fill{
+height:100%;
+width:0%;
+border-radius:20px;
+background:linear-gradient(90deg,#6e5bff,#bd57ff);
+transition:width .3s ease;
+}
+
+
+/* =========================
+   DAILY
+========================= */
+
+.daily{
+margin-top:14px;
+padding:13px;
+border-radius:17px;
+background:rgba(255,255,255,.055);
+border:1px solid rgba(255,255,255,.08);
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+}
+
+.daily-info{
+display:flex;
+align-items:center;
+gap:10px;
 }
 
 .daily-icon{
-  width:40px;
-  height:40px;
-  border-radius:12px;
-  background:rgba(255,196,87,.13);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:21px;
+width:40px;
+height:40px;
+border-radius:12px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:21px;
+background:rgba(255,204,85,.13);
 }
 
 .daily-title{
-  font-weight:800;
-  font-size:13px;
+font-size:13px;
+font-weight:900;
 }
 
 .daily-desc{
-  font-size:10px;
-  opacity:.5;
-  margin-top:3px;
+font-size:9px;
+opacity:.45;
+margin-top:3px;
 }
 
 .daily-btn{
-  border:0;
-  color:#111;
-  background:#ffd166;
-  border-radius:10px;
-  padding:10px 13px;
-  font-size:11px;
-  font-weight:900;
+border:0;
+border-radius:10px;
+padding:10px 13px;
+background:#ffd166;
+color:#111;
+font-size:10px;
+font-weight:900;
 }
 
+
+/* =========================
+   SECTIONS
+========================= */
+
 .section-title{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin:20px 3px 9px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin:19px 2px 9px;
 }
 
 .section-title h2{
-  margin:0;
-  font-size:14px;
+margin:0;
+font-size:14px;
 }
 
 .section-title span{
-  font-size:10px;
-  opacity:.4;
+font-size:9px;
+opacity:.4;
 }
 
+
+/* =========================
+   MODES
+========================= */
+
 .mode-list{
-  display:grid;
-  gap:10px;
+display:grid;
+gap:9px;
 }
 
 .mode-card{
-  width:100%;
-  border:1px solid rgba(255,255,255,.08);
-  background:#101429;
-  color:white;
-  border-radius:18px;
-  padding:14px;
-  text-align:left;
-  display:flex;
-  align-items:center;
-  gap:13px;
+width:100%;
+display:flex;
+align-items:center;
+gap:12px;
+padding:14px;
+border-radius:18px;
+border:1px solid rgba(255,255,255,.08);
+background:#101429;
+color:#fff;
+text-align:left;
 }
 
 .mode-card:active{
-  transform:scale(.98);
+transform:scale(.98);
 }
 
 .mode-icon{
-  width:45px;
-  height:45px;
-  border-radius:14px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:23px;
-  background:#1c2040;
-  flex-shrink:0;
+width:46px;
+height:46px;
+border-radius:14px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:23px;
+background:#1a1f3d;
+flex-shrink:0;
 }
 
 .mode-info{
-  flex:1;
+flex:1;
 }
 
 .mode-name{
-  font-size:14px;
-  font-weight:900;
+font-size:14px;
+font-weight:900;
 }
 
-.mode-description{
-  font-size:10px;
-  color:rgba(255,255,255,.48);
-  margin-top:4px;
+.mode-desc{
+font-size:10px;
+line-height:1.35;
+margin-top:4px;
+color:rgba(255,255,255,.46);
 }
 
 .mode-arrow{
-  opacity:.4;
-  font-size:20px;
+font-size:20px;
+opacity:.35;
 }
 
-.stats-row{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:9px;
-  margin-top:16px;
+
+/* =========================
+   HOME STATS
+========================= */
+
+.stats{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:8px;
+margin-top:15px;
 }
 
-.mini-stat{
-  background:#101429;
-  border:1px solid rgba(255,255,255,.07);
-  border-radius:15px;
-  padding:12px 5px;
-  text-align:center;
+.stat{
+background:#101429;
+border:1px solid rgba(255,255,255,.07);
+border-radius:15px;
+padding:11px 4px;
+text-align:center;
 }
 
-.number{
-  font-size:17px;
-  font-weight:900;
+.stat-number{
+font-size:17px;
+font-weight:900;
 }
 
-.label{
-  margin-top:3px;
-  font-size:9px;
-  opacity:.42;
-  letter-spacing:.6px;
+.stat-label{
+font-size:8px;
+opacity:.4;
+margin-top:3px;
+letter-spacing:.5px;
 }
+
+
+/* =========================
+   ACHIEVEMENTS
+========================= */
 
 .achievements{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:8px;
 }
 
 .achievement{
-  background:#101429;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.07);
-  padding:11px 4px;
-  text-align:center;
-  opacity:.3;
+background:#101429;
+border:1px solid rgba(255,255,255,.07);
+border-radius:14px;
+padding:10px 3px;
+text-align:center;
+opacity:.28;
 }
 
-.achievement.unlocked{
-  opacity:1;
-  border-color:rgba(255,209,102,.35);
+.achievement.on{
+opacity:1;
+border-color:rgba(255,209,102,.35);
 }
 
 .achievement-icon{
-  font-size:22px;
+font-size:22px;
 }
 
 .achievement-name{
-  font-size:8px;
-  margin-top:5px;
-  opacity:.65;
+font-size:8px;
+margin-top:4px;
+opacity:.65;
 }
 
+
+/* =========================
+   LEADERBOARD
+========================= */
+
 .leader-row{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  background:#101429;
-  border:1px solid rgba(255,255,255,.06);
-  border-radius:12px;
-  padding:10px;
-  margin-bottom:6px;
+display:flex;
+align-items:center;
+gap:9px;
+padding:10px;
+margin-bottom:6px;
+background:#101429;
+border:1px solid rgba(255,255,255,.06);
+border-radius:12px;
 }
 
 .rank{
-  width:25px;
-  text-align:center;
-  font-weight:900;
+width:24px;
+font-size:11px;
+font-weight:900;
+text-align:center;
 }
 
-.lb-mode{
-  flex:1;
-  font-size:10px;
-  opacity:.55;
+.leader-mode{
+flex:1;
+font-size:10px;
+opacity:.55;
 }
 
-.lb-score{
-  font-size:13px;
-  font-weight:900;
+.leader-score{
+font-size:13px;
+font-weight:900;
 }
 
 
-/* GAME */
+/* =========================
+   GAME HEADER
+========================= */
 
-.game-header{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:7px;
-  margin-bottom:12px;
+.game-stats{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:6px;
+margin-bottom:10px;
 }
 
 .game-stat{
-  background:#101429;
-  border:1px solid rgba(255,255,255,.07);
-  border-radius:13px;
-  padding:9px 3px;
-  text-align:center;
+background:#101429;
+border:1px solid rgba(255,255,255,.07);
+border-radius:12px;
+padding:8px 2px;
+text-align:center;
 }
 
 .game-stat-label{
-  font-size:8px;
-  opacity:.4;
+font-size:7px;
+opacity:.4;
 }
 
 .game-stat-value{
-  margin-top:3px;
-  font-size:14px;
-  font-weight:900;
+font-size:13px;
+font-weight:900;
+margin-top:3px;
 }
+
+
+/* =========================
+   TIMER
+========================= */
 
 .timer-top{
-  display:flex;
-  justify-content:space-between;
-  font-size:10px;
-  opacity:.6;
-  margin-bottom:5px;
+display:flex;
+justify-content:space-between;
+font-size:9px;
+opacity:.5;
+margin-bottom:5px;
 }
 
-.timer-bar{
-  height:6px;
-  background:#181c34;
-  border-radius:20px;
-  overflow:hidden;
+.timer{
+height:6px;
+background:#171c32;
+border-radius:20px;
+overflow:hidden;
 }
 
 .timer-fill{
-  height:100%;
-  width:100%;
-  background:linear-gradient(90deg,#61e294,#ffd166,#ff6b6b);
+width:100%;
+height:100%;
+background:linear-gradient(90deg,#5ee58e,#ffd166,#ff6666);
 }
+
+
+/* =========================
+   GAME CARD
+========================= */
 
 .game-card{
-  margin-top:13px;
-  background:
-    radial-gradient(circle at 20% 0%,rgba(120,87,255,.16),transparent 30%),
-    #101429;
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:23px;
-  padding:18px 14px;
-  min-height:440px;
-  display:flex;
-  flex-direction:column;
+margin-top:12px;
+min-height:465px;
+padding:18px 14px;
+border-radius:23px;
+background:
+radial-gradient(circle at 50% 0%,rgba(105,80,255,.13),transparent 35%),
+#101429;
+border:1px solid rgba(255,255,255,.08);
+display:flex;
+flex-direction:column;
 }
 
-.round-title{
-  text-align:center;
-  font-size:14px;
-  font-weight:800;
+.game-title{
+text-align:center;
+font-size:15px;
+font-weight:900;
 }
 
-.instruction{
-  text-align:center;
-  font-size:11px;
-  opacity:.45;
-  margin:5px 0 15px;
+.game-instruction{
+text-align:center;
+font-size:10px;
+opacity:.45;
+margin-top:5px;
+min-height:16px;
 }
 
-.puzzle-area{
-  flex:1;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.emoji-grid{
-  width:100%;
-  max-width:330px;
-  display:grid;
-  gap:8px;
-}
-
-.emoji-tile{
-  aspect-ratio:1;
-  border:1px solid rgba(255,255,255,.07);
-  border-radius:13px;
-  background:#181c34;
-  font-size:30px;
-  color:white;
-}
-
-.emoji-tile:active{
-  transform:scale(.9);
-}
-
-.color-container{
-  width:100%;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-}
-
-.color-word{
-  font-size:42px;
-  font-weight:1000;
-  margin-bottom:25px;
-}
-
-.color-options{
-  width:100%;
-  max-width:310px;
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-}
-
-.color-option{
-  min-height:58px;
-  border:0;
-  border-radius:14px;
-  color:white;
-  font-weight:900;
-}
-
-.pair-grid{
-  width:100%;
-  max-width:330px;
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:8px;
-}
-
-.pair-tile{
-  aspect-ratio:1;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.07);
-  background:#181c34;
-  color:white;
-  font-size:25px;
-}
-
-.game-message{
-  min-height:24px;
-  text-align:center;
-  font-size:12px;
-  font-weight:800;
-  padding-top:8px;
-}
-
-.good{
-  color:#61e294;
-}
-
-.bad{
-  color:#ff7676;
-}
-
-.back-button{
-  margin-top:12px;
-  width:100%;
-  border:1px solid rgba(255,255,255,.08);
-  background:transparent;
-  color:rgba(255,255,255,.55);
-  border-radius:13px;
-  padding:11px;
+.puzzle{
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
 }
 
 
-/* RESULT */
+/* =========================
+   SEQUENCE
+========================= */
+
+.sequence-box{
+width:100%;
+max-width:330px;
+}
+
+.sequence-display{
+min-height:74px;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:9px;
+margin-bottom:20px;
+}
+
+.sequence-symbol{
+width:52px;
+height:52px;
+border-radius:15px;
+background:#1a1f3d;
+border:1px solid rgba(255,255,255,.08);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:27px;
+}
+
+.sequence-options{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:9px;
+}
+
+.sequence-option{
+aspect-ratio:1;
+border:1px solid rgba(255,255,255,.08);
+background:#181d36;
+border-radius:14px;
+font-size:25px;
+color:white;
+}
+
+.sequence-option:active{
+transform:scale(.91);
+}
+
+
+/* =========================
+   TARGET GRID
+========================= */
+
+.target-wrap{
+width:100%;
+max-width:330px;
+}
+
+.target-display{
+text-align:center;
+margin-bottom:17px;
+}
+
+.target-label{
+font-size:9px;
+opacity:.4;
+letter-spacing:1px;
+}
+
+.target-symbol{
+font-size:43px;
+margin-top:3px;
+}
+
+.target-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:8px;
+}
+
+.target-cell{
+aspect-ratio:1;
+border:1px solid rgba(255,255,255,.07);
+background:#181d36;
+border-radius:14px;
+font-size:27px;
+color:white;
+}
+
+.target-cell:active{
+transform:scale(.9);
+}
+
+
+/* =========================
+   MEMORY
+========================= */
+
+.memory-wrap{
+width:100%;
+max-width:330px;
+}
+
+.memory-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:8px;
+}
+
+.memory-card{
+aspect-ratio:1;
+border:0;
+border-radius:14px;
+background:#1b2040;
+color:white;
+font-size:25px;
+}
+
+.memory-card.open{
+background:#292e55;
+}
+
+.memory-card.matched{
+background:#163c36;
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+.message{
+height:25px;
+padding-top:8px;
+text-align:center;
+font-size:11px;
+font-weight:900;
+}
+
+.message.good{
+color:#61e294;
+}
+
+.message.bad{
+color:#ff7373;
+}
+
+.leave{
+width:100%;
+margin-top:11px;
+padding:11px;
+border-radius:13px;
+border:1px solid rgba(255,255,255,.08);
+background:transparent;
+color:rgba(255,255,255,.5);
+}
+
+
+/* =========================
+   RESULT
+========================= */
 
 .result{
-  text-align:center;
-  padding-top:35px;
+text-align:center;
+padding-top:30px;
 }
 
 .result-icon{
-  width:82px;
-  height:82px;
-  border-radius:25px;
-  margin:auto auto 16px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:42px;
-  background:#171d3b;
+width:80px;
+height:80px;
+margin:auto;
+border-radius:24px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:40px;
+background:#171c38;
 }
 
 .result h1{
-  margin:0;
-  font-size:28px;
+font-size:28px;
+margin:15px 0 5px;
 }
 
 .result-sub{
-  margin-top:7px;
-  font-size:12px;
-  opacity:.48;
+font-size:11px;
+opacity:.45;
 }
 
-.result-score{
-  margin:24px auto;
-  padding:20px;
-  background:#101429;
-  border-radius:20px;
+.final-score{
+margin:22px 0;
+padding:19px;
+border-radius:20px;
+background:#101429;
+border:1px solid rgba(255,255,255,.07);
 }
 
-.result-score small{
-  font-size:10px;
-  opacity:.4;
+.final-score small{
+font-size:9px;
+opacity:.4;
+letter-spacing:1px;
 }
 
-.result-score strong{
-  display:block;
-  font-size:42px;
+.final-score strong{
+display:block;
+font-size:43px;
+margin-top:3px;
 }
 
 .result-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:8px;
 }
 
 .result-box{
-  background:#101429;
-  border-radius:14px;
-  padding:12px 4px;
+background:#101429;
+border-radius:14px;
+padding:11px 3px;
 }
 
 .result-box strong{
-  display:block;
-  font-size:17px;
+display:block;
+font-size:17px;
 }
 
 .result-box span{
-  font-size:8px;
-  opacity:.4;
+font-size:8px;
+opacity:.4;
 }
 
-.primary-button{
-  width:100%;
-  margin-top:16px;
-  border:0;
-  border-radius:15px;
-  padding:15px;
-  font-size:14px;
-  font-weight:900;
-  color:white;
-  background:linear-gradient(135deg,#735cff,#a057ff);
+.record{
+font-size:11px;
+font-weight:900;
+color:#ffd166;
+margin-bottom:9px;
 }
 
-.secondary-button{
-  width:100%;
-  margin-top:9px;
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:15px;
-  padding:14px;
-  color:rgba(255,255,255,.75);
-  background:#101429;
-  font-weight:800;
+.primary{
+width:100%;
+margin-top:16px;
+padding:15px;
+border:0;
+border-radius:15px;
+background:linear-gradient(135deg,#705cff,#a455ff);
+color:#fff;
+font-size:14px;
+font-weight:900;
 }
 
-.new-record{
-  color:#ffd166;
-  font-size:11px;
-  font-weight:900;
-  margin-bottom:10px;
+.secondary{
+width:100%;
+margin-top:9px;
+padding:14px;
+border-radius:15px;
+border:1px solid rgba(255,255,255,.08);
+background:#101429;
+color:rgba(255,255,255,.7);
+font-weight:800;
+}
+
+
+/* =========================
+   LEVEL POPUP
+========================= */
+
+.level-up{
+position:fixed;
+left:50%;
+top:45%;
+transform:translate(-50%,-50%) scale(.8);
+padding:20px 25px;
+border-radius:20px;
+background:#17152d;
+border:1px solid rgba(255,255,255,.12);
+box-shadow:0 20px 60px rgba(0,0,0,.5);
+text-align:center;
+opacity:0;
+pointer-events:none;
+transition:.25s;
+z-index:99;
+}
+
+.level-up.show{
+opacity:1;
+transform:translate(-50%,-50%) scale(1);
+}
+
+.level-up-icon{
+font-size:35px;
+}
+
+.level-up-title{
+font-size:18px;
+font-weight:900;
+margin-top:5px;
+}
+
+.level-up-sub{
+font-size:10px;
+opacity:.5;
+margin-top:3px;
 }
 
 </style>
 </head>
 
+
 <body>
 
 <div class="app">
 
-<!-- ================= HOME ================= -->
 
-<section id="homeScreen" class="screen active">
+<!-- =================================================
+     HOME
+================================================= -->
+
+<section id="home" class="screen active">
 
 <div class="topbar">
 
@@ -625,14 +835,14 @@ button{
 
 <div>
 <div class="brand-title">Puzzle Rush</div>
-<div class="brand-sub">Think fast. Beat your best.</div>
+<div class="brand-sub">Train your brain. Beat your score.</div>
 </div>
 
 </div>
 
-<div class="best-pill">
-<small>BEST</small>
-<strong id="homeBest">0</strong>
+<div class="level-pill">
+<small>LEVEL</small>
+<strong id="homeLevel">1</strong>
 </div>
 
 </div>
@@ -640,31 +850,56 @@ button{
 
 <div class="hero">
 
-<div class="hero-tag">⚡ NEW CHALLENGE SYSTEM</div>
+<div class="hero-label">⚡ PUZZLE RUSH V3</div>
 
-<h1>How fast can<br>you think?</h1>
+<h1>Three games.<br>One brain.</h1>
 
 <p>
-Solve different mini-puzzles, build your combo and push your score higher.
+Test your memory, reaction speed and pattern recognition. Every round gets harder.
 </p>
 
 
-<div class="daily-card">
+<div class="xp-wrap">
 
-<div class="daily-left">
+<div class="xp-info">
+<span>XP PROGRESS</span>
+<span id="xpText">0 / 100 XP</span>
+</div>
+
+<div class="xp-bar">
+<div
+class="xp-fill"
+id="xpFill">
+</div>
+</div>
+
+</div>
+
+
+<div class="daily">
+
+<div class="daily-info">
 
 <div class="daily-icon">🌟</div>
 
 <div>
-<div class="daily-title">Daily Challenge</div>
-<div class="daily-desc">10 rounds • New every day</div>
+
+<div class="daily-title">
+Daily Challenge
+</div>
+
+<div class="daily-desc">
+10 mixed rounds • New every day
+</div>
+
 </div>
 
 </div>
 
 <button
 class="daily-btn"
-onclick="playDaily()">
+onclick="playDaily()"
+id="dailyButton">
 PLAY
 </button>
 
@@ -674,24 +909,30 @@ PLAY
 
 
 <div class="section-title">
-<h2>Choose your mode</h2>
-<span>3 challenges</span>
+<h2>Choose a challenge</h2>
+<span>3 modes</span>
 </div>
 
 
 <div class="mode-list">
 
+
 <button
 class="mode-card"
-onclick="startGame('classic')">
+onclick="startGame('sequence')">
 
-<div class="mode-icon">🔎</div>
+<div class="mode-icon">⚡</div>
 
 <div class="mode-info">
-<div class="mode-name">Odd One</div>
-<div class="mode-description">
-Find the one symbol that doesn't belong.
+
+<div class="mode-name">
+Sequence Shift
 </div>
+
+<div class="mode-desc">
+Watch the pattern. Then reproduce it from memory.
+</div>
+
 </div>
 
 <div class="mode-arrow">›</div>
@@ -701,15 +942,20 @@ Find the one symbol that doesn't belong.
 
 <button
 class="mode-card"
-onclick="startGame('color')">
+onclick="startGame('target')">
 
-<div class="mode-icon">🎨</div>
+<div class="mode-icon">🎯</div>
 
 <div class="mode-info">
-<div class="mode-name">Color Code</div>
-<div class="mode-description">
-Ignore the word. Choose the color you see.
+
+<div class="mode-name">
+Target Grid
 </div>
+
+<div class="mode-desc">
+Find the requested symbol before the timer runs out.
+</div>
+
 </div>
 
 <div class="mode-arrow">›</div>
@@ -719,39 +965,45 @@ Ignore the word. Choose the color you see.
 
 <button
 class="mode-card"
-onclick="startGame('pair')">
+onclick="startGame('memory')">
 
 <div class="mode-icon">🧠</div>
 
 <div class="mode-info">
-<div class="mode-name">Pair Hunt</div>
-<div class="mode-description">
-Find the only symbol that appears twice.
+
+<div class="mode-name">
+Memory Match
 </div>
+
+<div class="mode-desc">
+Remember the cards and uncover the matching pair.
+</div>
+
 </div>
 
 <div class="mode-arrow">›</div>
 
 </button>
 
+
 </div>
 
 
-<div class="stats-row">
+<div class="stats">
 
-<div class="mini-stat">
-<div class="number" id="homeStreak">0</div>
-<div class="label">STREAK</div>
+<div class="stat">
+<div class="stat-number" id="homeBest">0</div>
+<div class="stat-label">BEST SCORE</div>
 </div>
 
-<div class="mini-stat">
-<div class="number" id="homeRounds">0</div>
-<div class="label">ROUNDS</div>
+<div class="stat">
+<div class="stat-number" id="homeRounds">0</div>
+<div class="stat-label">ROUNDS</div>
 </div>
 
-<div class="mini-stat">
-<div class="number" id="homeCombo">0</div>
-<div class="label">BEST COMBO</div>
+<div class="stat">
+<div class="stat-number" id="homeCombo">0</div>
+<div class="stat-label">BEST COMBO</div>
 </div>
 
 </div>
@@ -759,38 +1011,38 @@ Find the only symbol that appears twice.
 
 <div class="section-title">
 <h2>Achievements</h2>
-<span id="achievementCount">0/6</span>
+<span id="achievementText">0/6</span>
 </div>
 
 
 <div class="achievements">
 
-<div class="achievement" id="ach1">
+<div class="achievement" id="a1">
 <div class="achievement-icon">🚀</div>
 <div class="achievement-name">First Run</div>
 </div>
 
-<div class="achievement" id="ach2">
+<div class="achievement" id="a2">
 <div class="achievement-icon">🔥</div>
 <div class="achievement-name">10 Rounds</div>
 </div>
 
-<div class="achievement" id="ach3">
+<div class="achievement" id="a3">
 <div class="achievement-icon">⚡</div>
 <div class="achievement-name">Combo 5</div>
 </div>
 
-<div class="achievement" id="ach4">
+<div class="achievement" id="a4">
 <div class="achievement-icon">💎</div>
 <div class="achievement-name">1000 Score</div>
 </div>
 
-<div class="achievement" id="ach5">
+<div class="achievement" id="a5">
 <div class="achievement-icon">🌟</div>
 <div class="achievement-name">Daily</div>
 </div>
 
-<div class="achievement" id="ach6">
+<div class="achievement" id="a6">
 <div class="achievement-icon">👑</div>
 <div class="achievement-name">Master</div>
 </div>
@@ -799,7 +1051,7 @@ Find the only symbol that appears twice.
 
 
 <div class="section-title">
-<h2>Local leaderboard</h2>
+<h2>Personal leaderboard</h2>
 <span>this device</span>
 </div>
 
@@ -808,9 +1060,13 @@ Find the only symbol that appears twice.
 </section>
 
 
-<!-- ================= GAME ================= -->
 
-<section id="gameScreen" class="screen">
+<!-- =================================================
+     GAME
+================================================= -->
+
+<section id="game" class="screen">
+
 
 <div class="topbar">
 
@@ -819,19 +1075,23 @@ Find the only symbol that appears twice.
 <div class="brand-icon">🧩</div>
 
 <div>
-<div class="brand-title" id="gameTitle">
-Puzzle Rush
+<div
+class="brand-title"
+id="gameName">
+Sequence Shift
 </div>
 
-<div class="brand-sub" id="gameSub">
-Odd One
+<div
+class="brand-sub"
+id="gameDescription">
+Memory challenge
+</div>
 </div>
 
 </div>
 
-</div>
 
-<div class="best-pill">
+<div class="level-pill">
 <small>SCORE</small>
 <strong id="scoreText">0</strong>
 </div>
@@ -839,7 +1099,7 @@ Odd One
 </div>
 
 
-<div class="game-header">
+<div class="game-stats">
 
 <div class="game-stat">
 <div class="game-stat-label">ROUND</div>
@@ -857,8 +1117,8 @@ Odd One
 </div>
 
 <div class="game-stat">
-<div class="game-stat-label">MODE</div>
-<div class="game-stat-value" id="modeText">ODD</div>
+<div class="game-stat-label">LEVEL</div>
+<div class="game-stat-value" id="gameLevel">1</div>
 </div>
 
 </div>
@@ -869,57 +1129,65 @@ Odd One
 <span id="timeText">10.0s</span>
 </div>
 
-<div class="timer-bar">
-<div class="timer-fill" id="timerFill"></div>
+<div class="timer">
+<div
+class="timer-fill"
+id="timerFill">
+</div>
 </div>
 
 
 <div class="game-card">
 
 <div
-class="round-title"
-id="roundTitle">
-Find the odd one
+class="game-title"
+id="gameTitle">
+Sequence Shift
 </div>
 
 <div
-class="instruction"
-id="instruction">
-Tap the symbol that is different.
+class="game-instruction"
+id="gameInstruction">
+Remember the sequence.
 </div>
 
-<div
-class="puzzle-area"
-id="puzzleArea">
-</div>
 
 <div
-class="game-message"
-id="gameMessage">
+class="puzzle"
+id="puzzle">
+</div>
+
+
+<div
+class="message"
+id="message">
 </div>
 
 </div>
 
 
 <button
-class="back-button"
+class="leave"
 onclick="goHome()">
-Leave game
+Leave Game
 </button>
 
 </section>
 
 
-<!-- ================= RESULT ================= -->
 
-<section id="resultScreen" class="screen">
+<!-- =================================================
+     RESULT
+================================================= -->
+
+<section id="result" class="screen">
 
 <div class="result">
 
 <div
 class="result-icon"
 id="resultIcon">
-🏁
+🏆
 </div>
 
 <h1 id="resultTitle">
@@ -929,18 +1197,22 @@ Run Complete
 <div
 class="result-sub"
 id="resultSub">
-Can you beat your score?
+Nice work!
 </div>
 
-<div class="result-score">
+
+<div class="final-score">
 
 <small>FINAL SCORE</small>
 
-<strong id="finalScore">0</strong>
+<strong id="finalScore">
+0
+</strong>
 
 </div>
 
-<div id="recordMessage"></div>
+
+<div id="record"></div>
 
 
 <div class="result-grid">
@@ -964,14 +1236,14 @@ Can you beat your score?
 
 
 <button
-class="primary-button"
+class="primary"
 onclick="playAgain()">
 🔄 Play Again
 </button>
 
 
 <button
-class="secondary-button"
+class="secondary"
 onclick="goHome()">
 🏠 Back to Home
 </button>
@@ -990,66 +1262,78 @@ onclick="goHome()">
 </div>
 
 
+<div
+class="level-up"
+id="levelUp">
+
+<div class="level-up-icon">🎉</div>
+
+<div class="level-up-title">
+LEVEL UP!
+</div>
+
+<div class="level-up-sub">
+Your brain just got stronger.
+</div>
+
+</div>
+
+
+
 <script>
 
 /* =====================================================
-   PUZZLE RUSH
+   PUZZLE RUSH V3
    ===================================================== */
 
 /*
-   NEW ADSGRAM INTERSTITIAL BLOCK
+   ADSGRAM INTERSTITIAL BLOCK
 */
-var INTERSTITIAL_BLOCK_ID = "int-47314";
+var INTERSTITIAL_BLOCK_ID="int-47314";
 
 
-var gameMode = "classic";
-var dailyMode = false;
+/* GAME STATE */
 
-var score = 0;
-var round = 1;
-var lives = 3;
-var combo = 0;
-var bestComboRun = 0;
+var gameMode="sequence";
+var dailyMode=false;
 
-var correctAnswers = 0;
-var totalAttempts = 0;
+var score=0;
+var round=1;
+var lives=3;
+var combo=0;
+var bestComboRun=0;
 
-var timer = null;
-var timeLeft = 10;
-var maxTime = 10;
+var correctAnswers=0;
+var totalAttempts=0;
 
-var locked = false;
-var roundsSinceAd = 0;
+var timer=null;
+var timeLeft=10;
+var maxTime=10;
 
-
-var emojis = [
-"🍎","🍊","🍋","🍉","🍇","🍓",
-"🐶","🐱","🐼","🐸","🦊","🐵",
-"⭐","🌙","☀️","⚡","🔥","❄️",
-"🚗","🚲","🚀","✈️","🎈","🎯"
-];
+var locked=false;
+var roundsSinceAd=0;
 
 
-var colors = [
-{name:"RED",color:"#ff5c5c"},
-{name:"BLUE",color:"#5ca8ff"},
-{name:"GREEN",color:"#58d68d"},
-{name:"YELLOW",color:"#ffd166"},
-{name:"PURPLE",color:"#a66cff"},
-{name:"PINK",color:"#ff6fba"}
-];
+/* PUZZLE STATE */
+
+var sequenceAnswer=[];
+var memoryCards=[];
+var memoryFirst=-1;
+var memoryBusy=false;
 
 
-var pairs = [
-"★","◆","●","▲","■","♥️",
-"☀️","☾","✦","✚","⬟","⬢",
-"♣️","♠️","♦️","♟"
+/* SYMBOLS */
+
+var symbols=[
+"★","◆","●","▲","■","♥",
+"☀","☾","✦","✚","⬟","⬢",
+"♣","♠","♦","●","⚡","☘"
 ];
 
 
 /* =====================================================
    TELEGRAM
-   ===================================================== */
+===================================================== */
 
 try{
 
@@ -1073,15 +1357,15 @@ console.log("Telegram setup skipped");
 
 
 /* =====================================================
-   LOCAL DATA
-   ===================================================== */
+   STORAGE
+===================================================== */
 
 var data;
 
 try{
 
 data=JSON.parse(
-localStorage.getItem("puzzleRushV2") || "null"
+localStorage.getItem("puzzleRushV3")||"null"
 );
 
 }catch(e){
@@ -1098,6 +1382,8 @@ best:0,
 bestCombo:0,
 rounds:0,
 runs:0,
+xp:0,
+level:1,
 streak:0,
 lastPlayed:"",
 dailyPlayed:"",
@@ -1112,7 +1398,7 @@ function saveData(){
 try{
 
 localStorage.setItem(
-"puzzleRushV2",
+"puzzleRushV3",
 JSON.stringify(data)
 );
 
@@ -1122,133 +1408,8 @@ JSON.stringify(data)
 
 
 /* =====================================================
-   SCREEN
-   ===================================================== */
-
-function showScreen(id){
-
-document
-.querySelectorAll(".screen")
-.forEach(function(screen){
-
-screen.classList.remove("active");
-
-});
-
-document
-.getElementById(id)
-.classList.add("active");
-
-window.scrollTo(0,0);
-
-}
-
-
-/* =====================================================
-   HOME
-   ===================================================== */
-
-function updateHome(){
-
-document.getElementById("homeBest").textContent=
-data.best.toLocaleString();
-
-document.getElementById("homeStreak").textContent=
-data.streak;
-
-document.getElementById("homeRounds").textContent=
-data.rounds;
-
-document.getElementById("homeCombo").textContent=
-data.bestCombo;
-
-updateAchievements();
-
-renderLeaderboard("homeLeaderboard");
-
-}
-
-
-function updateAchievements(){
-
-var count=0;
-
-
-if(data.runs>=1){
-
-document
-.getElementById("ach1")
-.classList.add("unlocked");
-
-count++;
-
-}
-
-
-if(data.rounds>=10){
-
-document
-.getElementById("ach2")
-.classList.add("unlocked");
-
-count++;
-
-}
-
-
-if(data.bestCombo>=5){
-
-document
-.getElementById("ach3")
-.classList.add("unlocked");
-
-count++;
-
-}
-
-
-if(data.best>=1000){
-
-document
-.getElementById("ach4")
-.classList.add("unlocked");
-
-count++;
-
-}
-
-
-if(data.dailyPlayed===today()){
-
-document
-.getElementById("ach5")
-.classList.add("unlocked");
-
-count++;
-
-}
-
-
-if(data.rounds>=50 && data.best>=2500){
-
-document
-.getElementById("ach6")
-.classList.add("unlocked");
-
-count++;
-
-}
-
-
-document.getElementById("achievementCount").textContent=
-count+"/6";
-
-}
-
-
-/* =====================================================
    DATE
-   ===================================================== */
+===================================================== */
 
 function today(){
 
@@ -1263,7 +1424,7 @@ String(d.getDate()).padStart(2,"0");
 
 /* =====================================================
    STREAK
-   ===================================================== */
+===================================================== */
 
 function updateStreak(){
 
@@ -1273,16 +1434,14 @@ if(data.lastPlayed!==t){
 
 if(data.lastPlayed){
 
-var oldDate=new Date(data.lastPlayed);
+var old=new Date(data.lastPlayed);
+var now=new Date(t);
 
-var currentDate=new Date(t);
-
-var difference=Math.round(
-(currentDate-oldDate)/
-(1000*60*60*24)
+var diff=Math.round(
+(now-old)/(1000*60*60*24)
 );
 
-if(difference===1){
+if(diff===1){
 
 data.streak++;
 
@@ -1308,8 +1467,204 @@ saveData();
 
 
 /* =====================================================
+   SCREEN
+===================================================== */
+
+function showScreen(id){
+
+document
+.querySelectorAll(".screen")
+.forEach(function(s){
+
+s.classList.remove("active");
+
+});
+
+document
+.getElementById(id)
+.classList.add("active");
+
+window.scrollTo(0,0);
+
+}
+
+
+/* =====================================================
+   MODE NAME
+===================================================== */
+
+function modeName(mode){
+
+if(mode==="sequence"){
+return "Sequence Shift";
+}
+
+if(mode==="target"){
+return "Target Grid";
+}
+
+if(mode==="memory"){
+return "Memory Match";
+}
+
+return "Daily Challenge";
+
+}
+
+
+/* =====================================================
+   HOME
+===================================================== */
+
+function updateHome(){
+
+document.getElementById("homeBest").textContent=
+data.best.toLocaleString();
+
+document.getElementById("homeRounds").textContent=
+data.rounds;
+
+document.getElementById("homeCombo").textContent=
+data.bestCombo;
+
+document.getElementById("homeLevel").textContent=
+data.level;
+
+
+var xpInLevel=data.xp%100;
+
+document.getElementById("xpText").textContent=
+xpInLevel+" / 100 XP";
+
+document.getElementById("xpFill").style.width=
+xpInLevel+"%";
+
+
+document.getElementById("dailyButton").textContent=
+data.dailyPlayed===today()
+?"DONE"
+:"PLAY";
+
+
+updateAchievements();
+
+renderLeaderboard("homeLeaderboard");
+
+}
+
+
+/* =====================================================
+   ACHIEVEMENTS
+===================================================== */
+
+function updateAchievements(){
+
+var count=0;
+
+
+if(data.runs>=1){
+
+document.getElementById("a1").classList.add("on");
+
+count++;
+
+}
+
+
+if(data.rounds>=10){
+
+document.getElementById("a2").classList.add("on");
+
+count++;
+
+}
+
+
+if(data.bestCombo>=5){
+
+document.getElementById("a3").classList.add("on");
+
+count++;
+
+}
+
+
+if(data.best>=1000){
+
+document.getElementById("a4").classList.add("on");
+
+count++;
+
+}
+
+
+if(data.dailyPlayed===today()){
+
+document.getElementById("a5").classList.add("on");
+
+count++;
+
+}
+
+
+if(data.rounds>=50 && data.best>=2500){
+
+document.getElementById("a6").classList.add("on");
+
+count++;
+
+}
+
+
+document.getElementById("achievementText").textContent=
+count+"/6";
+
+}
+
+
+/* =====================================================
+   XP
+===================================================== */
+
+function addXP(amount){
+
+var oldLevel=data.level;
+
+data.xp+=amount;
+
+data.level=
+Math.floor(data.xp/100)+1;
+
+saveData();
+
+if(data.level>oldLevel){
+
+showLevelUp();
+
+}
+
+}
+
+
+function showLevelUp(){
+
+var popup=
+document.getElementById("levelUp");
+
+popup.classList.add("show");
+
+setTimeout(function(){
+
+popup.classList.remove("show");
+
+},1600);
+
+}
+
+
+/* =====================================================
    START NORMAL GAME
-   ===================================================== */
+===================================================== */
 
 function startGame(mode){
 
@@ -1332,25 +1687,20 @@ locked=false;
 updateStreak();
 
 
-document.getElementById("gameTitle").textContent=
-"Puzzle Rush";
-
-
-document.getElementById("gameSub").textContent=
+document.getElementById("gameName").textContent=
 modeName(mode);
 
+document.getElementById("gameDescription").textContent=
+mode==="sequence"
+?"Memory challenge"
+:mode==="target"
+?"Reaction challenge"
+:"Matching challenge";
 
-document.getElementById("modeText").textContent=
-mode==="classic"
-?"ODD":
-mode==="color"
-?"COLOR":
-"PAIR";
 
+showScreen("game");
 
-showScreen("gameScreen");
-
-updateGame();
+updateGameUI();
 
 createRound();
 
@@ -1358,14 +1708,14 @@ createRound();
 
 
 /* =====================================================
-   DAILY GAME
-   ===================================================== */
+   DAILY
+===================================================== */
 
 function playDaily(){
 
 if(data.dailyPlayed===today()){
 
-alert("You already completed today's challenge!");
+alert("Today's challenge is already complete!");
 
 return;
 
@@ -1391,21 +1741,16 @@ locked=false;
 updateStreak();
 
 
-document.getElementById("gameTitle").textContent=
+document.getElementById("gameName").textContent=
 "Daily Challenge";
 
-
-document.getElementById("gameSub").textContent=
-"10 rounds • Today's challenge";
-
-
-document.getElementById("modeText").textContent=
-"DAILY";
+document.getElementById("gameDescription").textContent=
+"10 mixed rounds";
 
 
-showScreen("gameScreen");
+showScreen("game");
 
-updateGame();
+updateGameUI();
 
 createRound();
 
@@ -1413,33 +1758,10 @@ createRound();
 
 
 /* =====================================================
-   MODE NAME
-   ===================================================== */
-
-function modeName(mode){
-
-if(mode==="classic"){
-return "Odd One";
-}
-
-if(mode==="color"){
-return "Color Code";
-}
-
-if(mode==="pair"){
-return "Pair Hunt";
-}
-
-return "Daily Challenge";
-
-}
-
-
-/* =====================================================
    GAME UI
-   ===================================================== */
+===================================================== */
 
-function updateGame(){
+function updateGameUI(){
 
 document.getElementById("scoreText").textContent=
 score.toLocaleString();
@@ -1454,39 +1776,56 @@ document.getElementById("livesText").textContent=
 document.getElementById("comboText").textContent=
 "x"+combo;
 
+document.getElementById("gameLevel").textContent=
+data.level;
+
 }
 
 
 /* =====================================================
-   CREATE ROUND
-   ===================================================== */
+   ROUND
+===================================================== */
 
 function createRound(){
 
 locked=false;
 
-document.getElementById("gameMessage").textContent="";
+memoryBusy=false;
 
-document.getElementById("gameMessage").className=
-"game-message";
+memoryFirst=-1;
+
+document.getElementById("message").textContent="";
+
+document.getElementById("message").className="message";
+
+
+var type=gameMode;
 
 
 if(dailyMode){
 
-var dailyModes=[
-"classic",
-"color",
-"pair"
+var dailyTypes=[
+"sequence",
+"target",
+"memory"
 ];
 
-createPuzzle(
-dailyModes[(round-1)%3]
-);
+type=
+dailyTypes[(round-1)%3];
 
-}else{
+}
 
-createPuzzle(gameMode);
 
+if(type==="sequence"){
+createSequence();
+}
+
+if(type==="target"){
+createTarget();
+}
+
+if(type==="memory"){
+createMemory();
 }
 
 
@@ -1497,30 +1836,32 @@ startTimer();
 
 /* =====================================================
    TIMER
-   ===================================================== */
+===================================================== */
 
 function startTimer(){
 
 clearInterval(timer);
 
-maxTime=Math.max(
-5.5,
-10-(round*.25)
+maxTime=
+Math.max(
+5,
+10-(round*.2)
 );
 
 timeLeft=maxTime;
 
 updateTimer();
 
-var start=Date.now();
+var started=Date.now();
 
 
 timer=setInterval(function(){
 
 var elapsed=
-(Date.now()-start)/1000;
+(Date.now()-started)/1000;
 
-timeLeft=Math.max(
+timeLeft=
+Math.max(
 0,
 maxTime-elapsed
 );
@@ -1532,7 +1873,7 @@ if(timeLeft<=0){
 
 clearInterval(timer);
 
-wrongAnswer("⏰ Too slow!");
+wrongAnswer("⏰ Time's up!");
 
 }
 
@@ -1547,259 +1888,214 @@ document.getElementById("timeText").textContent=
 timeLeft.toFixed(1)+"s";
 
 document.getElementById("timerFill").style.width=
-((timeLeft/maxTime)*100)+"%";
+Math.max(
+0,
+(timeLeft/maxTime)*100
+)+"%";
 
 }
 
 
 /* =====================================================
-   PUZZLE SELECTOR
-   ===================================================== */
+   RANDOM SYMBOL
+===================================================== */
 
-function createPuzzle(type){
+function randomSymbol(){
 
-if(type==="classic"){
-createOdd();
-}
-
-if(type==="color"){
-createColor();
-}
-
-if(type==="pair"){
-createPair();
-}
+return symbols[
+Math.floor(
+Math.random()*symbols.length
+)
+];
 
 }
 
 
 /* =====================================================
-   ODD PUZZLE
-   ===================================================== */
+   SEQUENCE SHIFT
+===================================================== */
 
-function createOdd(){
+function createSequence(){
 
 var area=
-document.getElementById("puzzleArea");
+document.getElementById("puzzle");
 
 
-var size=
-round<3
+var length=
+round<4
 ?3
-:round<6
+:round<8
 ?4
-:round<10
-?5
-:6;
+:5;
 
 
-var total=size*size;
+sequenceAnswer=[];
 
 
-var normal=
-emojis[
-Math.floor(
-Math.random()*emojis.length
-)
-];
+for(var i=0;i<length;i++){
 
-
-var odd=
-emojis[
-Math.floor(
-Math.random()*emojis.length
-)
-];
-
-
-while(odd===normal){
-
-odd=
-emojis[
-Math.floor(
-Math.random()*emojis.length
-)
-];
-
-}
-
-
-var oddIndex=
-Math.floor(Math.random()*total);
-
-
-document.getElementById("roundTitle").textContent=
-"Find the odd one";
-
-
-document.getElementById("instruction").textContent=
-"One symbol is different. Tap it.";
-
-
-var html=
-'<div class="emoji-grid" '+
-'style="grid-template-columns:repeat('+
-size+
-',1fr)">';
-
-
-for(var i=0;i<total;i++){
-
-html+=
-'<button class="emoji-tile" '+
-'onclick="answerOdd(this,'+
-(i===oddIndex)+')">'+
-(i===oddIndex?odd:normal)+
-'</button>';
-
-}
-
-
-html+="</div>";
-
-area.innerHTML=html;
-
-}
-
-
-function answerOdd(button,correct){
-
-if(correct){
-
-correctAnswer();
-
-}else{
-
-wrongAnswer("❌ Not that one!");
-
-}
-
-}
-
-
-/* =====================================================
-   COLOR PUZZLE
-   ===================================================== */
-
-function createColor(){
-
-var area=
-document.getElementById("puzzleArea");
-
-
-var wordIndex=
-Math.floor(
-Math.random()*colors.length
-);
-
-
-var colorIndex=
-Math.floor(
-Math.random()*colors.length
-);
-
-
-while(colorIndex===wordIndex){
-
-colorIndex=
-Math.floor(
-Math.random()*colors.length
+sequenceAnswer.push(
+randomSymbol()
 );
 
 }
 
 
-var word=colors[wordIndex];
-
-var ink=colors[colorIndex];
-
-
-document.getElementById("roundTitle").textContent=
-"Color Code";
+document.getElementById("gameTitle").textContent=
+"Sequence Shift";
 
 
-document.getElementById("instruction").textContent=
-"Ignore the word. Choose the ink color.";
+document.getElementById("gameInstruction").textContent=
+"Memorize the sequence";
+
+
+area.innerHTML=
+'<div class="sequence-box">'+
+'<div class="sequence-display" id="sequenceDisplay">'+
+sequenceAnswer.map(function(s){
+
+return '<div class="sequence-symbol">'+s+'</div>';
+
+}).join("")+
+'</div>'+
+'<div class="sequence-options" id="sequenceOptions"></div>'+
+'</div>';
+
+
+/*
+   Give the player a short look,
+   then hide the sequence.
+*/
+
+setTimeout(function(){
+
+if(locked){
+return;
+}
+
+var display=
+document.getElementById("sequenceDisplay");
+
+if(display){
+
+display.innerHTML=
+'<div style="opacity:.4;font-size:12px">NOW REPEAT IT</div>';
+
+}
+
+createSequenceOptions();
+
+},700);
+
+
+}
+
+
+function createSequenceOptions(){
+
+var box=
+document.getElementById("sequenceOptions");
+
+if(!box){
+return;
+}
 
 
 var options=
-colors
+symbols
 .slice()
 .sort(function(){
 return Math.random()-.5;
 })
-.slice(0,4);
+.slice(0,8);
 
 
-if(!options.includes(ink)){
+box.innerHTML=
+options.map(function(s){
 
-options[0]=ink;
-
-}
-
-
-options.sort(function(){
-return Math.random()-.5;
-});
-
-
-var html=
-'<div class="color-container">'+
-
-'<div class="color-word" '+
-'style="color:'+ink.color+'">'+
-word.name+
-'</div>'+
-
-'<div class="color-options">';
-
-
-for(var i=0;i<options.length;i++){
-
-html+=
-'<button class="color-option" '+
-'style="background:'+options[i].color+'" '+
-'onclick="answerColor(this,'+
-(options[i]===ink)+')">'+
-options[i].name+
+return '<button class="sequence-option" '+
+'onclick="sequenceTap(\''+
+s+
+'\')">'+
+s+
 '</button>';
 
+}).join("");
+
+
+sequenceAnswer=
+sequenceAnswer.slice();
+
+var currentIndex=0;
+
+
+/*
+   Replace buttons with sequence-selection behavior.
+*/
+
+box.innerHTML=
+options.map(function(s){
+
+return '<button class="sequence-option" '+
+'onclick="sequenceChoose(\''+
+s+
+'\')">'+
+s+
+'</button>';
+
+}).join("");
+
+
+window.sequenceCurrent=0;
+
 }
 
 
-html+="</div></div>";
+function sequenceChoose(symbol){
 
-area.innerHTML=html;
+if(locked){
+return;
+}
+
+
+if(symbol!==sequenceAnswer[window.sequenceCurrent]){
+
+wrongAnswer("❌ Sequence broken!");
+
+return;
 
 }
 
 
-function answerColor(button,correct){
+window.sequenceCurrent++;
 
-if(correct){
+
+if(window.sequenceCurrent>=sequenceAnswer.length){
 
 correctAnswer();
 
-}else{
-
-wrongAnswer("❌ Watch the color!");
+return;
 
 }
+
+
+document.getElementById("gameInstruction").textContent=
+"Good! Find symbol "+(window.sequenceCurrent+1);
 
 }
 
 
 /* =====================================================
-   PAIR PUZZLE
-   ===================================================== */
+   TARGET GRID
+===================================================== */
 
-function createPair(){
+function createTarget(){
 
 var area=
-document.getElementById("puzzleArea");
+document.getElementById("puzzle");
 
 
-var total=
+var size=
 round<5
 ?12
 :round<10
@@ -1807,63 +2103,73 @@ round<5
 :20;
 
 
-var symbols=
-pairs
-.slice()
-.sort(function(){
-return Math.random()-.5;
-})
-.slice(0,total-1);
+var target=randomSymbol();
 
 
-var pair=
-symbols[
+document.getElementById("gameTitle").textContent=
+"Target Grid";
+
+
+document.getElementById("gameInstruction").textContent=
+"Find the target symbol";
+
+
+var cells=[];
+
+
+for(var i=0;i<size-1;i++){
+
+var s=randomSymbol();
+
+while(s===target){
+s=randomSymbol();
+}
+
+cells.push(s);
+
+}
+
+
+var targetPosition=
 Math.floor(
-Math.random()*symbols.length
-)
-];
+Math.random()*size
+);
+
+cells.splice(
+targetPosition,
+0,
+target
+);
 
 
-symbols.push(pair);
+area.innerHTML=
+'<div class="target-wrap">'+
 
+'<div class="target-display">'+
+'<div class="target-label">FIND THIS</div>'+
+'<div class="target-symbol">'+target+'</div>'+
+'</div>'+
 
-symbols.sort(function(){
-return Math.random()-.5;
-});
+'<div class="target-grid">'+
 
+cells.map(function(s,index){
 
-document.getElementById("roundTitle").textContent=
-"Pair Hunt";
-
-
-document.getElementById("instruction").textContent=
-"Find the only symbol that appears twice.";
-
-
-var html=
-'<div class="pair-grid">';
-
-
-for(var i=0;i<symbols.length;i++){
-
-html+=
-'<button class="pair-tile" '+
-'onclick="answerPair(this,'+
-(symbols[i]===pair)+')">'+
-symbols[i]+
+return '<button class="target-cell" '+
+'onclick="targetTap('+index+','+
+(index===targetPosition)+')">'+
+s+
 '</button>';
 
+}).join("")+
+
+'</div>'+
+
+'</div>';
+
 }
 
 
-html+="</div>";
-
-area.innerHTML=html;
-
-}
-
-
-function answerPair(button,correct){
+function targetTap(index,correct){
 
 if(correct){
 
@@ -1871,7 +2177,7 @@ correctAnswer();
 
 }else{
 
-wrongAnswer("❌ That's a unique symbol!");
+wrongAnswer("❌ Wrong target!");
 
 }
 
@@ -1879,8 +2185,197 @@ wrongAnswer("❌ That's a unique symbol!");
 
 
 /* =====================================================
-   CORRECT ANSWER
-   ===================================================== */
+   MEMORY MATCH
+===================================================== */
+
+function createMemory(){
+
+var area=
+document.getElementById("puzzle");
+
+
+var pairCount=
+round<5
+?4
+:round<9
+?5
+:6;
+
+
+var chosen=
+symbols
+.slice()
+.sort(function(){
+return Math.random()-.5;
+})
+.slice(0,pairCount);
+
+
+var cards=
+chosen.concat(chosen)
+.sort(function(){
+return Math.random()-.5;
+});
+
+
+memoryCards=cards;
+
+memoryFirst=-1;
+
+memoryBusy=false;
+
+
+document.getElementById("gameTitle").textContent=
+"Memory Match";
+
+
+document.getElementById("gameInstruction").textContent=
+"Find the matching pair";
+
+
+area.innerHTML=
+'<div class="memory-wrap">'+
+'<div class="memory-grid">'+
+
+cards.map(function(s,index){
+
+return '<button '+
+'class="memory-card" '+
+'id="memory-'+index+'" '+
+'onclick="memoryTap('+index+')">'+
+'?'+
+'</button>';
+
+}).join("")+
+
+'</div>'+
+'</div>';
+
+}
+
+
+/*
+   For this mode the player gets
+   one target pair at a time.
+*/
+
+var memoryMatched=[];
+
+
+function memoryTap(index){
+
+if(locked || memoryBusy){
+return;
+}
+
+if(memoryMatched.indexOf(index)!==-1){
+return;
+}
+
+
+var card=
+document.getElementById(
+"memory-"+index
+);
+
+if(!card){
+return;
+}
+
+
+card.textContent=
+memoryCards[index];
+
+card.classList.add("open");
+
+
+if(memoryFirst===-1){
+
+memoryFirst=index;
+
+return;
+
+}
+
+
+var second=index;
+
+memoryBusy=true;
+
+
+if(
+memoryCards[memoryFirst]===
+memoryCards[second]
+){
+
+memoryMatched.push(
+memoryFirst,
+second
+);
+
+card.classList.add("matched");
+
+document
+.getElementById("memory-"+memoryFirst)
+.classList.add("matched");
+
+memoryFirst=-1;
+
+memoryBusy=false;
+
+
+/*
+   If all pairs are found,
+   the round is correct.
+*/
+
+if(memoryMatched.length>=memoryCards.length){
+
+correctAnswer();
+
+}
+
+}else{
+
+setTimeout(function(){
+
+var firstCard=
+document.getElementById(
+"memory-"+memoryFirst
+);
+
+var secondCard=
+document.getElementById(
+"memory-"+second
+);
+
+if(firstCard){
+
+firstCard.textContent="?";
+firstCard.classList.remove("open");
+
+}
+
+if(secondCard){
+
+secondCard.textContent="?";
+secondCard.classList.remove("open");
+
+}
+
+memoryFirst=-1;
+memoryBusy=false;
+
+},500);
+
+}
+
+}
+
+
+/* =====================================================
+   CORRECT
+===================================================== */
 
 function correctAnswer(){
 
@@ -1905,34 +2400,37 @@ bestComboRun=combo;
 
 
 var points=
-50+
-round*10+
-Math.round(timeLeft*12)+
-combo*10;
+60+
+round*12+
+Math.round(timeLeft*15)+
+combo*12;
 
 
 score+=points;
 
 
-document.getElementById("gameMessage").textContent=
+addXP(
+Math.max(
+5,
+Math.round(points/10)
+)
+);
+
+
+document.getElementById("message").textContent=
 "✓ +"+points+" points";
 
+document.getElementById("message").className=
+"message good";
 
-document.getElementById("gameMessage").className=
-"game-message good";
 
-
-updateGame();
+updateGameUI();
 
 
 setTimeout(function(){
 
 roundsSinceAd++;
 
-
-/*
-   DAILY = EXACTLY 10 ROUNDS
-*/
 
 if(dailyMode && round>=10){
 
@@ -1944,15 +2442,21 @@ return;
 
 
 /*
-   ADSGRAM INTERSTITIAL
-   AFTER EVERY 5 COMPLETED ROUNDS
+   INTERSTITIAL BREAK
+   EVERY 5 COMPLETED ROUNDS
 */
 
 if(roundsSinceAd>=5){
 
 roundsSinceAd=0;
 
-showAdsGramInterstitial();
+showAdsGram(function(){
+
+round++;
+
+createRound();
+
+});
 
 }else{
 
@@ -1962,14 +2466,14 @@ createRound();
 
 }
 
-},350);
+},400);
 
 }
 
 
 /* =====================================================
-   WRONG ANSWER
-   ===================================================== */
+   WRONG
+===================================================== */
 
 function wrongAnswer(message){
 
@@ -1988,15 +2492,14 @@ lives--;
 combo=0;
 
 
-document.getElementById("gameMessage").textContent=
+document.getElementById("message").textContent=
 message;
 
+document.getElementById("message").className=
+"message bad";
 
-document.getElementById("gameMessage").className=
-"game-message bad";
 
-
-updateGame();
+updateGameUI();
 
 
 setTimeout(function(){
@@ -2011,42 +2514,51 @@ createRound();
 
 }
 
-},600);
+},650);
 
 }
 
 
 /* =====================================================
    ADSGRAM
-   ===================================================== */
+===================================================== */
 
 /*
-   The AdsGram script is loaded only after
-   the game has started.
+   AdsGram is deliberately loaded after
+   the game is available.
 
-   This means AdsGram cannot stop the
-   game buttons from working.
+   If the SDK/ad is unavailable,
+   gameplay continues normally.
 */
 
 function loadAdsGram(){
 
+return new Promise(function(resolve){
+
 if(window.Adsgram){
 
-return Promise.resolve();
+resolve();
+
+return;
 
 }
 
 
-return new Promise(function(resolve){
-
-var existing=
-document.getElementById("adsgramScript");
+var old=
+document.getElementById("adsgram-script");
 
 
-if(existing){
+if(old){
 
-existing.addEventListener(
+old.addEventListener(
 "load",
+function(){
+resolve();
+}
+);
+
+old.addEventListener(
+"error",
 function(){
 resolve();
 }
@@ -2060,10 +2572,7 @@ return;
 var script=
 document.createElement("script");
 
-
-script.id=
-"adsgramScript";
-
+script.id="adsgram-script";
 
 script.src=
 "https://sad.adsgram.ai/js/sad.min.js";
@@ -2098,7 +2607,7 @@ document.head.appendChild(script);
    SHOW INTERSTITIAL
 */
 
-function showAdsGramInterstitial(){
+function showAdsGram(continueGame){
 
 loadAdsGram()
 .then(function(){
@@ -2108,14 +2617,7 @@ if(
 typeof window.Adsgram.init!=="function"
 ){
 
-/*
-   No ad available.
-   Continue game.
-*/
-
-round++;
-
-createRound();
+continueGame();
 
 return;
 
@@ -2134,61 +2636,42 @@ var result=
 controller.show();
 
 
-if(result && typeof result.then==="function"){
+if(
+result &&
+typeof result.then==="function"
+){
 
-result
-.then(function(){
+result.then(function(){
 
-/*
-   Ad finished.
-   Continue game.
-*/
+continueGame();
 
-round++;
+}).catch(function(){
 
-createRound();
-
-})
-.catch(function(){
-
-/*
-   Ad failed/closed.
-   Continue game.
-*/
-
-round++;
-
-createRound();
+continueGame();
 
 });
 
 }else{
 
-round++;
-
-createRound();
+continueGame();
 
 }
 
 }catch(error){
 
 console.log(
-"AdsGram error:",
+"AdsGram error",
 error
 );
 
-round++;
-
-createRound();
+continueGame();
 
 }
 
 })
 .catch(function(){
 
-round++;
-
-createRound();
+continueGame();
 
 });
 
@@ -2197,7 +2680,7 @@ createRound();
 
 /* =====================================================
    FINISH GAME
-   ===================================================== */
+===================================================== */
 
 function finishGame(dailyComplete){
 
@@ -2213,7 +2696,10 @@ data.runs++;
 data.rounds+=
 dailyComplete
 ?10
-:Math.max(0,round-1);
+:Math.max(
+0,
+round-1
+);
 
 
 if(score>data.best){
@@ -2270,7 +2756,10 @@ score.toLocaleString();
 document.getElementById("resultRounds").textContent=
 dailyComplete
 ?10
-:Math.max(0,round-1);
+:Math.max(
+0,
+round-1
+);
 
 
 document.getElementById("resultCombo").textContent=
@@ -2280,7 +2769,9 @@ bestComboRun;
 var accuracy=
 totalAttempts
 ?Math.round(
-correctAnswers/totalAttempts*100
+correctAnswers/
+totalAttempts*
+100
 )
 :0;
 
@@ -2297,8 +2788,8 @@ dailyComplete
 
 document.getElementById("resultSub").textContent=
 dailyComplete
-?"Today's challenge is finished!"
-:"Can you beat your score next time?";
+?"You finished today's challenge."
+:"Try another run and beat your score.";
 
 
 document.getElementById("resultIcon").textContent=
@@ -2309,28 +2800,31 @@ dailyComplete
 
 if(score>oldBest){
 
-document.getElementById("recordMessage").innerHTML=
-'<div class="new-record">🏆 NEW PERSONAL BEST!</div>';
+document.getElementById("record").innerHTML=
+'<div class="record">🏆 NEW PERSONAL BEST!</div>';
 
 }else{
 
-document.getElementById("recordMessage").innerHTML="";
+document.getElementById("record").innerHTML="";
 
 }
 
 
-renderLeaderboard("resultLeaderboard");
+renderLeaderboard(
+"resultLeaderboard"
+);
+
 
 updateHome();
 
-showScreen("resultScreen");
+showScreen("result");
 
 }
 
 
 /* =====================================================
    LEADERBOARD
-   ===================================================== */
+===================================================== */
 
 function renderLeaderboard(id){
 
@@ -2342,8 +2836,9 @@ if(!data.scores.length){
 
 box.innerHTML=
 '<div class="leader-row">'+
-'<div class="lb-mode">'+
-'Play your first run to appear here.'+
+'<div class="leader-mode">'+
+'Complete a run to create your first score.'
++
 '</div>'+
 '</div>';
 
@@ -2364,11 +2859,11 @@ html+=
 (i+1)+
 '</div>'+
 
-'<div class="lb-mode">'+
+'<div class="leader-mode">'+
 data.scores[i].mode+
 '</div>'+
 
-'<div class="lb-score">'+
+'<div class="leader-score">'+
 data.scores[i].score.toLocaleString()+
 '</div>'+
 
@@ -2384,13 +2879,13 @@ box.innerHTML=html;
 
 /* =====================================================
    PLAY AGAIN
-   ===================================================== */
+===================================================== */
 
 function playAgain(){
 
 if(gameMode==="daily"){
 
-startGame("classic");
+startGame("sequence");
 
 }else{
 
@@ -2403,7 +2898,7 @@ startGame(gameMode);
 
 /* =====================================================
    HOME
-   ===================================================== */
+===================================================== */
 
 function goHome(){
 
@@ -2411,14 +2906,14 @@ clearInterval(timer);
 
 updateHome();
 
-showScreen("homeScreen");
+showScreen("home");
 
 }
 
 
 /* =====================================================
    INITIALIZE
-   ===================================================== */
+===================================================== */
 
 updateHome();
 
