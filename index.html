@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-  />
+  >
+
   <title>Puzzle Rush</title>
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -17,35 +19,44 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    html,
     body {
       margin: 0;
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at top, #25204d 0%, #11142b 45%, #080b18 100%);
-      color: white;
-      font-family: Arial, Helvetica, sans-serif;
+      padding: 0;
+      width: 100%;
+      height: 100%;
       overflow: hidden;
     }
 
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      color: white;
+      background:
+        radial-gradient(circle at top, #282451 0%, #11142c 48%, #070a17 100%);
+    }
+
     button {
-      font: inherit;
+      font-family: inherit;
+      -webkit-appearance: none;
+      appearance: none;
     }
 
     .app {
       width: 100%;
       max-width: 520px;
       min-height: 100vh;
-      margin: auto;
+      margin: 0 auto;
       padding: 18px 16px;
       display: flex;
       flex-direction: column;
     }
 
     .topbar {
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .logo {
@@ -55,16 +66,16 @@
     }
 
     .logo span {
-      color: #8b7cff;
+      color: #8c7cff;
     }
 
     .best {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.1);
       padding: 8px 12px;
       border-radius: 12px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #c8c8d8;
       font-size: 13px;
-      color: #d8d8ea;
     }
 
     .screen {
@@ -72,16 +83,20 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      width: 100%;
     }
 
     .card {
+      width: 100%;
       background: rgba(255,255,255,0.055);
       border: 1px solid rgba(255,255,255,0.1);
       border-radius: 26px;
-      padding: 25px 18px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      padding: 24px 18px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
       backdrop-filter: blur(12px);
     }
+
+    /* START */
 
     .start-card {
       text-align: center;
@@ -89,7 +104,18 @@
 
     .emoji-logo {
       font-size: 62px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
+    }
+
+    .challenge {
+      display: inline-block;
+      padding: 8px 13px;
+      border-radius: 20px;
+      background: rgba(139,124,255,0.14);
+      border: 1px solid rgba(139,124,255,0.25);
+      color: #bdb6ff;
+      font-size: 13px;
+      margin-bottom: 18px;
     }
 
     h1 {
@@ -99,21 +125,10 @@
     }
 
     .subtitle {
-      color: #aaaac0;
       margin: 12px 0 25px;
-      line-height: 1.5;
+      color: #aaaabd;
       font-size: 15px;
-    }
-
-    .challenge {
-      display: inline-block;
-      background: rgba(139,124,255,0.14);
-      border: 1px solid rgba(139,124,255,0.25);
-      color: #bcb4ff;
-      padding: 8px 13px;
-      border-radius: 20px;
-      font-size: 13px;
-      margin-bottom: 22px;
+      line-height: 1.5;
     }
 
     .primary {
@@ -122,136 +137,161 @@
       border-radius: 17px;
       padding: 16px;
       color: white;
-      font-weight: 800;
-      font-size: 17px;
-      cursor: pointer;
       background: linear-gradient(135deg, #7868ff, #a05cff);
+      font-size: 17px;
+      font-weight: 900;
+      cursor: pointer;
       box-shadow: 0 10px 30px rgba(125,95,255,0.3);
     }
 
-    .primary:active,
-    .secondary:active,
-    .reward:active,
-    .tile:active {
+    .primary:active {
       transform: scale(0.97);
     }
+
+    /* GAME */
 
     .game-info {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
+      gap: 7px;
       margin-bottom: 13px;
     }
 
     .stat {
-      background: rgba(255,255,255,0.06);
-      border-radius: 13px;
-      padding: 10px 5px;
+      padding: 10px 4px;
       text-align: center;
+      border-radius: 13px;
+      background: rgba(255,255,255,0.06);
     }
 
     .stat-label {
-      font-size: 10px;
-      color: #8889a2;
-      text-transform: uppercase;
       margin-bottom: 4px;
+      color: #8889a2;
+      font-size: 10px;
+      text-transform: uppercase;
     }
 
     .stat-value {
-      font-size: 16px;
-      font-weight: 800;
+      font-size: 15px;
+      font-weight: 900;
     }
 
     .timer-box {
-      margin-bottom: 16px;
+      margin-bottom: 15px;
     }
 
     .timer-line {
       display: flex;
       justify-content: space-between;
+      margin-bottom: 6px;
       color: #a7a7bd;
       font-size: 12px;
-      margin-bottom: 6px;
     }
 
     .timer-track {
+      width: 100%;
       height: 7px;
-      background: rgba(255,255,255,0.08);
-      border-radius: 10px;
       overflow: hidden;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.08);
     }
 
     .timer-fill {
-      height: 100%;
       width: 100%;
-      background: linear-gradient(90deg, #71e6a2, #ffcc68);
+      height: 100%;
       border-radius: 10px;
-      transition: width 0.1s linear;
+      background: linear-gradient(90deg, #71e6a2, #ffcc68);
     }
 
     .question {
       text-align: center;
-      margin: 5px 0 17px;
+      margin: 4px 0 17px;
     }
 
     .question-title {
       font-size: 20px;
-      font-weight: 800;
-      margin-bottom: 5px;
+      font-weight: 900;
     }
 
     .question-sub {
+      margin-top: 5px;
       color: #8889a2;
       font-size: 13px;
     }
 
     .grid {
       display: grid;
-      gap: 9px;
       width: 100%;
       max-width: 390px;
-      margin: auto;
+      margin: 0 auto;
+      gap: 9px;
     }
 
     .tile {
+      width: 100%;
       aspect-ratio: 1;
       border: 0;
       border-radius: 16px;
       background: rgba(255,255,255,0.085);
+      color: white;
       font-size: clamp(25px, 8vw, 45px);
-      cursor: pointer;
-      transition: transform 0.08s;
       display: flex;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
+      transition: transform 0.08s;
+    }
+
+    .tile:active {
+      transform: scale(0.94);
     }
 
     .tile.correct {
-      animation: correct 0.25s ease;
+      animation: correctAnim 0.25s ease;
     }
 
     .tile.wrong {
-      animation: wrong 0.25s ease;
+      animation: wrongAnim 0.25s ease;
     }
 
-    @keyframes correct {
-      50% { transform: scale(1.08); }
+    @keyframes correctAnim {
+      50% {
+        transform: scale(1.08);
+      }
     }
 
-    @keyframes wrong {
-      25% { transform: translateX(-7px); }
-      50% { transform: translateX(7px); }
-      75% { transform: translateX(-5px); }
+    @keyframes wrongAnim {
+      25% {
+        transform: translateX(-7px);
+      }
+
+      50% {
+        transform: translateX(7px);
+      }
+
+      75% {
+        transform: translateX(-5px);
+      }
     }
 
     .combo-text {
-      text-align: center;
       height: 23px;
-      margin-top: 12px;
+      margin-top: 11px;
+      text-align: center;
       color: #ffcf6e;
       font-size: 14px;
-      font-weight: 800;
+      font-weight: 900;
     }
+
+    .notice {
+      min-height: 20px;
+      margin-top: 10px;
+      text-align: center;
+      color: #85869e;
+      font-size: 11px;
+    }
+
+    /* GAME OVER */
 
     .gameover {
       text-align: center;
@@ -259,7 +299,7 @@
 
     .gameover-icon {
       font-size: 58px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .gameover h2 {
@@ -268,15 +308,16 @@
     }
 
     .final-score {
+      margin: 12px 0 22px;
       font-size: 48px;
       font-weight: 900;
-      margin: 12px 0 22px;
     }
 
     .final-score small {
       display: block;
-      font-size: 12px;
+      margin-bottom: 2px;
       color: #8f90a7;
+      font-size: 12px;
       font-weight: normal;
       text-transform: uppercase;
     }
@@ -285,13 +326,13 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .result {
-      background: rgba(255,255,255,0.06);
-      border-radius: 13px;
       padding: 12px 5px;
+      border-radius: 13px;
+      background: rgba(255,255,255,0.06);
     }
 
     .result strong {
@@ -306,7 +347,6 @@
     }
 
     .reward-box {
-      margin-top: 14px;
       margin-bottom: 12px;
       padding: 15px;
       border-radius: 17px;
@@ -315,10 +355,10 @@
     }
 
     .reward-text {
-      font-size: 13px;
-      color: #bdbdc9;
-      line-height: 1.45;
       margin-bottom: 11px;
+      color: #bdbdc9;
+      font-size: 13px;
+      line-height: 1.45;
     }
 
     .reward {
@@ -328,8 +368,13 @@
       padding: 14px;
       background: linear-gradient(135deg, #f0a93a, #ffcc63);
       color: #211707;
+      font-size: 15px;
       font-weight: 900;
       cursor: pointer;
+    }
+
+    .reward:active {
+      transform: scale(0.97);
     }
 
     .reward:disabled {
@@ -344,46 +389,47 @@
       padding: 14px;
       background: rgba(255,255,255,0.06);
       color: white;
-      font-weight: 800;
+      font-size: 15px;
+      font-weight: 900;
       cursor: pointer;
     }
 
-    .notice {
-      min-height: 20px;
-      text-align: center;
-      color: #85869e;
-      font-size: 11px;
-      margin-top: 12px;
+    .secondary:active {
+      transform: scale(0.97);
     }
 
     .hidden {
       display: none !important;
     }
-
-    .ad-break {
-      text-align: center;
-      color: #8f90a7;
-      font-size: 12px;
-      margin-top: 10px;
-    }
   </style>
 </head>
 
 <body>
+
   <div class="app">
 
+    <!-- TOP BAR -->
     <div class="topbar">
-      <div class="logo">Puzzle<span>Rush</span></div>
-      <div class="best">Best: <b id="bestScore">0</b></div>
+      <div class="logo">
+        Puzzle<span>Rush</span>
+      </div>
+
+      <div class="best">
+        Best: <b id="bestScore">0</b>
+      </div>
     </div>
 
-    <!-- START SCREEN -->
+
+    <!-- ================= START SCREEN ================= -->
+
     <div id="startScreen" class="screen">
+
       <div class="card start-card">
+
         <div class="emoji-logo">🧩</div>
 
         <div class="challenge">
-          Daily Challenge #<span id="challengeNumber"></span>
+          Daily Challenge #<span id="challengeNumber">1</span>
         </div>
 
         <h1>Puzzle Rush</h1>
@@ -393,38 +439,52 @@
           Be fast. Build your combo. Beat your best score.
         </div>
 
-        <button id="startBtn" class="primary">
+        <!-- IMPORTANT: INLINE CLICK -->
+        <button
+          id="startBtn"
+          class="primary"
+          type="button"
+          onclick="startGame()"
+        >
           Start Puzzle Rush
         </button>
+
       </div>
+
     </div>
 
-    <!-- GAME SCREEN -->
+
+    <!-- ================= GAME SCREEN ================= -->
+
     <div id="gameScreen" class="screen hidden">
 
       <div class="game-info">
+
         <div class="stat">
           <div class="stat-label">Score</div>
-          <div class="stat-value" id="score">0</div>
+          <div id="score" class="stat-value">0</div>
         </div>
 
         <div class="stat">
           <div class="stat-label">Round</div>
-          <div class="stat-value" id="round">1</div>
+          <div id="round" class="stat-value">1</div>
         </div>
 
         <div class="stat">
           <div class="stat-label">Lives</div>
-          <div class="stat-value" id="lives">❤️❤️❤️</div>
+          <div id="lives" class="stat-value">❤️❤️❤️</div>
         </div>
 
         <div class="stat">
           <div class="stat-label">Combo</div>
-          <div class="stat-value" id="combo">0</div>
+          <div id="combo" class="stat-value">0</div>
         </div>
+
       </div>
 
+
       <div class="timer-box">
+
         <div class="timer-line">
           <span>Time</span>
           <span id="timerText">5.0s</span>
@@ -433,36 +493,65 @@
         <div class="timer-track">
           <div id="timerFill" class="timer-fill"></div>
         </div>
+
       </div>
 
+
       <div class="card">
+
         <div class="question">
-          <div class="question-title">Find the odd one!</div>
-          <div class="question-sub">Tap the emoji that is different.</div>
+
+          <div class="question-title">
+            Find the odd one!
+          </div>
+
+          <div class="question-sub">
+            Tap the emoji that is different.
+          </div>
+
         </div>
 
         <div id="grid" class="grid"></div>
 
         <div id="comboText" class="combo-text"></div>
+
       </div>
 
       <div id="notice" class="notice"></div>
+
     </div>
 
-    <!-- GAME OVER -->
+
+    <!-- ================= GAME OVER SCREEN ================= -->
+
     <div id="gameOverScreen" class="screen hidden">
+
       <div class="card gameover">
 
-        <div class="gameover-icon">🏁</div>
-
-        <h2>Run Complete</h2>
-
-        <div class="final-score">
-          <small>Final Score</small>
-          <span id="finalScore">0</span>
+        <div class="gameover-icon">
+          🏁
         </div>
 
+        <h2>
+          Run Complete
+        </h2>
+
+
+        <div class="final-score">
+
+          <small>
+            Final Score
+          </small>
+
+          <span id="finalScore">
+            0
+          </span>
+
+        </div>
+
+
         <div class="results">
+
           <div class="result">
             <strong id="finalRounds">0</strong>
             <span>Rounds</span>
@@ -477,97 +566,127 @@
             <strong id="finalCombo">0</strong>
             <span>Best Combo</span>
           </div>
+
         </div>
 
+
+        <!-- REWARDED AD -->
+
         <div id="rewardBox" class="reward-box">
+
           <div class="reward-text">
             Optional reward: watch one ad to continue this run with
             <b>+1 life</b>.<br>
             You can always play again without watching an ad.
           </div>
 
-          <button id="rewardBtn" class="reward">
+          <button
+            id="rewardBtn"
+            class="reward"
+            type="button"
+          >
             📺 Watch Ad → +1 Life
           </button>
+
         </div>
 
-        <button id="restartBtn" class="secondary">
+
+        <button
+          id="restartBtn"
+          class="secondary"
+          type="button"
+          onclick="startGame()"
+        >
           🔄 Start New Run
         </button>
 
+
         <div id="rewardNotice" class="notice"></div>
+
       </div>
+
     </div>
 
   </div>
 
+
   <script>
-    // ==========================================
-    // ADSGRAM BLOCK IDS
-    // ==========================================
+
+    /* =====================================================
+       ADSGRAM
+       ===================================================== */
 
     const REWARD_BLOCK_ID = "47290";
     const INTERSTITIAL_BLOCK_ID = "int-47289";
-
-    // ==========================================
-    // TELEGRAM
-    // ==========================================
-
-    if (window.Telegram && window.Telegram.WebApp) {
-      window.Telegram.WebApp.ready();
-      window.Telegram.WebApp.expand();
-    }
-
-    // ==========================================
-    // ADSGRAM CONTROLLERS
-    // ==========================================
 
     let rewardController = null;
     let interstitialController = null;
     let adShowing = false;
 
+
     function initRewardAd() {
+
       try {
+
         if (!window.Adsgram) {
-          console.log("Adsgram SDK not loaded");
+          console.log("Adsgram SDK not available");
           return null;
         }
 
         if (!rewardController) {
+
           rewardController = window.Adsgram.init({
             blockId: REWARD_BLOCK_ID
           });
+
         }
 
         return rewardController;
+
       } catch (error) {
-        console.log("Reward ad initialization error:", error);
+
+        console.log("Reward initialization error:", error);
         return null;
+
       }
+
     }
 
+
     function initInterstitialAd() {
+
       try {
+
         if (!window.Adsgram) {
-          console.log("Adsgram SDK not loaded");
+          console.log("Adsgram SDK not available");
           return null;
         }
 
         if (!interstitialController) {
+
           interstitialController = window.Adsgram.init({
             blockId: INTERSTITIAL_BLOCK_ID
           });
+
         }
 
         return interstitialController;
+
       } catch (error) {
+
         console.log("Interstitial initialization error:", error);
         return null;
+
       }
+
     }
 
+
     async function showRewardAd() {
-      if (adShowing) return false;
+
+      if (adShowing) {
+        return false;
+      }
 
       const controller = initRewardAd();
 
@@ -578,28 +697,41 @@
       adShowing = true;
 
       try {
+
         const result = await controller.show();
 
         console.log("Reward result:", result);
 
-        // Reward ONLY after the ad was actually completed.
-        if (result && result.done === true) {
+        if (
+          result &&
+          result.done === true
+        ) {
+
           return true;
+
         }
 
         return false;
 
       } catch (error) {
+
         console.log("Reward ad error:", error);
         return false;
 
       } finally {
+
         adShowing = false;
+
       }
+
     }
 
+
     async function showInterstitialAd() {
-      if (adShowing) return;
+
+      if (adShowing) {
+        return;
+      }
 
       const controller = initInterstitialAd();
 
@@ -610,19 +742,51 @@
       adShowing = true;
 
       try {
+
         await controller.show();
+
       } catch (error) {
-        console.log("Interstitial error:", error);
+
+        console.log("Interstitial ad error:", error);
+
       } finally {
+
         adShowing = false;
+
       }
+
     }
 
-    // ==========================================
-    // GAME DATA
-    // ==========================================
+
+    /* =====================================================
+       TELEGRAM
+       ===================================================== */
+
+    try {
+
+      if (
+        window.Telegram &&
+        window.Telegram.WebApp
+      ) {
+
+        window.Telegram.WebApp.ready();
+        window.Telegram.WebApp.expand();
+
+      }
+
+    } catch (error) {
+
+      console.log("Telegram error:", error);
+
+    }
+
+
+    /* =====================================================
+       GAME VARIABLES
+       ===================================================== */
 
     const emojiPairs = [
+
       ["🐼", "🐨"],
       ["😀", "😃"],
       ["😎", "🤓"],
@@ -639,7 +803,9 @@
       ["🍕", "🌮"],
       ["🎈", "🎉"],
       ["🔥", "✨"]
+
     ];
+
 
     let score = 0;
     let round = 1;
@@ -657,272 +823,568 @@
     let roundTime = 5;
     let correctIndex = 0;
 
-    const startScreen = document.getElementById("startScreen");
-    const gameScreen = document.getElementById("gameScreen");
-    const gameOverScreen = document.getElementById("gameOverScreen");
 
-    const startBtn = document.getElementById("startBtn");
-    const restartBtn = document.getElementById("restartBtn");
-    const rewardBtn = document.getElementById("rewardBtn");
+    /* =====================================================
+       ELEMENTS
+       ===================================================== */
 
-    const scoreEl = document.getElementById("score");
-    const roundEl = document.getElementById("round");
-    const livesEl = document.getElementById("lives");
-    const comboEl = document.getElementById("combo");
+    const startScreen =
+      document.getElementById("startScreen");
 
-    const timerText = document.getElementById("timerText");
-    const timerFill = document.getElementById("timerFill");
+    const gameScreen =
+      document.getElementById("gameScreen");
 
-    const grid = document.getElementById("grid");
-    const comboText = document.getElementById("comboText");
-    const notice = document.getElementById("notice");
-    const rewardNotice = document.getElementById("rewardNotice");
+    const gameOverScreen =
+      document.getElementById("gameOverScreen");
 
-    const bestScoreEl = document.getElementById("bestScore");
+    const scoreEl =
+      document.getElementById("score");
 
-    const finalScore = document.getElementById("finalScore");
-    const finalRounds = document.getElementById("finalRounds");
-    const finalCorrect = document.getElementById("finalCorrect");
-    const finalCombo = document.getElementById("finalCombo");
+    const roundEl =
+      document.getElementById("round");
 
-    // ==========================================
-    // DAILY CHALLENGE
-    // ==========================================
+    const livesEl =
+      document.getElementById("lives");
+
+    const comboEl =
+      document.getElementById("combo");
+
+    const timerText =
+      document.getElementById("timerText");
+
+    const timerFill =
+      document.getElementById("timerFill");
+
+    const grid =
+      document.getElementById("grid");
+
+    const comboText =
+      document.getElementById("comboText");
+
+    const notice =
+      document.getElementById("notice");
+
+    const rewardNotice =
+      document.getElementById("rewardNotice");
+
+    const rewardBox =
+      document.getElementById("rewardBox");
+
+    const rewardBtn =
+      document.getElementById("rewardBtn");
+
+    const bestScoreEl =
+      document.getElementById("bestScore");
+
+    const finalScore =
+      document.getElementById("finalScore");
+
+    const finalRounds =
+      document.getElementById("finalRounds");
+
+    const finalCorrect =
+      document.getElementById("finalCorrect");
+
+    const finalCombo =
+      document.getElementById("finalCombo");
+
+
+    /* =====================================================
+       DAILY CHALLENGE
+       ===================================================== */
 
     const today = new Date();
-    const dayNumber =
+
+    const startDate =
+      new Date(2026, 0, 1);
+
+    const difference =
       Math.floor(
-        (Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()) -
-          Date.UTC(2026, 0, 1)) /
+        (today - startDate) /
         86400000
-      ) + 1;
+      );
 
-    document.getElementById("challengeNumber").textContent =
-      Math.max(1, dayNumber);
+    document.getElementById(
+      "challengeNumber"
+    ).textContent =
+      Math.max(1, difference + 1);
 
-    // ==========================================
-    // BEST SCORE
-    // ==========================================
 
-    let bestScore = Number(localStorage.getItem("puzzleRushBest") || 0);
+    /* =====================================================
+       BEST SCORE
+       ===================================================== */
 
-    bestScoreEl.textContent = bestScore;
+    let bestScore =
+      Number(
+        localStorage.getItem(
+          "puzzleRushBest"
+        ) || 0
+      );
 
-    // ==========================================
-    // GAME FUNCTIONS
-    // ==========================================
+    bestScoreEl.textContent =
+      bestScore;
+
+
+    /* =====================================================
+       UPDATE STATS
+       ===================================================== */
 
     function updateStats() {
-      scoreEl.textContent = score;
-      roundEl.textContent = round;
-      comboEl.textContent = combo;
+
+      scoreEl.textContent =
+        score;
+
+      roundEl.textContent =
+        round;
+
+      comboEl.textContent =
+        combo;
 
       let hearts = "";
 
-      for (let i = 0; i < lives; i++) {
+      for (
+        let i = 0;
+        i < lives;
+        i++
+      ) {
+
         hearts += "❤️";
+
       }
 
-      if (hearts === "") {
+      if (!hearts) {
         hearts = "💔";
       }
 
-      livesEl.textContent = hearts;
+      livesEl.textContent =
+        hearts;
+
     }
+
+
+    /* =====================================================
+       DIFFICULTY
+       ===================================================== */
 
     function getGridSize() {
-      if (round <= 3) return 3;
-      if (round <= 7) return 4;
-      if (round <= 12) return 5;
+
+      if (round <= 3) {
+        return 3;
+      }
+
+      if (round <= 7) {
+        return 4;
+      }
+
+      if (round <= 12) {
+        return 5;
+      }
+
       return 6;
+
     }
+
 
     function getRoundTime() {
-      if (round <= 3) return 5;
-      if (round <= 7) return 4.5;
-      if (round <= 12) return 4;
-      if (round <= 18) return 3.5;
+
+      if (round <= 3) {
+        return 5;
+      }
+
+      if (round <= 7) {
+        return 4.5;
+      }
+
+      if (round <= 12) {
+        return 4;
+      }
+
+      if (round <= 18) {
+        return 3.5;
+      }
+
       return 3;
+
     }
 
+
+    /* =====================================================
+       CREATE PUZZLE
+       ===================================================== */
+
     function createPuzzle() {
+
       clearInterval(timer);
 
       grid.innerHTML = "";
 
-      const size = getGridSize();
-      const total = size * size;
+      const size =
+        getGridSize();
+
+      const total =
+        size * size;
 
       const pair =
-        emojiPairs[Math.floor(Math.random() * emojiPairs.length)];
+        emojiPairs[
+          Math.floor(
+            Math.random() *
+            emojiPairs.length
+          )
+        ];
 
-      const normal = pair[0];
-      const odd = pair[1];
+      const normal =
+        pair[0];
 
-      correctIndex = Math.floor(Math.random() * total);
+      const odd =
+        pair[1];
+
+      correctIndex =
+        Math.floor(
+          Math.random() *
+          total
+        );
 
       grid.style.gridTemplateColumns =
         repeat(${size}, 1fr);
 
-      for (let i = 0; i < total; i++) {
-        const tile = document.createElement("button");
 
-        tile.className = "tile";
-        tile.textContent = i === correctIndex ? odd : normal;
+      for (
+        let i = 0;
+        i < total;
+        i++
+      ) {
 
-        tile.addEventListener("click", () => {
-          if (!running) return;
+        const tile =
+          document.createElement("button");
 
-          if (i === correctIndex) {
-            handleCorrect(tile);
-          } else {
-            handleWrong(tile);
+        tile.type = "button";
+
+        tile.className =
+          "tile";
+
+        tile.textContent =
+          i === correctIndex
+            ? odd
+            : normal;
+
+
+        tile.addEventListener(
+          "click",
+          function () {
+
+            if (!running) {
+              return;
+            }
+
+            if (i === correctIndex) {
+
+              handleCorrect(tile);
+
+            } else {
+
+              handleWrong(tile);
+
+            }
+
           }
-        });
+        );
+
 
         grid.appendChild(tile);
+
       }
 
-      roundTime = getRoundTime();
-      roundStartTime = performance.now();
+
+      roundTime =
+        getRoundTime();
+
+      roundStartTime =
+        performance.now();
 
       updateTimer();
-      timer = setInterval(updateTimer, 50);
+
+      timer =
+        setInterval(
+          updateTimer,
+          50
+        );
+
     }
+
+
+    /* =====================================================
+       TIMER
+       ===================================================== */
 
     function updateTimer() {
-      if (!running) return;
+
+      if (!running) {
+        return;
+      }
 
       const elapsed =
-        (performance.now() - roundStartTime) / 1000;
+        (
+          performance.now() -
+          roundStartTime
+        ) / 1000;
 
       const remaining =
-        Math.max(0, roundTime - elapsed);
+        Math.max(
+          0,
+          roundTime - elapsed
+        );
 
       const percent =
-        (remaining / roundTime) * 100;
+        (
+          remaining /
+          roundTime
+        ) * 100;
 
-      timerFill.style.width = percent + "%";
-      timerText.textContent = remaining.toFixed(1) + "s";
+      timerFill.style.width =
+        percent + "%";
+
+      timerText.textContent =
+        remaining.toFixed(1) +
+        "s";
+
 
       if (remaining <= 0) {
+
         clearInterval(timer);
+
         handleTimeout();
+
       }
+
     }
 
+
+    /* =====================================================
+       CORRECT
+       ===================================================== */
+
     function handleCorrect(tile) {
-      if (!running) return;
+
+      if (!running) {
+        return;
+      }
 
       clearInterval(timer);
 
-      tile.classList.add("correct");
+      tile.classList.add(
+        "correct"
+      );
 
       const reactionTime =
-        (performance.now() - roundStartTime) / 1000;
+        (
+          performance.now() -
+          roundStartTime
+        ) / 1000;
+
 
       combo++;
       correctAnswers++;
       completedRounds++;
 
-      if (combo > bestComboRun) {
-        bestComboRun = combo;
+
+      if (
+        combo >
+        bestComboRun
+      ) {
+
+        bestComboRun =
+          combo;
+
       }
+
 
       let points = 100;
 
-      // Combo bonus
-      points += combo * 15;
+      points +=
+        combo * 15;
 
-      // Speed bonus
+
       if (reactionTime < 1) {
+
         points += 100;
-        comboText.textContent = "⚡ LIGHTNING FAST!";
-      } else if (reactionTime < 2) {
-        points += 50;
-        comboText.textContent = "🔥 FAST!";
-      } else {
+
         comboText.textContent =
-          combo >= 3 ? 🔥 ${combo}x COMBO! : "";
+          "⚡ LIGHTNING FAST!";
+
+      } else if (
+        reactionTime < 2
+      ) {
+
+        points += 50;
+
+        comboText.textContent =
+          "🔥 FAST!";
+
+      } else {
+
+        comboText.textContent =
+          combo >= 3
+            ? 🔥 ${combo}x COMBO!
+            : "";
+
       }
 
-      score += points;
+
+      score +=
+        points;
 
       updateStats();
 
-      // Interstitial after every 5 completed rounds.
+
+      /*
+        INTERSTITIAL EVERY 5 COMPLETED ROUNDS
+      */
+
       if (
         completedRounds > 0 &&
         completedRounds % 5 === 0
       ) {
+
         notice.textContent =
-          "🎬 Round complete • Short ad break";
+          "🎬 Short ad break";
 
-        setTimeout(async () => {
-          await showInterstitialAd();
+        setTimeout(
+          async function () {
 
-          if (running) {
-            notice.textContent = "";
+            await showInterstitialAd();
+
+            if (!running) {
+              return;
+            }
+
+            notice.textContent =
+              "";
+
             round++;
+
             updateStats();
+
             createPuzzle();
-          }
-        }, 300);
+
+          },
+          300
+        );
 
       } else {
-        setTimeout(() => {
-          if (!running) return;
 
-          round++;
-          updateStats();
-          createPuzzle();
-        }, 250);
+        setTimeout(
+          function () {
+
+            if (!running) {
+              return;
+            }
+
+            round++;
+
+            updateStats();
+
+            createPuzzle();
+
+          },
+          250
+        );
+
       }
+
     }
+
+
+    /* =====================================================
+       WRONG
+       ===================================================== */
 
     function handleWrong(tile) {
-      if (!running) return;
 
-      tile.classList.add("wrong");
+      if (!running) {
+        return;
+      }
+
+      tile.classList.add(
+        "wrong"
+      );
 
       lives--;
+
       combo = 0;
 
       updateStats();
 
+
       if (lives <= 0) {
-        setTimeout(endGame, 200);
+
+        setTimeout(
+          endGame,
+          200
+        );
+
       }
+
     }
+
+
+    /* =====================================================
+       TIMEOUT
+       ===================================================== */
 
     function handleTimeout() {
-      if (!running) return;
+
+      if (!running) {
+        return;
+      }
 
       lives--;
+
       combo = 0;
 
       updateStats();
 
+
       if (lives <= 0) {
+
         endGame();
+
       } else {
-        comboText.textContent = "⏰ Too slow!";
 
-        setTimeout(() => {
-          if (!running) return;
+        comboText.textContent =
+          "⏰ Too slow!";
 
-          round++;
-          updateStats();
-          createPuzzle();
-        }, 350);
+        setTimeout(
+          function () {
+
+            if (!running) {
+              return;
+            }
+
+            round++;
+
+            updateStats();
+
+            createPuzzle();
+
+          },
+          350
+        );
+
       }
+
     }
 
-    // ==========================================
-    // START GAME
-    // ==========================================
+
+    /* =====================================================
+       START GAME
+       ===================================================== */
 
     function startGame() {
+
+      console.log(
+        "Puzzle Rush started"
+      );
+
       clearInterval(timer);
 
       score = 0;
@@ -936,113 +1398,194 @@
 
       running = true;
 
-      startScreen.classList.add("hidden");
-      gameOverScreen.classList.add("hidden");
-      gameScreen.classList.remove("hidden");
 
-      notice.textContent = "";
-      comboText.textContent = "";
+      startScreen.classList.add(
+        "hidden"
+      );
+
+      gameOverScreen.classList.add(
+        "hidden"
+      );
+
+      gameScreen.classList.remove(
+        "hidden"
+      );
+
+
+      notice.textContent =
+        "";
+
+      comboText.textContent =
+        "";
+
 
       updateStats();
+
       createPuzzle();
+
     }
 
-    // ==========================================
-    // GAME OVER
-    // ==========================================
+
+    /* =====================================================
+       GAME OVER
+       ===================================================== */
 
     function endGame() {
+
       running = false;
 
       clearInterval(timer);
 
-      if (score > bestScore) {
-        bestScore = score;
+
+      if (
+        score >
+        bestScore
+      ) {
+
+        bestScore =
+          score;
+
         localStorage.setItem(
           "puzzleRushBest",
           bestScore
         );
+
       }
 
-      bestScoreEl.textContent = bestScore;
 
-      finalScore.textContent = score;
-      finalRounds.textContent = completedRounds;
-      finalCorrect.textContent = correctAnswers;
-      finalCombo.textContent = bestComboRun;
+      bestScoreEl.textContent =
+        bestScore;
+
+
+      finalScore.textContent =
+        score;
+
+      finalRounds.textContent =
+        completedRounds;
+
+      finalCorrect.textContent =
+        correctAnswers;
+
+      finalCombo.textContent =
+        bestComboRun;
+
 
       rewardUsed = false;
 
-      rewardBox.classList.remove("hidden");
+      rewardBox.classList.remove(
+        "hidden"
+      );
 
-      rewardBtn.disabled = false;
+      rewardBtn.disabled =
+        false;
+
       rewardBtn.textContent =
         "📺 Watch Ad → +1 Life";
 
-      rewardNotice.textContent = "";
+      rewardNotice.textContent =
+        "";
 
-      gameScreen.classList.add("hidden");
-      gameOverScreen.classList.remove("hidden");
+
+      gameScreen.classList.add(
+        "hidden"
+      );
+
+      gameOverScreen.classList.remove(
+        "hidden"
+      );
+
     }
 
-    // ==========================================
-    // REWARDED AD
-    // ==========================================
 
-    rewardBtn.addEventListener("click", async () => {
-      if (rewardUsed || adShowing) return;
+    /* =====================================================
+       REWARDED AD BUTTON
+       ===================================================== */
 
-      rewardBtn.disabled = true;
-      rewardBtn.textContent = "⏳ Loading ad...";
+    rewardBtn.addEventListener(
+      "click",
+      async function () {
 
-      const completed = await showRewardAd();
+        if (
+          rewardUsed ||
+          adShowing
+        ) {
+          return;
+        }
 
-      if (completed) {
-        rewardUsed = true;
 
-        lives = 1;
-        running = true;
+        rewardBtn.disabled =
+          true;
 
-        gameOverScreen.classList.add("hidden");
-        gameScreen.classList.remove("hidden");
-
-        rewardNotice.textContent = "";
-
-        updateStats();
-
-        notice.textContent =
-          "🎁 +1 Life added! Keep going.";
-
-        // Continue from the current round.
-        createPuzzle();
-
-      } else {
-        rewardBtn.disabled = false;
         rewardBtn.textContent =
-          "📺 Watch Ad → +1 Life";
+          "⏳ Loading ad...";
 
-        rewardNotice.textContent =
-          "The ad wasn't completed. No life was added.";
+
+        const completed =
+          await showRewardAd();
+
+
+        if (completed) {
+
+          rewardUsed = true;
+
+          lives = 1;
+
+          running = true;
+
+
+          gameOverScreen.classList.add(
+            "hidden"
+          );
+
+          gameScreen.classList.remove(
+            "hidden"
+          );
+
+
+          rewardNotice.textContent =
+            "";
+
+          notice.textContent =
+            "🎁 +1 Life added! Keep going.";
+
+
+          updateStats();
+
+          createPuzzle();
+
+
+        } else {
+
+          rewardBtn.disabled =
+            false;
+
+          rewardBtn.textContent =
+            "📺 Watch Ad → +1 Life";
+
+          rewardNotice.textContent =
+            "The ad wasn't completed. No life was added.";
+
+        }
+
       }
-    });
+    );
 
-    // ==========================================
-    // BUTTONS
-    // ==========================================
 
-    startBtn.addEventListener("click", startGame);
+    /* =====================================================
+       PRELOAD ADS
+       ===================================================== */
 
-    restartBtn.addEventListener("click", startGame);
+    setTimeout(
+      function () {
 
-    // ==========================================
-    // PRELOAD ADSGRAM
-    // ==========================================
+        initRewardAd();
+        initInterstitialAd();
 
-    setTimeout(() => {
-      initRewardAd();
-      initInterstitialAd();
-    }, 1000);
+      },
+      1000
+    );
 
   </script>
+
 </body>
 </html>
