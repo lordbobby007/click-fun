@@ -2,8 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#111827">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
+  <meta name="theme-color" content="#080b18">
 
   <title>Puzzle Rush</title>
 
@@ -19,13 +22,17 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    html {
+      background: #080b18;
+    }
+
     body {
       margin: 0;
       min-height: 100vh;
       font-family: Arial, Helvetica, sans-serif;
+      color: #fff;
       background:
-        radial-gradient(circle at top, #312e81 0%, #111827 45%, #030712 100%);
-      color: white;
+        radial-gradient(circle at 50% -10%, #4338ca 0%, #171b38 32%, #080b18 75%);
       overflow-x: hidden;
     }
 
@@ -37,238 +44,164 @@
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      padding: 18px 14px 28px;
+      padding: 16px 14px 30px;
     }
 
     .game {
       width: 100%;
       max-width: 520px;
-      display: flex;
-      flex-direction: column;
     }
+
+    /* =========================
+       HEADER
+       ========================= */
 
     .top {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 18px;
+      justify-content: space-between;
+      margin-bottom: 14px;
     }
 
     .logo {
       font-size: 24px;
       font-weight: 900;
-      letter-spacing: -0.5px;
+      letter-spacing: -0.8px;
     }
 
     .logo span {
       color: #a5b4fc;
     }
 
-    .best {
-      background: rgba(255,255,255,0.10);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 999px;
+    .best-pill {
       padding: 8px 12px;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 16px;
-    }
-
-    .stat {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.10);
-      border-radius: 16px;
-      padding: 11px 8px;
-      text-align: center;
-    }
-
-    .stat-label {
-      font-size: 11px;
-      color: #cbd5e1;
-      text-transform: uppercase;
-      letter-spacing: 0.7px;
-    }
-
-    .stat-value {
-      margin-top: 3px;
-      font-size: 21px;
-      font-weight: 900;
-    }
-
-    .timer-wrap {
-      margin-bottom: 18px;
-    }
-
-    .timer-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 7px;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .timer {
-      font-size: 20px;
-    }
-
-    .timer-bar {
-      height: 9px;
       border-radius: 999px;
-      background: rgba(255,255,255,0.12);
-      overflow: hidden;
-    }
-
-    .timer-fill {
-      height: 100%;
-      width: 100%;
-      border-radius: inherit;
-      background: #818cf8;
-      transition: width 0.1s linear;
-    }
-
-    .card {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 28px;
-      padding: 24px 16px 20px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
-    }
-
-    .round {
-      text-align: center;
-      margin-bottom: 16px;
-    }
-
-    .round-title {
-      font-size: 14px;
-      color: #cbd5e1;
-      margin-bottom: 5px;
-    }
-
-    .question {
-      font-size: 23px;
-      font-weight: 900;
-    }
-
-    .emoji-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-      margin-top: 18px;
-    }
-
-    .emoji {
-      aspect-ratio: 1;
-      border: 0;
-      border-radius: 17px;
       background: rgba(255,255,255,0.09);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: clamp(25px, 8vw, 43px);
-      cursor: pointer;
-      transition: transform 0.12s ease, background 0.12s ease;
-      touch-action: manipulation;
-    }
-
-    .emoji:active {
-      transform: scale(0.88);
-      background: rgba(255,255,255,0.18);
-    }
-
-    .emoji.correct {
-      background: rgba(34,197,94,0.35);
-      transform: scale(1.05);
-    }
-
-    .emoji.wrong {
-      background: rgba(239,68,68,0.35);
-      transform: scale(0.92);
-    }
-
-    .message {
-      min-height: 24px;
-      margin-top: 17px;
-      text-align: center;
-      font-size: 14px;
+      border: 1px solid rgba(255,255,255,0.11);
+      font-size: 12px;
       font-weight: 800;
     }
 
-    .hint {
-      margin-top: 14px;
+    /* =========================
+       COMMON CARD
+       ========================= */
+
+    .card {
+      background: rgba(255,255,255,0.075);
+      border: 1px solid rgba(255,255,255,0.11);
+      border-radius: 26px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.30);
+    }
+
+    /* =========================
+       START SCREEN
+       ========================= */
+
+    .start-screen {
+      padding: 26px 18px 20px;
       text-align: center;
-      color: #94a3b8;
-      font-size: 12px;
     }
 
-    .start-screen,
-    .game-over {
-      text-align: center;
-      padding: 12px 5px 4px;
+    .hero-icon {
+      width: 88px;
+      height: 88px;
+      margin: 0 auto 14px;
+      border-radius: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      background: linear-gradient(
+        145deg,
+        rgba(129,140,248,0.30),
+        rgba(99,102,241,0.08)
+      );
+      border: 1px solid rgba(165,180,252,0.20);
     }
 
-    .big-icon {
-      font-size: 70px;
-      margin-bottom: 8px;
-    }
-
-    .start-screen h1,
-    .game-over h1 {
+    .start-screen h1 {
       margin: 0;
       font-size: 34px;
       font-weight: 900;
+      letter-spacing: -1px;
     }
 
-    .start-screen p,
-    .game-over p {
+    .subtitle {
       color: #cbd5e1;
-      line-height: 1.5;
-      margin: 10px auto 20px;
-      max-width: 350px;
+      line-height: 1.55;
+      margin: 10px auto 18px;
+      max-width: 390px;
+      font-size: 14px;
     }
 
-    .main-button {
+    .challenge-card {
+      text-align: left;
+      padding: 14px;
+      margin-bottom: 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.055);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .challenge-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .challenge-title {
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #a5b4fc;
+    }
+
+    .challenge-number {
+      font-size: 12px;
+      font-weight: 900;
+      color: #fde68a;
+    }
+
+    .challenge-text {
+      color: #cbd5e1;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    /* =========================
+       BUTTONS
+       ========================= */
+
+    .main-button,
+    .reward-button {
       width: 100%;
       min-height: 54px;
       border: 0;
       border-radius: 17px;
-      background: #818cf8;
       color: white;
-      font-size: 17px;
-      font-weight: 900;
-      cursor: pointer;
-      box-shadow: 0 10px 25px rgba(99,102,241,0.35);
-      touch-action: manipulation;
-    }
-
-    .main-button:active {
-      transform: scale(0.98);
-    }
-
-    .reward-button {
-      width: 100%;
-      min-height: 54px;
-      margin-bottom: 12px;
-      border: 1px solid rgba(74,222,128,0.35);
-      border-radius: 17px;
-      background: rgba(34,197,94,0.18);
-      color: #bbf7d0;
       font-size: 16px;
       font-weight: 900;
       cursor: pointer;
       touch-action: manipulation;
     }
 
+    .main-button {
+      background: linear-gradient(135deg, #818cf8, #6366f1);
+      box-shadow: 0 12px 28px rgba(99,102,241,0.32);
+    }
+
+    .main-button:active,
     .reward-button:active {
       transform: scale(0.98);
+    }
+
+    .reward-button {
+      margin-bottom: 11px;
+      background: rgba(34,197,94,0.15);
+      border: 1px solid rgba(74,222,128,0.35);
+      color: #bbf7d0;
     }
 
     .reward-button:disabled {
@@ -276,22 +209,248 @@
       cursor: default;
     }
 
-    .score-result {
-      font-size: 48px;
+    /* =========================
+       STATS
+       ========================= */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 7px;
+      margin-bottom: 13px;
+    }
+
+    .stat {
+      min-width: 0;
+      text-align: center;
+      padding: 9px 5px;
+      border-radius: 15px;
+      background: rgba(255,255,255,0.075);
+      border: 1px solid rgba(255,255,255,0.09);
+    }
+
+    .stat-label {
+      font-size: 9px;
+      color: #94a3b8;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-value {
+      margin-top: 3px;
+      font-size: 18px;
       font-weight: 900;
-      margin: 8px 0;
+      white-space: nowrap;
+    }
+
+    /* =========================
+       TIMER
+       ========================= */
+
+    .timer-wrap {
+      margin-bottom: 13px;
+    }
+
+    .timer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-size: 11px;
+      font-weight: 900;
+      color: #cbd5e1;
+    }
+
+    .timer {
+      font-size: 19px;
+      color: white;
+    }
+
+    .timer-bar {
+      height: 8px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.10);
+    }
+
+    .timer-fill {
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      background: #818cf8;
+      transition: width 0.1s linear;
+    }
+
+    /* =========================
+       GAME CARD
+       ========================= */
+
+    .game-card {
+      padding: 20px 13px 17px;
+    }
+
+    .round-info {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .round-label {
+      color: #94a3b8;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .question {
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    .combo-message {
+      min-height: 21px;
+      margin-top: 5px;
+      color: #fcd34d;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    /* =========================
+       GRID
+       ========================= */
+
+    .emoji-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 7px;
+      margin-top: 10px;
+    }
+
+    .emoji {
+      aspect-ratio: 1;
+      border: 0;
+      border-radius: 15px;
+      background: rgba(255,255,255,0.075);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(24px, 8vw, 42px);
+      cursor: pointer;
+      touch-action: manipulation;
+      transition:
+        transform 0.10s ease,
+        background 0.10s ease;
+    }
+
+    .emoji:active {
+      transform: scale(0.88);
+    }
+
+    .emoji.correct {
+      background: rgba(34,197,94,0.32);
+      transform: scale(1.06);
+    }
+
+    .emoji.wrong {
+      background: rgba(239,68,68,0.32);
+      transform: scale(0.90);
+    }
+
+    .message {
+      min-height: 23px;
+      margin-top: 13px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .hint {
+      margin-top: 8px;
+      text-align: center;
+      color: #64748b;
+      font-size: 11px;
+    }
+
+    /* =========================
+       GAME OVER
+       ========================= */
+
+    .game-over {
+      padding: 26px 18px 20px;
+      text-align: center;
+    }
+
+    .game-over-icon {
+      font-size: 64px;
+      margin-bottom: 7px;
+    }
+
+    .game-over h1 {
+      margin: 0;
+      font-size: 32px;
+      font-weight: 900;
+    }
+
+    .final-label {
+      margin-top: 7px;
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    .score-result {
+      margin: 3px 0 9px;
+      font-size: 52px;
+      font-weight: 900;
     }
 
     .new-best {
       display: inline-block;
-      margin-bottom: 16px;
-      background: rgba(250,204,21,0.15);
-      color: #fde68a;
-      border: 1px solid rgba(250,204,21,0.25);
-      border-radius: 999px;
+      margin-bottom: 14px;
       padding: 7px 12px;
-      font-size: 13px;
+      border-radius: 999px;
+      color: #fde68a;
+      background: rgba(250,204,21,0.13);
+      border: 1px solid rgba(250,204,21,0.22);
+      font-size: 12px;
       font-weight: 900;
+    }
+
+    .results {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 7px;
+      margin: 4px 0 15px;
+    }
+
+    .result-box {
+      padding: 11px 5px;
+      border-radius: 15px;
+      background: rgba(255,255,255,0.055);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .result-number {
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .result-label {
+      margin-top: 3px;
+      color: #94a3b8;
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .ad-note {
+      margin: 0 0 11px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.045);
+      color: #94a3b8;
+      font-size: 11px;
+      line-height: 1.45;
     }
 
     .hidden {
@@ -299,16 +458,20 @@
     }
 
     @media (max-width: 360px) {
+      .start-screen h1 {
+        font-size: 30px;
+      }
+
+      .game-card {
+        padding: 17px 10px 15px;
+      }
+
       .emoji-grid {
-        gap: 6px;
+        gap: 5px;
       }
 
       .emoji {
-        border-radius: 13px;
-      }
-
-      .card {
-        padding: 20px 12px 16px;
+        border-radius: 12px;
       }
     }
   </style>
@@ -319,34 +482,61 @@
 <div class="app">
   <main class="game">
 
+    <!-- HEADER -->
+
     <div class="top">
       <div class="logo">🧩 Puzzle<span>Rush</span></div>
-      <div class="best">🏆 Best: <span id="bestScore">0</span></div>
+
+      <div class="best-pill">
+        🏆 <span id="bestScore">0</span>
+      </div>
     </div>
+
 
     <!-- START SCREEN -->
 
-    <div id="startScreen" class="card start-screen">
+    <section id="startScreen" class="card start-screen">
 
-      <div class="big-icon">🧩</div>
+      <div class="hero-icon">🧩</div>
 
-      <h1>Find The Odd One!</h1>
+      <h1>Find The Odd One</h1>
 
-      <p>
-        Find the one emoji that is different before the timer runs out.
-        Every round gets harder!
-      </p>
+      <div class="subtitle">
+        Spot the different emoji before time runs out.
+        Build your streak, beat your best score and survive as long as possible.
+      </div>
+
+
+      <div class="challenge-card">
+
+        <div class="challenge-top">
+          <div class="challenge-title">
+            📅 Daily Challenge
+          </div>
+
+          <div id="dailyNumber" class="challenge-number">
+            #1
+          </div>
+        </div>
+
+        <div class="challenge-text">
+          Today's challenge changes every day.
+          Complete more rounds to build your personal record.
+        </div>
+
+      </div>
+
 
       <button id="startButton" class="main-button">
-        🎮 Start Game
+        🎮 Start Puzzle Rush
       </button>
 
-    </div>
+    </section>
 
 
     <!-- GAME SCREEN -->
 
-    <div id="gameScreen" class="hidden">
+    <section id="gameScreen" class="hidden">
 
       <div class="stats">
 
@@ -365,13 +555,18 @@
           <div id="lives" class="stat-value">❤️❤️❤️</div>
         </div>
 
+        <div class="stat">
+          <div class="stat-label">Combo</div>
+          <div id="combo" class="stat-value">0</div>
+        </div>
+
       </div>
 
 
       <div class="timer-wrap">
 
         <div class="timer-row">
-          <span>TIME</span>
+          <span>TIME REMAINING</span>
           <span id="timer" class="timer">10.0</span>
         </div>
 
@@ -382,73 +577,94 @@
       </div>
 
 
-      <div class="card">
+      <div class="card game-card">
 
-        <div class="round">
+        <div class="round-info">
 
-          <div class="round-title">
-            Can you spot it?
+          <div class="round-label">
+            ROUND <span id="roundLabel">1</span>
           </div>
 
-          <div id="question" class="question">
+          <div class="question">
             Find the different emoji
           </div>
+
+          <div id="comboMessage" class="combo-message"></div>
 
         </div>
 
 
         <div id="emojiGrid" class="emoji-grid"></div>
 
+
         <div id="message" class="message"></div>
 
         <div class="hint">
-          👆 Tap the different emoji
+          👆 Tap the odd emoji
         </div>
 
       </div>
 
-    </div>
+    </section>
 
 
     <!-- GAME OVER -->
 
-    <div id="gameOver" class="hidden card game-over">
+    <section id="gameOver" class="hidden card game-over">
 
-      <div class="big-icon">
-        🏁
+      <div class="game-over-icon">🏁</div>
+
+      <h1>Run Complete</h1>
+
+      <div class="final-label">
+        Final Score
       </div>
-
-      <h1>
-        Game Over!
-      </h1>
-
-      <p>
-        Your final score is
-      </p>
 
       <div id="finalScore" class="score-result">
         0
       </div>
 
       <div id="newBest" class="new-best hidden">
-        🏆 NEW BEST SCORE!
+        🏆 NEW PERSONAL BEST
       </div>
 
 
-      <!-- REWARDED AD BUTTON -->
+      <div class="results">
+
+        <div class="result-box">
+          <div id="finalRound" class="result-number">0</div>
+          <div class="result-label">Rounds</div>
+        </div>
+
+        <div class="result-box">
+          <div id="finalCorrect" class="result-number">0</div>
+          <div class="result-label">Correct</div>
+        </div>
+
+        <div class="result-box">
+          <div id="finalStreak" class="result-number">0</div>
+          <div class="result-label">Best Combo</div>
+        </div>
+
+      </div>
+
+
+      <div class="ad-note">
+        📺 Optional reward: watch one ad to continue this run with +1 life.
+        You can always play again without watching an ad.
+      </div>
+
 
       <button id="watchAdButton" class="reward-button">
         📺 Watch Ad → +1 Life
       </button>
 
 
-      <!-- NORMAL PLAY AGAIN -->
-
       <button id="playAgain" class="main-button">
-        🔄 Play Again
+        🔄 Start New Run
       </button>
 
-    </div>
+    </section>
 
   </main>
 </div>
@@ -457,28 +673,18 @@
 <script>
 (function () {
 
-  /*
-   * ==========================================
-   * ADSGRAM SETTINGS
-   * ==========================================
-   */
+  /* =========================================
+     ADSGRAM
+     ========================================= */
 
   const INTERSTITIAL_BLOCK_ID = "int-47190";
-
   const REWARD_BLOCK_ID = "47191";
-
 
   let interstitialController = null;
   let rewardController = null;
 
   let adShowing = false;
 
-
-  /*
-   * ==========================================
-   * ADSGRAM INTERSTITIAL
-   * ==========================================
-   */
 
   function initInterstitial() {
 
@@ -500,7 +706,7 @@
     } catch (error) {
 
       console.log(
-        "AdsGram interstitial initialization failed:",
+        "Interstitial initialization failed:",
         error
       );
 
@@ -519,11 +725,7 @@
     const controller = initInterstitial();
 
     if (!controller) {
-
-      console.log(
-        "AdsGram interstitial is not available."
-      );
-
+      console.log("Interstitial unavailable.");
       return;
     }
 
@@ -536,7 +738,7 @@
     } catch (error) {
 
       console.log(
-        "AdsGram interstitial was not shown:",
+        "Interstitial not shown:",
         error
       );
 
@@ -548,12 +750,6 @@
 
   }
 
-
-  /*
-   * ==========================================
-   * ADSGRAM REWARDED AD
-   * ==========================================
-   */
 
   function initReward() {
 
@@ -575,7 +771,7 @@
     } catch (error) {
 
       console.log(
-        "AdsGram reward initialization failed:",
+        "Reward initialization failed:",
         error
       );
 
@@ -595,31 +791,41 @@
 
     if (!controller) {
 
-      console.log(
-        "AdsGram reward ad is not available."
-      );
+      console.log("Reward ad unavailable.");
 
       return false;
+
     }
 
     adShowing = true;
 
     try {
 
+      const result =
+        await controller.show();
+
       /*
-       * AdsGram resolves this promise when
-       * the rewarded ad has been watched
-       * completely.
+       * IMPORTANT:
+       *
+       * AdsGram rewarded ads should only
+       * give the reward when done === true.
        */
 
-      await controller.show();
+      if (
+        result &&
+        result.done === true
+      ) {
 
-      return true;
+        return true;
+
+      }
+
+      return false;
 
     } catch (error) {
 
       console.log(
-        "AdsGram reward ad was not completed:",
+        "Reward ad was not completed:",
         error
       );
 
@@ -634,11 +840,9 @@
   }
 
 
-  /*
-   * ==========================================
-   * GAME ELEMENTS
-   * ==========================================
-   */
+  /* =========================================
+     ELEMENTS
+     ========================================= */
 
   const startScreen =
     document.getElementById("startScreen");
@@ -666,8 +870,14 @@
   const roundEl =
     document.getElementById("round");
 
+  const roundLabelEl =
+    document.getElementById("roundLabel");
+
   const livesEl =
     document.getElementById("lives");
+
+  const comboEl =
+    document.getElementById("combo");
 
   const timerEl =
     document.getElementById("timer");
@@ -681,9 +891,21 @@
   const messageEl =
     document.getElementById("message");
 
+  const comboMessageEl =
+    document.getElementById("comboMessage");
+
 
   const finalScoreEl =
     document.getElementById("finalScore");
+
+  const finalRoundEl =
+    document.getElementById("finalRound");
+
+  const finalCorrectEl =
+    document.getElementById("finalCorrect");
+
+  const finalStreakEl =
+    document.getElementById("finalStreak");
 
   const bestScoreEl =
     document.getElementById("bestScore");
@@ -691,24 +913,25 @@
   const newBestEl =
     document.getElementById("newBest");
 
+  const dailyNumberEl =
+    document.getElementById("dailyNumber");
 
-  /*
-   * ==========================================
-   * GAME VARIABLES
-   * ==========================================
-   */
+
+  /* =========================================
+     GAME STATE
+     ========================================= */
 
   let score = 0;
-
   let round = 1;
-
   let lives = 3;
 
+  let combo = 0;
+  let bestComboThisRun = 0;
+  let correctAnswers = 0;
+  let mistakes = 0;
 
   let timeLeft = 10;
-
   let maxTime = 10;
-
 
   let timer = null;
 
@@ -716,14 +939,9 @@
 
   let correctIndex = 0;
 
-
   /*
-   * IMPORTANT:
-   *
-   * The player can use the rewarded ad
-   * only ONCE during a game.
+   * One rewarded-ad opportunity per run.
    */
-
   let rewardUsed = false;
 
 
@@ -734,24 +952,59 @@
 
     bestScore =
       Number(
-        localStorage.getItem("puzzleRushBest")
+        localStorage.getItem(
+          "puzzleRushBest"
+        )
       ) || 0;
 
-  } catch (e) {
+  } catch (error) {
 
     bestScore = 0;
 
   }
 
 
-  bestScoreEl.textContent = bestScore;
+  bestScoreEl.textContent =
+    bestScore;
 
 
-  /*
-   * ==========================================
-   * EMOJI PAIRS
-   * ==========================================
-   */
+  /* =========================================
+     DAILY CHALLENGE NUMBER
+     ========================================= */
+
+  function getDailyNumber() {
+
+    const today =
+      new Date();
+
+    const year =
+      today.getFullYear();
+
+    const month =
+      today.getMonth() + 1;
+
+    const day =
+      today.getDate();
+
+    const value =
+      (
+        year * 31 +
+        month * 17 +
+        day * 13
+      ) % 9999;
+
+    return value + 1;
+
+  }
+
+
+  dailyNumberEl.textContent =
+    "#" + getDailyNumber();
+
+
+  /* =========================================
+     EMOJI PAIRS
+     ========================================= */
 
   const pairs = [
 
@@ -769,54 +1022,60 @@
     ["🌙", "🌚"],
     ["😄", "😁"],
     ["😡", "😠"],
-    ["🐸", "🐢"]
-
+    ["🐸", "🐢"],
+    ["🍔", "🍟"],
+    ["🌈", "🌤️"],
+    ["🎈", "🎉"],
+    ["🚀", "✈️"],
+    ["🐼", "🐨"]
   ];
 
 
-  /*
-   * ==========================================
-   * GRID SIZE
-   * ==========================================
-   */
+  /* =========================================
+     GAME DIFFICULTY
+     ========================================= */
 
   function getGridSize() {
 
-    if (round < 3) return 15;
+    if (round < 3) {
+      return 15;
+    }
 
-    if (round < 6) return 20;
+    if (round < 6) {
+      return 20;
+    }
 
-    if (round < 10) return 25;
+    if (round < 10) {
+      return 25;
+    }
 
     return 30;
 
   }
 
 
-  /*
-   * ==========================================
-   * ROUND TIME
-   * ==========================================
-   */
-
   function getTime() {
 
-    if (round < 4) return 10;
+    if (round < 4) {
+      return 10;
+    }
 
-    if (round < 7) return 8;
+    if (round < 7) {
+      return 8;
+    }
 
-    if (round < 10) return 7;
+    if (round < 10) {
+      return 7;
+    }
 
     return 6;
 
   }
 
 
-  /*
-   * ==========================================
-   * START GAME
-   * ==========================================
-   */
+  /* =========================================
+     START GAME
+     ========================================= */
 
   function startGame() {
 
@@ -824,16 +1083,14 @@
 
 
     score = 0;
-
     round = 1;
-
     lives = 3;
 
+    combo = 0;
+    bestComboThisRun = 0;
+    correctAnswers = 0;
+    mistakes = 0;
 
-    /*
-     * New game means the player gets
-     * one new rewarded-ad chance.
-     */
 
     rewardUsed = false;
 
@@ -843,6 +1100,9 @@
     );
 
     watchAdButton.disabled = false;
+
+    watchAdButton.textContent =
+      "📺 Watch Ad → +1 Life";
 
 
     running = true;
@@ -868,17 +1128,23 @@
   }
 
 
-  /*
-   * ==========================================
-   * UPDATE STATS
-   * ==========================================
-   */
+  /* =========================================
+     UPDATE STATS
+     ========================================= */
 
   function updateStats() {
 
-    scoreEl.textContent = score;
+    scoreEl.textContent =
+      score;
 
-    roundEl.textContent = round;
+    roundEl.textContent =
+      round;
+
+    roundLabelEl.textContent =
+      round;
+
+    comboEl.textContent =
+      combo;
 
 
     let hearts = "";
@@ -906,20 +1172,21 @@
     }
 
 
-    livesEl.textContent = hearts;
+    livesEl.textContent =
+      hearts;
 
   }
 
 
-  /*
-   * ==========================================
-   * NEXT ROUND
-   * ==========================================
-   */
+  /* =========================================
+     CREATE ROUND
+     ========================================= */
 
   function nextRound() {
 
-    if (!running) return;
+    if (!running) {
+      return;
+    }
 
 
     clearInterval(timer);
@@ -940,7 +1207,8 @@
     const pair =
       pairs[
         Math.floor(
-          Math.random() * pairs.length
+          Math.random() *
+          pairs.length
         )
       ];
 
@@ -958,7 +1226,8 @@
       );
 
 
-    emojiGrid.innerHTML = "";
+    emojiGrid.innerHTML =
+      "";
 
 
     for (
@@ -975,7 +1244,6 @@
 
       button.type =
         "button";
-
 
       button.className =
         "emoji";
@@ -1007,7 +1275,13 @@
     }
 
 
-    messageEl.textContent = "";
+    messageEl.textContent =
+      "";
+
+    comboMessageEl.textContent =
+      combo >= 2
+        ? "🔥 " + combo + " combo!"
+        : "";
 
 
     updateTimer();
@@ -1046,11 +1320,9 @@
   }
 
 
-  /*
-   * ==========================================
-   * TIMER
-   * ==========================================
-   */
+  /* =========================================
+     TIMER
+     ========================================= */
 
   function updateTimer() {
 
@@ -1063,7 +1335,10 @@
         0,
         Math.min(
           100,
-          (timeLeft / maxTime) * 100
+          (
+            timeLeft /
+            maxTime
+          ) * 100
         )
       );
 
@@ -1074,13 +1349,11 @@
   }
 
 
-  /*
-   * ==========================================
-   * CHOOSE EMOJI
-   * ==========================================
-   */
+  /* =========================================
+     CORRECT / WRONG ANSWER
+     ========================================= */
 
-  async function chooseEmoji(
+  function chooseEmoji(
     index,
     button
   ) {
@@ -1089,9 +1362,7 @@
       !running ||
       adShowing
     ) {
-
       return;
-
     }
 
 
@@ -1107,38 +1378,80 @@
       );
 
 
+      correctAnswers++;
+
+
+      combo++;
+
+
+      if (
+        combo >
+        bestComboThisRun
+      ) {
+
+        bestComboThisRun =
+          combo;
+
+      }
+
+
       const speedBonus =
-        Math.ceil(timeLeft);
+        Math.ceil(
+          timeLeft
+        );
+
+
+      const comboBonus =
+        Math.min(
+          combo * 2,
+          20
+        );
 
 
       const points =
         10 +
         speedBonus +
+        comboBonus +
         round;
 
 
-      score += points;
+      score +=
+        points;
 
 
-      messageEl.textContent =
-        "+" +
-        points +
-        " points! 🔥";
+      if (
+        combo >= 3
+      ) {
+
+        messageEl.textContent =
+          "+" +
+          points +
+          " points • 🔥 COMBO x" +
+          combo;
+
+      } else {
+
+        messageEl.textContent =
+          "+" +
+          points +
+          " points!";
+
+      }
+
+
+      comboMessageEl.textContent =
+        combo >= 2
+          ? "🔥 " + combo + " in a row!"
+          : "";
 
 
       updateStats();
 
 
       /*
-       * ========================================
-       * INTERSTITIAL
-       * ========================================
+       * Natural interstitial breakpoint.
        *
        * Every 5 completed rounds.
-       *
-       * 5 -> Ad -> 6
-       * 10 -> Ad -> 11
-       * 15 -> Ad -> 16
        */
 
       const shouldShowAd =
@@ -1153,10 +1466,12 @@
           }
 
 
-          if (shouldShowAd) {
+          if (
+            shouldShowAd
+          ) {
 
             messageEl.textContent =
-              "🎬 Short break...";
+              "🎬 Round complete • Short ad break";
 
 
             await showInterstitial();
@@ -1171,15 +1486,14 @@
 
           round++;
 
-
           updateStats();
-
 
           nextRound();
 
         },
         350
       );
+
 
     } else {
 
@@ -1190,12 +1504,21 @@
 
       lives--;
 
+      mistakes++;
+
+
+      combo = 0;
+
 
       updateStats();
 
 
       messageEl.textContent =
-        "❌ Wrong!";
+        "❌ Wrong answer";
+
+
+      comboMessageEl.textContent =
+        "Combo reset";
 
 
       if (
@@ -1211,7 +1534,7 @@
             endGame();
 
           },
-          350
+          400
         );
 
       }
@@ -1221,11 +1544,9 @@
   }
 
 
-  /*
-   * ==========================================
-   * TIME EXPIRED
-   * ==========================================
-   */
+  /* =========================================
+     TIME EXPIRED
+     ========================================= */
 
   function timeExpired() {
 
@@ -1236,12 +1557,21 @@
 
     lives--;
 
+    mistakes++;
+
+
+    combo = 0;
+
 
     updateStats();
 
 
     messageEl.textContent =
       "⏰ Time's up!";
+
+
+    comboMessageEl.textContent =
+      "Combo reset";
 
 
     if (
@@ -1254,7 +1584,7 @@
           endGame();
 
         },
-        500
+        450
       );
 
 
@@ -1273,6 +1603,7 @@
 
         round++;
 
+        updateStats();
 
         nextRound();
 
@@ -1283,11 +1614,9 @@
   }
 
 
-  /*
-   * ==========================================
-   * GAME OVER
-   * ==========================================
-   */
+  /* =========================================
+     GAME OVER
+     ========================================= */
 
   function endGame() {
 
@@ -1300,13 +1629,26 @@
     finalScoreEl.textContent =
       score;
 
+    finalRoundEl.textContent =
+      Math.max(
+        0,
+        round - 1
+      );
+
+    finalCorrectEl.textContent =
+      correctAnswers;
+
+    finalStreakEl.textContent =
+      bestComboThisRun;
+
 
     const oldBest =
       bestScore;
 
 
     if (
-      score > bestScore
+      score >
+      bestScore
     ) {
 
       bestScore =
@@ -1320,7 +1662,7 @@
           String(bestScore)
         );
 
-      } catch (e) {}
+      } catch (error) {}
 
 
       bestScoreEl.textContent =
@@ -1330,7 +1672,8 @@
 
 
     if (
-      score > oldBest
+      score >
+      oldBest
     ) {
 
       newBestEl.classList.remove(
@@ -1347,9 +1690,8 @@
 
 
     /*
-     * Show rewarded button only if
-     * the player has not already used
-     * their one reward this game.
+     * Rewarded ad is available once
+     * per game run.
      */
 
     if (
@@ -1366,7 +1708,11 @@
         "hidden"
       );
 
-      watchAdButton.disabled = false;
+      watchAdButton.disabled =
+        false;
+
+      watchAdButton.textContent =
+        "📺 Watch Ad → +1 Life";
 
     }
 
@@ -1375,7 +1721,6 @@
       "hidden"
     );
 
-
     gameOver.classList.remove(
       "hidden"
     );
@@ -1383,27 +1728,19 @@
   }
 
 
-  /*
-   * ==========================================
-   * WATCH AD FOR +1 LIFE
-   * ==========================================
-   */
+  /* =========================================
+     REWARDED AD
+     ========================================= */
 
   watchAdButton.addEventListener(
     "click",
     async function () {
 
-      /*
-       * Prevent double clicks.
-       */
-
       if (
         rewardUsed ||
         adShowing
       ) {
-
         return;
-
       }
 
 
@@ -1412,37 +1749,34 @@
 
 
       watchAdButton.textContent =
-        "📺 Loading Ad...";
+        "📺 Loading reward ad...";
 
-
-      /*
-       * Show rewarded ad.
-       */
 
       const rewarded =
         await showRewardAd();
 
 
       /*
-       * ONLY give the life if the
-       * rewarded ad completed.
+       * Reward ONLY after AdsGram
+       * confirms completion.
        */
 
-      if (rewarded) {
+      if (
+        rewarded
+      ) {
 
         rewardUsed = true;
 
 
         /*
-         * Give exactly ONE life.
+         * Give one life.
+         *
+         * The player has just lost all
+         * lives, so one new life is enough.
          */
 
         lives = 1;
 
-
-        /*
-         * Return to the game.
-         */
 
         gameOver.classList.add(
           "hidden"
@@ -1460,14 +1794,11 @@
 
 
         messageEl.textContent =
-          "❤️ Extra life! Keep going!";
+          "❤️ +1 Life! Continue your run.";
 
 
-        /*
-         * Start the SAME round again.
-         */
-
-        nextRound();
+        comboMessageEl.textContent =
+          "Keep your streak alive!";
 
 
         watchAdButton.classList.add(
@@ -1475,16 +1806,25 @@
         );
 
 
+        /*
+         * Restart the SAME round.
+         *
+         * The score and round number
+         * remain unchanged.
+         */
+
+        nextRound();
+
+
       } else {
 
         /*
-         * Ad wasn't completed.
-         * No reward.
+         * No completed ad =
+         * no reward.
          */
 
         watchAdButton.disabled =
           false;
-
 
         watchAdButton.textContent =
           "📺 Watch Ad → +1 Life";
@@ -1495,11 +1835,9 @@
   );
 
 
-  /*
-   * ==========================================
-   * BUTTONS
-   * ==========================================
-   */
+  /* =========================================
+     BUTTONS
+     ========================================= */
 
   startButton.addEventListener(
     "click",
